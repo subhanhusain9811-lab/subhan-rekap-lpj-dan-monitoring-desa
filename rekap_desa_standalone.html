@@ -1,0 +1,4792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REKAP DESA — Monitoring LPJ Tahunan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <style>
+/* DESIGN SYSTEM & CSS VARIABLES */
+:root {
+  --primary-purple: #6b21a8;
+  --primary-purple-dark: #581c87;
+  --primary-purple-light: #7e22ce;
+  --primary-purple-soft: #f3e8ff;
+  --primary-purple-border: #d8b4fe;
+  
+  --accent-gold: #d97706;
+  --accent-gold-dark: #b45309;
+  --accent-gold-soft: #fef3c7;
+  --accent-gold-border: #fde68a;
+  
+  --navy-dark: #0f172a;
+  --navy-slate: #1e293b;
+  --navy-sidebar: #18113c;
+  --navy-sidebar-hover: #261b58;
+  --navy-sidebar-active: #3b2075;
+  
+  --status-green: #059669;
+  --status-green-light: #10b981;
+  --status-green-soft: #ecfdf5;
+  --status-green-border: #a7f3d0;
+  
+  --status-red: #dc2626;
+  --status-red-light: #ef4444;
+  --status-red-soft: #fef2f2;
+  --status-red-border: #fecaca;
+  
+  --status-yellow: #d97706;
+  --status-yellow-soft: #fffbeb;
+  --status-yellow-border: #fef08a;
+
+  --bg-body: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-secondary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 270px;
+  background: var(--navy-sidebar);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-brand {
+  padding: 22px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(107, 33, 168, 0.4);
+}
+
+.brand-text h1 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.brand-text p {
+  font-size: 11px;
+  color: #cbd5e1;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.sidebar-menu {
+  padding: 16px 12px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-header {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  padding: 12px 12px 6px;
+  font-weight: 700;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  color: #e2e8f0;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.menu-item:hover {
+  background: var(--navy-sidebar-hover);
+  color: #ffffff;
+}
+
+.menu-item.active {
+  background: linear-gradient(90deg, #7e22ce 0%, #6b21a8 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(126, 34, 206, 0.35);
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-badge {
+  background: var(--status-red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(220, 38, 38, 0.4);
+}
+
+.menu-badge.count-blue {
+  background: #3b82f6;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.15);
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.operator-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.operator-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #475569;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.operator-info {
+  line-height: 1.2;
+}
+
+.operator-name {
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.operator-role {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+/* MAIN CONTENT WRAPPER */
+.app-main {
+  margin-left: 270px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+  background: var(--bg-body);
+  transition: margin-left 0.3s ease;
+}
+
+/* TOP HEADER */
+.top-header {
+  background: #ffffff;
+  height: 72px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--navy-slate);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+}
+
+.page-title-area h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy-slate);
+  letter-spacing: -0.3px;
+}
+
+.page-title-area p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* YEAR SELECTOR BADGE */
+.year-pill {
+  display: flex;
+  align-items: center;
+  background: var(--primary-purple-soft);
+  border: 1px solid var(--primary-purple-border);
+  border-radius: var(--radius-md);
+  padding: 4px 10px;
+  gap: 6px;
+}
+
+.year-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.year-select {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary-purple-dark);
+  cursor: pointer;
+  outline: none;
+}
+
+.header-search {
+  position: relative;
+  width: 240px;
+}
+
+.header-search input {
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  background: var(--bg-secondary);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.header-search input:focus {
+  background: #fff;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+}
+
+.header-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.notif-bell-btn {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--navy-slate);
+  transition: all 0.2s;
+}
+
+.notif-bell-btn:hover {
+  background: #f8fafc;
+  border-color: var(--primary-purple);
+}
+
+.notif-badge-pill {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--status-red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary-purple);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-purple-dark);
+  box-shadow: 0 2px 8px rgba(107, 33, 168, 0.3);
+}
+
+.btn-secondary {
+  background: #fff;
+  border-color: var(--border-color);
+  color: var(--navy-slate);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-secondary);
+  border-color: #cbd5e1;
+}
+
+.btn-outline-purple {
+  background: transparent;
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+}
+
+.btn-outline-purple:hover {
+  background: var(--primary-purple-soft);
+}
+
+.btn-success {
+  background: var(--status-green);
+  color: #fff;
+}
+
+.btn-success:hover {
+  background: #047857;
+}
+
+.btn-danger {
+  background: var(--status-red);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn-gold {
+  background: var(--accent-gold);
+  color: #fff;
+}
+
+.btn-gold:hover {
+  background: var(--accent-gold-dark);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+
+/* MAIN CONTAINER */
+.content-container {
+  padding: 24px 28px 60px;
+  flex: 1;
+}
+
+/* VIEW SWITCHING */
+.app-view {
+  display: none;
+}
+
+.app-view.active {
+  display: block;
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ALERT BANNER */
+.alert-banner {
+  background: linear-gradient(90deg, #fff1f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  border-left: 4px solid var(--status-red);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-icon {
+  font-size: 20px;
+}
+
+.alert-title {
+  font-weight: 700;
+  color: #991b1b;
+  font-size: 14px;
+}
+
+.alert-desc {
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+/* CARDS & GRIDS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.stat-card.c-total::before { background: var(--primary-purple); }
+.stat-card.c-success::before { background: var(--status-green); }
+.stat-card.c-danger::before { background: var(--status-red); }
+.stat-card.c-doc-ok::before { background: #0284c7; }
+.stat-card.c-doc-no::before { background: var(--accent-gold); }
+.stat-card.c-warning::before { background: #e11d48; }
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.c-total .stat-icon { background: var(--primary-purple-soft); color: var(--primary-purple); }
+.c-success .stat-icon { background: var(--status-green-soft); color: var(--status-green); }
+.c-danger .stat-icon { background: var(--status-red-soft); color: var(--status-red); }
+.c-doc-ok .stat-icon { background: #e0f2fe; color: #0284c7; }
+.c-doc-no .stat-icon { background: var(--accent-gold-soft); color: var(--accent-gold); }
+.c-warning .stat-icon { background: #ffe4e6; color: #e11d48; }
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--navy-slate);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* PROGRESS TAHUNAN CARD */
+.progress-hero-card {
+  background: linear-gradient(135deg, #2e1065 0%, #1e1b4b 60%, #0f172a 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-hero-card::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+}
+
+.progress-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hero-title h3 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.hero-title p {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+.hero-pct {
+  font-size: 32px;
+  font-weight: 800;
+  color: #38bdf8;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hero-bar-track {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  height: 14px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.hero-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #38bdf8 50%, #a855f7 100%);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-details-row {
+  display: flex;
+  gap: 24px;
+  font-size: 12.5px;
+  color: #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.hero-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green { background: #10b981; }
+.dot-gold { background: #f59e0b; }
+.dot-red { background: #ef4444; }
+
+/* INSIGHTS & PROGRESS ROW */
+.dashboard-two-col {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy-slate);
+}
+
+/* INSIGHT LIST */
+.insight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+}
+
+.insight-item.type-attention {
+  background: #fff7ed;
+  border-color: #ffedd5;
+}
+
+.insight-item.type-payment {
+  background: #ecfdf5;
+  border-color: #d1fae5;
+}
+
+.insight-item.type-document {
+  background: #f0fdf4;
+  border-color: #dcfce7;
+}
+
+.insight-item.type-issue {
+  background: #fef2f2;
+  border-color: #fee2e2;
+}
+
+.insight-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.insight-content h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.type-attention h4 { color: #c2410c; }
+.type-payment h4 { color: #047857; }
+.type-document h4 { color: #15803d; }
+.type-issue h4 { color: #b91c1c; }
+
+.insight-content p {
+  font-size: 12.5px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* MINI PROGRESS BARS */
+.progress-metric-item {
+  margin-bottom: 16px;
+}
+
+.progress-metric-item:last-child {
+  margin-bottom: 0;
+}
+
+.progress-metric-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.progress-track {
+  height: 10px;
+  background: var(--bg-secondary);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.fill-green { background: var(--status-green); }
+.fill-purple { background: var(--primary-purple); }
+.fill-gold { background: var(--accent-gold); }
+.fill-blue { background: #0284c7; }
+
+/* QUICK ACTIONS STRIP */
+.quick-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.qa-label {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+/* FILTER BAR */
+.filter-panel {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  height: 38px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* TABLE SECTION */
+.table-container {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-toolbar {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #fafafa;
+}
+
+.table-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.table-count b {
+  color: var(--navy-slate);
+}
+
+.table-view-toggle {
+  display: flex;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  border: 1px solid var(--border-color);
+}
+
+.toggle-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+}
+
+.toggle-btn.active {
+  background: #fff;
+  color: var(--primary-purple);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  max-height: 680px;
+  position: relative;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.data-table th {
+  background: #f8fafc;
+  color: var(--navy-slate);
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table th:hover {
+  background: #f1f5f9;
+  color: var(--primary-purple);
+}
+
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background-color: #faf5ff;
+}
+
+/* STATUS BADGES */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.badge-done {
+  background: var(--status-green-soft);
+  color: var(--status-green);
+  border-color: var(--status-green-border);
+}
+
+.badge-belum {
+  background: var(--status-red-soft);
+  color: var(--status-red);
+  border-color: var(--status-red-border);
+}
+
+.badge-belum-ttd {
+  background: var(--status-yellow-soft);
+  color: var(--status-yellow);
+  border-color: var(--status-yellow-border);
+}
+
+.badge-kosong {
+  background: var(--bg-secondary);
+  color: var(--text-light);
+  border-color: var(--border-color);
+}
+
+.badge-selesai {
+  background: var(--status-green-soft);
+  color: #065f46;
+  border-color: var(--status-green-border);
+  font-weight: 800;
+}
+
+.badge-perlu-dokumen {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+  font-weight: 800;
+}
+
+.badge-belum-bayar {
+  background: var(--status-red-soft);
+  color: #991b1b;
+  border-color: var(--status-red-border);
+  font-weight: 800;
+}
+
+.badge-verification {
+  background: #fdf4ff;
+  color: #a21caf;
+  border: 1px dashed #e879f9;
+  font-size: 10.5px;
+  padding: 2px 6px;
+  margin-left: 4px;
+}
+
+.priority-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-tinggi {
+  background: #dc2626;
+  color: #fff;
+}
+
+.priority-sedang {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.priority-rendah {
+  background: #10b981;
+  color: #fff;
+}
+
+/* PAGINATION */
+.table-pagination {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  background: #fafafa;
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pagination-btns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.page-btn {
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-main);
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--bg-secondary);
+  border-color: var(--primary-purple);
+}
+
+.page-btn.active {
+  background: var(--primary-purple);
+  color: #fff;
+  border-color: var(--primary-purple);
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* CARD VIEW MODE (MOBILE/RESPONSIVE) */
+.cards-grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.desa-record-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.desa-record-card:hover {
+  border-color: var(--primary-purple-border);
+  box-shadow: var(--shadow-md);
+}
+
+.dcard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.dcard-title h4 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--navy-slate);
+}
+
+.dcard-title p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dcard-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.dcard-row b {
+  color: var(--navy-slate);
+}
+
+.dcard-docs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: var(--bg-secondary);
+  padding: 10px;
+  border-radius: var(--radius-md);
+}
+
+.dcard-doc-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10.5px;
+  text-align: center;
+  gap: 4px;
+}
+
+/* MODAL SYSTEM */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-backdrop.active {
+  display: flex;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.modal-box.modal-lg {
+  max-width: 860px;
+}
+
+.modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
+
+.modal-header h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy-slate);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+}
+
+.modal-close:hover {
+  color: var(--status-red);
+  background: var(--bg-secondary);
+}
+
+.modal-body {
+  padding: 24px;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #fafafa;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* FORM STYLING */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .form-grid-2, .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--navy-slate);
+  margin-bottom: 6px;
+}
+
+.form-field label .required {
+  color: var(--status-red);
+}
+
+/* DETAIL TABS */
+.detail-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+  gap: 4px;
+}
+
+.dtab-btn {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.dtab-btn:hover {
+  color: var(--primary-purple);
+}
+
+.dtab-btn.active {
+  color: var(--primary-purple);
+  border-bottom-color: var(--primary-purple);
+  font-weight: 700;
+}
+
+.dtab-content {
+  display: none;
+}
+
+.dtab-content.active {
+  display: block;
+}
+
+/* CHECKLIST DOKUMEN */
+.doc-checklist-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.doc-check-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+
+.doc-check-item:last-child {
+  margin-bottom: 0;
+}
+
+.doc-check-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* TOAST SYSTEM */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--navy-slate);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toastIn 0.3s ease-out;
+  border-left: 4px solid var(--primary-purple-light);
+}
+
+.toast.toast-success { border-left-color: var(--status-green); }
+.toast.toast-danger { border-left-color: var(--status-red); }
+.toast.toast-warning { border-left-color: var(--accent-gold); }
+
+@keyframes toastIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* PRINT LAYOUT */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+  .sidebar, .top-header, .filter-panel, .table-toolbar, .table-pagination,
+  .quick-actions-bar, .btn, .modal-backdrop, .toast-container {
+    display: none !important;
+  }
+  .app-main {
+    margin-left: 0 !important;
+  }
+  .content-container {
+    padding: 0 !important;
+  }
+  .print-official-header {
+    display: block !important;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid #94a3b8 !important;
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+    white-space: normal !important;
+  }
+  .badge {
+    border: none !important;
+    padding: 0 !important;
+    font-weight: bold !important;
+  }
+}
+
+.print-official-header {
+  display: none;
+}
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .app-main {
+    margin-left: 0;
+  }
+  .mobile-menu-btn {
+    display: block;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- MOBILE BACKDROP FOR SIDEBAR -->
+  <div class="modal-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="appSidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">RD</div>
+      <div class="brand-text">
+        <h1>REKAP DESA</h1>
+        <p>Monitoring LPJ Tahunan</p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-header">Menu Utama</div>
+      <a class="menu-item active" onclick="switchView('dashboard')">
+        <div class="menu-left">
+          <span>🏠</span>
+          <span>Dashboard</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('rekap-desa')">
+        <div class="menu-left">
+          <span>📋</span>
+          <span>Rekap Desa</span>
+        </div>
+        <span class="menu-badge count-blue" id="sidebarTotalBadge">50</span>
+      </a>
+      <a class="menu-item" onclick="switchView('kecamatan')">
+        <div class="menu-left">
+          <span>🏘️</span>
+          <span>Rekap Kecamatan</span>
+        </div>
+      </a>
+
+      <div class="menu-header">Monitoring Khusus</div>
+      <a class="menu-item" onclick="switchView('pembayaran')">
+        <div class="menu-left">
+          <span>💰</span>
+          <span>Status Pembayaran</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('dokumen')">
+        <div class="menu-left">
+          <span>📑</span>
+          <span>Dokumen LPJ</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('ttd')">
+        <div class="menu-left">
+          <span>✍️</span>
+          <span>Status TTD</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('tindak-lanjut')">
+        <div class="menu-left">
+          <span>⚠️</span>
+          <span>Perlu Tindak Lanjut</span>
+        </div>
+        <span class="menu-badge" id="sidebarIssuesBadge">17</span>
+      </a>
+
+      <div class="menu-header">Analisis & Integrasi</div>
+      <a class="menu-item" onclick="switchView('statistik')">
+        <div class="menu-left">
+          <span>📊</span>
+          <span>Statistik & Grafik</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('import')">
+        <div class="menu-left">
+          <span>📥</span>
+          <span>Import Data</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('export')">
+        <div class="menu-left">
+          <span>📤</span>
+          <span>Export Data</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('audit')">
+        <div class="menu-left">
+          <span>🕒</span>
+          <span>Riwayat Perubahan</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('pengaturan')">
+        <div class="menu-left">
+          <span>⚙️</span>
+          <span>Pengaturan & Backup</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="operator-card">
+        <div class="operator-avatar">AS</div>
+        <div class="operator-info">
+          <div class="operator-name">Ahmad Subhan, S.H.</div>
+          <div class="operator-role">Minzathu Law Offices</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="app-main">
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="page-title-area">
+          <h2 id="headerPageTitle">Dashboard Monitoring LPJ</h2>
+          <p id="headerPageSubtitle">Gambaran Menyeluruh Status Administrasi & Pembayaran Desa</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- TAHUN AKTIF SELECTOR -->
+        <div class="year-pill">
+          <span class="year-label">Tahun:</span>
+          <select class="year-select" id="yearSelector" onchange="changeYear(this.value)">
+          </select>
+        </div>
+
+        <button class="btn btn-outline-purple btn-sm" onclick="openAddYearModal()" title="Tambah Tahun Baru">
+          + Tahun
+        </button>
+
+        <!-- SEARCH INPUT -->
+        <div class="header-search">
+          <span class="header-search-icon">🔍</span>
+          <input type="text" id="globalSearchInput" placeholder="Cari desa, kades, camat..." oninput="handleGlobalSearch(this.value)">
+        </div>
+
+        <!-- NOTIF BUTTON -->
+        <button class="notif-bell-btn" onclick="switchView('tindak-lanjut')" title="Desa perlu tindak lanjut">
+          <span>🔔</span>
+          <span class="notif-badge-pill" id="headerNotifBadge">17</span>
+        </button>
+
+        <!-- QUICK ADD DESA -->
+        <button class="btn btn-primary" onclick="openAddDesaModal()">
+          <span>+</span>
+          <span>Tambah Desa</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="content-container">
+
+      <!-- PRINT OFFICIAL HEADER (Only shown on window.print) -->
+      <div class="print-official-header" id="printOfficialHeader">
+        <h2 style="font-size: 18pt; font-weight: 800; margin-bottom: 4px;">REKAP MONITORING LPJ & ADMINISTRASI DESA TAHUN <span class="print-year-target">2026</span></h2>
+        <p style="font-size: 11pt; color: #333; margin-bottom: 2px;">Minzathu & Minzathu Law Offices — Pendampingan & Konsultan Hukum Pemerintah Desa</p>
+        <p style="font-size: 9.5pt; color: #555;">Dicetak pada: <span id="printTimestamp"></span> | Wilayah: Kabupaten Mamuju & Mamuju Tengah</p>
+      </div>
+
+      <!-- VIEW 1: DASHBOARD UTAMA -->
+      <section class="app-view active" id="view-dashboard">
+
+        <!-- TOP ATTENTION BANNER -->
+        <div class="alert-banner" id="dashAlertBanner">
+          <div class="alert-left">
+            <span class="alert-icon">⚠️</span>
+            <div>
+              <div class="alert-title">PERHATIAN ADMINISTRASI</div>
+              <div class="alert-desc" id="dashAlertText">17 desa masih memiliki dokumen atau tanda tangan yang belum lengkap.</div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="switchView('tindak-lanjut')">Lihat Daftar Tindak Lanjut →</button>
+        </div>
+
+        <!-- 6 STATISTIK CARDS -->
+        <div class="stats-grid">
+          <div class="stat-card c-total">
+            <div class="stat-header">
+              <span class="stat-label">Total Desa</span>
+              <div class="stat-icon">🏘️</div>
+            </div>
+            <div class="stat-value" id="statTotalDesa">50</div>
+            <div class="stat-sub">Terdaftar pada tahun aktif</div>
+          </div>
+
+          <div class="stat-card c-success">
+            <div class="stat-header">
+              <span class="stat-label">Sudah Bayar</span>
+              <div class="stat-icon">💳</div>
+            </div>
+            <div class="stat-value" id="statSudahBayar">42</div>
+            <div class="stat-sub" id="statNominalBayar">Rp 630.000.000 (84%)</div>
+          </div>
+
+          <div class="stat-card c-danger">
+            <div class="stat-header">
+              <span class="stat-label">Belum Bayar</span>
+              <div class="stat-icon">⏳</div>
+            </div>
+            <div class="stat-value" id="statBelumBayar">8</div>
+            <div class="stat-sub" id="statPctBelumBayar">16% dari total desa</div>
+          </div>
+
+          <div class="stat-card c-doc-ok">
+            <div class="stat-header">
+              <span class="stat-label">Dokumen Lengkap</span>
+              <div class="stat-icon">📁</div>
+            </div>
+            <div class="stat-value" id="statDocLengkap">33</div>
+            <div class="stat-sub" id="statPctDocLengkap">66% selesai seluruhnya</div>
+          </div>
+
+          <div class="stat-card c-doc-no">
+            <div class="stat-header">
+              <span class="stat-label">Belum Lengkap</span>
+              <div class="stat-icon">📝</div>
+            </div>
+            <div class="stat-value" id="statDocBelum">17</div>
+            <div class="stat-sub">PKS/Kwitansi/TTD kurang</div>
+          </div>
+
+          <div class="stat-card c-warning">
+            <div class="stat-header">
+              <span class="stat-label">Perlu Tindak Lanjut</span>
+              <div class="stat-icon">🚨</div>
+            </div>
+            <div class="stat-value" id="statTindakLanjut">17</div>
+            <div class="stat-sub">Membutuhkan atensi operator</div>
+          </div>
+        </div>
+
+        <!-- PROGRESS HERO CARD -->
+        <div class="progress-hero-card">
+          <div class="progress-hero-top">
+            <div class="hero-title">
+              <h3>Progress Tahunan Penyelesaian LPJ & Administrasi</h3>
+              <p>Indeks agregat penyelesaian kewajiban pembayaran, kelengkapan berkas PKS, dan TTD LPJ</p>
+            </div>
+            <div class="hero-pct" id="heroProgressPct">78% Selesai</div>
+          </div>
+
+          <div class="hero-bar-track">
+            <div class="hero-bar-fill" id="heroProgressBar" style="width: 78%;"></div>
+          </div>
+
+          <div class="hero-details-row">
+            <div class="hero-detail-item">
+              <span class="dot dot-green"></span>
+              <span id="heroLunasTxt">Pembayaran: 42 / 50 Desa (84%)</span>
+            </div>
+            <div class="hero-detail-item">
+              <span class="dot dot-gold"></span>
+              <span id="heroDocTxt">Dokumen Lengkap: 33 / 50 Desa (66%)</span>
+            </div>
+            <div class="hero-detail-item">
+              <span class="dot dot-red"></span>
+              <span id="heroTtdTxt">TTD Desa Lengkap: 35 / 50 Desa (70%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS STRIP -->
+        <div class="quick-actions-bar">
+          <span class="qa-label">Aksi Cepat:</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddDesaModal()">+ Tambah Desa Baru</button>
+          <button class="btn btn-secondary btn-sm" onclick="switchView('import')">📥 Import Data Excel/CSV</button>
+          <button class="btn btn-secondary btn-sm" onclick="switchView('export')">📤 Export Rekapitulasi</button>
+          <button class="btn btn-gold btn-sm" onclick="switchView('tindak-lanjut')">⚠️ Lihat Desa Belum Selesai</button>
+          <button class="btn btn-outline-purple btn-sm" onclick="printOfficialRecap()">🖨️ Cetak Rekap Resmi</button>
+        </div>
+
+        <!-- INSIGHTS & PROGRESS VISUALIZATIONS -->
+        <div class="dashboard-two-col">
+          <div class="card">
+            <div class="card-header-flex">
+              <h3 class="card-title">💡 Insight & Catatan Penting Otomatis</h3>
+              <span class="badge badge-done" style="font-size: 11px;">Real-time</span>
+            </div>
+            <div class="insight-list" id="dashboardInsightList">
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-flex">
+              <h3 class="card-title">📊 Rincian Capaian Kinerja Administrasi</h3>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Progress Pembayaran (Lunas)</span>
+                <span id="progBayarVal">84%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-green" id="progBayarFill" style="width: 84%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Kelengkapan Dokumen Fisik (PKS & Kwitansi)</span>
+                <span id="progDocVal">76%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-purple" id="progDocFill" style="width: 76%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Tanda Tangan Dokumen oleh Kepala Desa</span>
+                <span id="progTtdVal">70%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-blue" id="progTtdFill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item" style="margin-top: 20px;">
+              <div class="progress-metric-header">
+                <span>Status Keseluruhan Selesai 100%</span>
+                <span id="progSelesaiVal">66%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-gold" id="progSelesaiFill" style="width: 66%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VIEW 2: TABEL REKAP DESA UTAMA -->
+      <section class="app-view" id="view-rekap-desa">
+        <div class="filter-panel">
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label>Kecamatan</label>
+              <select class="form-control" id="filterKecamatan" onchange="applyFilters()">
+                <option value="">Semua Kecamatan</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Pembayaran</label>
+              <select class="form-control" id="filterBayar" onchange="applyFilters()">
+                <option value="">Semua Status</option>
+                <option value="SUDAH BAYAR">🟢 Sudah Bayar</option>
+                <option value="BELUM BAYAR">🔴 Belum Bayar</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Dokumen</label>
+              <select class="form-control" id="filterDokumen" onchange="applyFilters()">
+                <option value="">Semua Dokumen</option>
+                <option value="LENGKAP">🟢 Lengkap</option>
+                <option value="BELUM LENGKAP">🔴 Belum Lengkap</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status TTD Kades</label>
+              <select class="form-control" id="filterTtd" onchange="applyFilters()">
+                <option value="">Semua TTD</option>
+                <option value="LENGKAP">🟢 Lengkap</option>
+                <option value="BELUM LENGKAP">🟡 Belum Lengkap</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Keseluruhan</label>
+              <select class="form-control" id="filterStatusAll" onchange="applyFilters()">
+                <option value="">Semua Status</option>
+                <option value="SELESAI">🟢 Selesai</option>
+                <option value="PERLU MELENGKAPI DOKUMEN">🟡 Perlu Melengkapi Dokumen</option>
+                <option value="BELUM BAYAR">🔴 Belum Bayar</option>
+              </select>
+            </div>
+
+            <div class="filter-actions">
+              <button class="btn btn-secondary btn-sm" onclick="resetFilters()" title="Reset semua filter">
+                ↺ Reset Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-toolbar">
+            <div class="table-count" id="tableCountDisplay">
+              Menampilkan <b>50</b> dari <b>50</b> desa
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div class="table-view-toggle">
+                <button class="toggle-btn active" id="btnModeTable" onclick="setTableViewMode('table')">Tabel</button>
+                <button class="toggle-btn" id="btnModeCards" onclick="setTableViewMode('cards')">Kartu</button>
+              </div>
+
+              <button class="btn btn-primary btn-sm" onclick="openAddDesaModal()">
+                + Tambah Desa
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive" id="tableWrapper">
+            <table class="data-table" id="mainDataTable">
+              <thead>
+                <tr>
+                  <th onclick="sortTable('no')">No ↕</th>
+                  <th onclick="sortTable('desa')">Desa ↕</th>
+                  <th onclick="sortTable('kades')">Nama Kades ↕</th>
+                  <th onclick="sortTable('kecamatan')">Kecamatan ↕</th>
+                  <th onclick="sortTable('statusBayar')">Status Bayar ↕</th>
+                  <th onclick="sortTable('tanggalBayar')">Tgl Bayar ↕</th>
+                  <th onclick="sortTable('nominal')">Nominal ↕</th>
+                  <th onclick="sortTable('pks')">PKS ↕</th>
+                  <th onclick="sortTable('kwitansiLbh')">Kwitansi LBH ↕</th>
+                  <th onclick="sortTable('kwitansiLpj')">Kwitansi LPJ ↕</th>
+                  <th onclick="sortTable('pksDesaTtd')">PKS TTD ↕</th>
+                  <th onclick="sortTable('kwitansiLbhDesaTtd')">LBH TTD ↕</th>
+                  <th onclick="sortTable('kwitansiLpjDesaTtd')">LPJ TTD ↕</th>
+                  <th onclick="sortTable('statusAll')">Status ↕</th>
+                  <th>Keterangan</th>
+                  <th style="text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="mainTableBody">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cards-grid-view" id="cardsWrapper" style="display: none;">
+          </div>
+
+          <div class="table-pagination">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>Tampilkan per halaman:</span>
+              <select class="form-control" style="width: 75px; height: 32px;" id="pageSizeSelect" onchange="changePageSize(this.value)">
+                <option value="15">15</option>
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="9999">Semua</option>
+              </select>
+            </div>
+
+            <div class="pagination-btns" id="paginationBtns">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: REKAP KECAMATAN -->
+      <section class="app-view" id="view-kecamatan">
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Rekapitulasi Administrasi & Keuangan Per Kecamatan</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Klik salah satu baris kecamatan untuk langsung memfilter daftar desa di kecamatan tersebut.
+              </p>
+            </div>
+            <button class="btn btn-outline-purple btn-sm" onclick="printOfficialRecap()">🖨️ Cetak Rekap Kecamatan</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Kecamatan</th>
+                  <th>Total Desa</th>
+                  <th>Sudah Bayar</th>
+                  <th>Belum Bayar</th>
+                  <th>Dokumen Lengkap</th>
+                  <th>Belum Lengkap</th>
+                  <th style="width: 250px;">Progress Penyelesaian</th>
+                  <th style="text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kecamatanTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: MONITORING PEMBAYARAN -->
+      <section class="app-view" id="view-pembayaran">
+        <div class="stats-grid" style="margin-bottom: 20px;">
+          <div class="stat-card c-success">
+            <div class="stat-header">
+              <span class="stat-label">Total Realisasi Bayar</span>
+              <div class="stat-icon">💰</div>
+            </div>
+            <div class="stat-value" id="payRealisasiNominal">Rp 630.000.000</div>
+            <div class="stat-sub" id="payRealisasiCount">42 Desa telah membayar</div>
+          </div>
+
+          <div class="stat-card c-danger">
+            <div class="stat-header">
+              <span class="stat-label">Tunggakan / Belum Bayar</span>
+              <div class="stat-icon">⚠️</div>
+            </div>
+            <div class="stat-value" id="payTunggakanNominal">Rp 120.000.000</div>
+            <div class="stat-sub" id="payTunggakanCount">8 Desa belum membayar</div>
+          </div>
+
+          <div class="stat-card c-total">
+            <div class="stat-header">
+              <span class="stat-label">Rata-rata Iuran / Desa</span>
+              <div class="stat-icon">📊</div>
+            </div>
+            <div class="stat-value">Rp 15.000.000</div>
+            <div class="stat-sub">Sesuai Kontrak PKS Tahunan</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-flex">
+            <h3 class="card-title">Daftar Status Pembayaran Seluruh Desa</h3>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="filterBayarDirect('ALL')">Semua</button>
+              <button class="btn btn-success btn-sm" onclick="filterBayarDirect('PAID')">Sudah Bayar</button>
+              <button class="btn btn-danger btn-sm" onclick="filterBayarDirect('UNPAID')">Belum Bayar</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kecamatan</th>
+                  <th>Status Bayar</th>
+                  <th>Tanggal Bayar</th>
+                  <th>Nominal</th>
+                  <th>Catatan Pembayaran</th>
+                  <th>No. Referensi / Bukti</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="pembayaranTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: DOKUMEN LPJ -->
+      <section class="app-view" id="view-dokumen">
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Matriks Pengawasan Dokumen LPJ & PKS</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted);">
+                Monitoring 3 dokumen utama: Perjanjian Kerja Sama (PKS), Kwitansi LBH, dan Kwitansi LPJ.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kecamatan</th>
+                  <th>PKS</th>
+                  <th>Kwitansi LBH</th>
+                  <th>Kwitansi LPJ</th>
+                  <th>Status Dokumen</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="dokumenTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 6: STATUS TANDA TANGAN (TTD) -->
+      <section class="app-view" id="view-ttd">
+        <div class="alert-banner" style="margin-bottom: 16px;">
+          <div class="alert-left">
+            <span class="alert-icon">✍️</span>
+            <div>
+              <div class="alert-title">PENGAWASAN TANDA TANGAN KEPALA DESA</div>
+              <div class="alert-desc">
+                Desa dengan dokumen belum TTD terbanyak berada pada <b>Kecamatan Tapalang Barat</b> (5 Desa: Tanete Pao, Ahu, Labuang Rano, Pasabu, Pangasaan).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-flex">
+            <h3 class="card-title">Status Pengesahan Tanda Tangan Desa</h3>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kepala Desa</th>
+                  <th>Kecamatan</th>
+                  <th>PKS TTD</th>
+                  <th>Kwitansi LBH TTD</th>
+                  <th>Kwitansi LPJ TTD</th>
+                  <th>Status TTD</th>
+                  <th>Catatan / Masalah</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="ttdTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 7: MENU "PERLU TINDAK LANJUT" -->
+      <section class="app-view" id="view-tindak-lanjut">
+        <div class="filter-panel" style="margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--navy-slate);">Daftar Desa yang Membutuhkan Tindak Lanjut Segera</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Memuat desa yang belum bayar, berkas belum lengkap, tanda tangan kurang, atau memiliki catatan khusus.
+              </p>
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Filter Prioritas:</span>
+              <select class="form-control" style="width: 170px;" id="filterPrioritySelect" onchange="renderTindakLanjut()">
+                <option value="ALL">Semua Prioritas</option>
+                <option value="TINGGI">🔴 Prioritas Tinggi</option>
+                <option value="SEDANG">🟡 Prioritas Sedang</option>
+                <option value="RENDAH">🟢 Prioritas Rendah</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid-view" id="tindakLanjutContainer" style="padding: 0;">
+        </div>
+      </section>
+
+      <!-- VIEW 8: STATISTIK & GRAFIK -->
+      <section class="app-view" id="view-statistik">
+        <div class="dashboard-two-col" style="margin-bottom: 24px;">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 16px;">Komparasi Status Pembayaran</h3>
+            <div id="statPayChartContainer">
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 16px;">Kelengkapan Dokumen & Tanda Tangan</h3>
+            <div id="statDocChartContainer">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 16px;">Peringkat Penyelesaian Per Kecamatan</h3>
+          <div id="statKecBarChartContainer">
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 9: IMPORT DATA -->
+      <section class="app-view" id="view-import">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 18px; margin-bottom: 6px;">Import Data Rekap Desa (Excel / CSV)</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+            Unggah berkas Excel (.xlsx, .xls) atau file teks CSV untuk memasukkan atau memperbarui data desa secara massal.
+          </p>
+
+          <div style="border: 2px dashed var(--primary-purple-border); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center; background: var(--primary-purple-soft); margin-bottom: 20px; cursor: pointer;" onclick="document.getElementById('importFileInput').click()">
+            <div style="font-size: 42px; margin-bottom: 12px;">📁</div>
+            <h4 style="font-size: 16px; font-weight: 700; color: var(--primary-purple-dark); margin-bottom: 4px;">Klik untuk Memilih Berkas atau Tarik File ke Sini</h4>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Mendukung format: .xlsx, .xls, dan .csv</p>
+            <input type="file" id="importFileInput" accept=".csv, .xlsx, .xls" style="display: none;" onchange="handleFileSelected(event)">
+          </div>
+
+          <div id="importPreviewArea" style="display: none;">
+            <div class="card-header-flex">
+              <h4 style="font-size: 14px; font-weight: 700;">Pratinjau Data yang Terdeteksi (<span id="importPreviewCount">0</span> baris)</h4>
+              <span class="badge badge-done" id="importFileBadge">filename.xlsx</span>
+            </div>
+
+            <div id="importWarningBox" style="display: none; background: #fffbeb; border: 1px solid #fef08a; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12px; color: #854d0e; margin-bottom: 12px;">
+              ⚠️ Ditemukan beberapa kolom yang tidak standar, sistem akan menyesuaikan secara otomatis tanpa menghapus data asli.
+            </div>
+
+            <div class="table-responsive" style="max-height: 280px; margin-bottom: 16px;">
+              <table class="data-table" id="importPreviewTable">
+              </table>
+            </div>
+
+            <div style="background: var(--bg-secondary); padding: 14px 18px; border-radius: var(--radius-md); margin-bottom: 16px;">
+              <label style="font-weight: 700; font-size: 13px; display: block; margin-bottom: 8px;">Pilih Tindakan Penyimpanan:</label>
+              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                  <input type="radio" name="importMode" value="MERGE" checked>
+                  <span><b>Perbarui Data yang Cocok</b> (Update data desa yang sudah ada & tambahkan yang baru)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                  <input type="radio" name="importMode" value="APPEND">
+                  <span><b>Tambahkan Saja</b> (Tambahkan seluruh baris baru)</span>
+                </label>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+              <button class="btn btn-secondary" onclick="cancelImport()">Batalkan</button>
+              <button class="btn btn-primary" onclick="executeImport()">Proses dan Simpan ke Database</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 10: EXPORT DATA -->
+      <section class="app-view" id="view-export">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 18px; margin-bottom: 6px;">Ekspor Rekapitulasi Data Desa</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+            Unduh laporan rekapitulasi desa dalam berbagai format. Hasil ekspor mematuhi filter kecamatan dan status yang sedang aktif.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">📊</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Format Excel (.xlsx)</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Format spreadsheet lengkap dengan header, kolom terstruktur, dan format nominal.</p>
+              <button class="btn btn-success" style="width: 100%; justify-content: center;" onclick="exportDataExcel()">
+                Unduh Excel (.xlsx)
+              </button>
+            </div>
+
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">📑</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Format CSV (.csv)</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Format teks universal dengan delimiter koma, mudah dibuka di aplikasi spreadsheet.</p>
+              <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="exportDataCSV()">
+                Unduh CSV (.csv)
+              </button>
+            </div>
+
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">🖨️</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Cetak / Simpan PDF</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Tata letak cetak resmi bersih khusus dokumen fisik dengan kop kantor advokat.</p>
+              <button class="btn btn-outline-purple" style="width: 100%; justify-content: center;" onclick="printOfficialRecap()">
+                Buka Cetak / PDF
+              </button>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 14px 18px;">
+            <div style="font-size: 12.5px; font-weight: 600; color: var(--navy-slate);">
+              Status Filter Saat Ini:
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="exportFilterSummary">
+              Tahun: 2026 | Sesuai filter yang aktif di tabel
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 11: RIWAYAT PERUBAHAN (AUDIT LOG) -->
+      <section class="app-view" id="view-audit">
+        <div class="card">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Log Riwayat Perubahan & Pengawasan</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Mencatat kronologi setiap aksi penambahan, pengubahan status pembayaran, dokumen, atau keterangan.
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="clearAuditLogs()">Bersihkan Riwayat</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Waktu (Tgl/Jam)</th>
+                  <th>Nama Desa</th>
+                  <th>Bidang yang Diubah</th>
+                  <th>Nilai Sebelum</th>
+                  <th>Nilai Sesudah</th>
+                  <th>Operator</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 12: PENGATURAN & BACKUP -->
+      <section class="app-view" id="view-pengaturan">
+        <div class="card" style="max-width: 800px; margin: 0 auto 20px;">
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Manajemen Tahun & Arsip</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+            Setiap tahun memiliki database independen sehingga data tahun 2025 tidak bercampur dengan 2026 atau 2027.
+          </p>
+
+          <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 24px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="openAddYearModal()">+ Tambah Tahun Anggaran Baru</button>
+            <span style="font-size: 12.5px; color: var(--text-muted);">Tahun terdaftar: <b id="settingsYearsList">2026, 2025</b></span>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Backup & Pemulihan Database</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+            Simpan seluruh database lokal ke dalam berkas JSON atau pulihkan data dari cadangan yang telah disimpan.
+          </p>
+
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="backupDatabaseJSON()">📥 Backup Database (JSON)</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('restoreFileInput').click()">📤 Pulihkan Database (JSON)</button>
+            <button class="btn btn-danger" onclick="confirmResetSampleData()">↺ Reset ke Dataset Standar</button>
+            <input type="file" id="restoreFileInput" accept=".json" style="display: none;" onchange="handleRestoreJSON(event)">
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Informasi Pengembang & Aplikasi</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+            Sistem Informasi Monitoring Administrasi LPJ & Konsultan Hukum Desa.
+          </p>
+
+          <div style="font-size: 13px; line-height: 1.6; color: var(--navy-slate);">
+            <div><b>Nama Aplikasi:</b> REKAP DESA — MONITORING LPJ</div>
+            <div><b>Versi:</b> 1.0.0 Production LTS (Modular Vanilla JS / HTML5)</div>
+            <div><b>Klien Utama:</b> Minzathu & Minzathu Law Offices (Mamuju, Sulawesi Barat)</div>
+            <div><b>Wilayah Kerja:</b> Kabupaten Mamuju & Kabupaten Mamuju Tengah</div>
+            <div><b>Penyimpanan:</b> HTML5 LocalStorage Persistence (Siap integrasi API Supabase / PostgreSQL)</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL 1: DETAIL DESA LENGKAP -->
+  <div class="modal-backdrop" id="modalDetailDesa">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="detailModalDesaName">Desa Tanete Pao</h3>
+          <p style="font-size: 12px; color: var(--text-muted);" id="detailModalSub">Kecamatan Tapalang Barat • Kades: Basri, S.Pd.</p>
+        </div>
+        <button class="modal-close" onclick="closeDetailModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-tabs">
+          <button class="dtab-btn active" onclick="switchDetailTab('tab-identitas')">Identitas & Wilayah</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-keuangan')">Pembayaran</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-dokumen')">Dokumen Checklist</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-catatan')">Catatan & Log</button>
+        </div>
+
+        <!-- TAB 1: IDENTITAS -->
+        <div class="dtab-content active" id="tab-identitas">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nama Desa</div>
+              <div style="font-size: 17px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasDesa">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Kecamatan</div>
+              <div style="font-size: 17px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasKecamatan">-</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nama Kepala Desa</div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--navy-slate);" id="dIdentitasKades">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Status Jabatan</div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--navy-slate);" id="dIdentitasJabatan">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: KEUANGAN -->
+        <div class="dtab-content" id="tab-keuangan">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Status Pembayaran</div>
+              <div style="margin-top: 4px;" id="dPayStatusBadge">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nominal Pembayaran</div>
+              <div style="font-size: 18px; font-weight: 800; color: var(--navy-slate); margin-top: 2px;" id="dPayNominal">-</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Tanggal Realisasi</div>
+              <div style="font-size: 14px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayTanggal">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Metode / Catatan Pembayaran</div>
+              <div style="font-size: 14px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayCatatan">-</div>
+            </div>
+          </div>
+
+          <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nomor Resi / Referensi Transaksi</div>
+            <div style="font-size: 13.5px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayRef">-</div>
+          </div>
+        </div>
+
+        <!-- TAB 3: DOKUMEN CHECKLIST -->
+        <div class="dtab-content" id="tab-dokumen">
+          <div class="doc-checklist-card">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">1. Dokumen Fisik / Administrasi</h4>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>📄</span><span>Perjanjian Kerja Sama (PKS)</span></div>
+              <span id="dDocPksBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>🧾</span><span>Kwitansi LBH</span></div>
+              <span id="dDocLbhBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>📑</span><span>Kwitansi LPJ</span></div>
+              <span id="dDocLpjBadge">-</span>
+            </div>
+          </div>
+
+          <div class="doc-checklist-card">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">2. Tanda Tangan Dokumen Oleh Desa (Kepala Desa)</h4>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>PKS Desa TTD</span></div>
+              <span id="dDocTtdPksBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LBH Desa TTD</span></div>
+              <span id="dDocTtdLbhBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LPJ Desa TTD</span></div>
+              <span id="dDocTtdLpjBadge">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: CATATAN & LOG -->
+        <div class="dtab-content" id="tab-catatan">
+          <div class="card" style="background: var(--bg-secondary); padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Catatan Khusus / Keterangan</div>
+            <div style="font-size: 14px; color: var(--navy-slate); margin-top: 4px; font-style: italic;" id="dCatatanKhusus">-</div>
+          </div>
+
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--navy-slate); margin-bottom: 8px;">Riwayat Perubahan Terakhir Desa Ini</div>
+            <div id="dDesaAuditLogs" style="font-size: 12px; color: var(--text-muted);">
+              Belum ada catatan perubahan khusus.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDetailModal()">Tutup</button>
+        <button class="btn btn-primary" id="btnEditFromDetail">✏️ Edit Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: FORM TAMBAH / EDIT DESA -->
+  <div class="modal-backdrop" id="modalFormDesa">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3 id="formModalTitle">Tambah Data Desa Baru</h3>
+        <button class="modal-close" onclick="closeFormModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="desaCrudForm" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="formDesaId">
+
+          <!-- DUPLICATE WARNING BOX -->
+          <div id="duplicateWarningBox" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px;">
+            <div style="font-weight: 700; color: #991b1b; font-size: 13px;">⚠️ Data Desa Kemungkinan Sudah Tersedia!</div>
+            <div style="font-size: 12px; color: #b91c1c; margin-top: 2px;">
+              Ditemukan nama desa dan kecamatan yang sama pada tahun ini.
+            </div>
+            <div style="margin-top: 8px; display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="viewDuplicateRecord()">Lihat Data</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="updateDuplicateRecord()">Update Data Ini</button>
+            </div>
+          </div>
+
+          <!-- IDENTITAS -->
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Nama Desa <span class="required">*</span></label>
+              <input type="text" class="form-control" id="fDesa" required placeholder="Contoh: Tanete Pao" onblur="checkDuplicate()">
+            </div>
+
+            <div class="form-field">
+              <label>Kecamatan <span class="required">*</span></label>
+              <input type="text" class="form-control" id="fKecamatan" required list="kecamatanList" placeholder="Pilih atau ketik kecamatan..." onblur="checkDuplicate()">
+              <datalist id="kecamatanList"></datalist>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Nama Kepala Desa</label>
+              <input type="text" class="form-control" id="fKades" placeholder="Nama lengkap kepala desa...">
+            </div>
+
+            <div class="form-field">
+              <label>Status / Jabatan</label>
+              <select class="form-control" id="fJabatan">
+                <option value="Definitif">Definitif</option>
+                <option value="Pj. Kepala Desa">Pj. Kepala Desa</option>
+                <option value="Plt. Kepala Desa">Plt. Kepala Desa</option>
+                <option value="Pejabat">Pejabat</option>
+              </select>
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 18px 0;">
+
+          <!-- PEMBAYARAN -->
+          <div style="font-size: 14px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px;">
+            💰 Informasi Pembayaran
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>Status Bayar</label>
+              <select class="form-control" id="fStatusBayar">
+                <option value="BELUM BAYAR">Belum Bayar</option>
+                <option value="SUDAH BAYAR">Sudah Bayar</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Tanggal Pembayaran</label>
+              <input type="date" class="form-control" id="fTanggalBayar">
+            </div>
+
+            <div class="form-field">
+              <label>Nominal Pembayaran (Rp)</label>
+              <input type="text" class="form-control" id="fNominal" placeholder="15.000.000" oninput="formatRupiahInput(this)">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Catatan Pembayaran</label>
+              <input type="text" class="form-control" id="fCatatanBayar" placeholder="Contoh: Transfer Bank BPD Sulselbar">
+            </div>
+
+            <div class="form-field">
+              <label>No. Referensi / Bukti</label>
+              <input type="text" class="form-control" id="fInfoBayar" placeholder="Contoh: TRF-BPD/2026/0881">
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 18px 0;">
+
+          <!-- DOKUMEN & TTD -->
+          <div style="font-size: 14px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px;">
+            📑 Status Kelengkapan Dokumen & Tanda Tangan
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>PKS</label>
+              <select class="form-control" id="fPks">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LBH</label>
+              <select class="form-control" id="fKwitansiLbh">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LPJ</label>
+              <select class="form-control" id="fKwitansiLpj">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>PKS Desa TTD</label>
+              <select class="form-control" id="fPksTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LBH Desa TTD</label>
+              <select class="form-control" id="fKwitansiLbhTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LPJ Desa TTD</label>
+              <select class="form-control" id="fKwitansiLpjTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Keterangan / Catatan Khusus</label>
+            <textarea class="form-control" id="fKeterangan" rows="2" placeholder="Contoh: Ada yang kurang TTD Kades"></textarea>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+            <input type="checkbox" id="fNeedsVerification" style="width: 16px; height: 16px; cursor: pointer;">
+            <label for="fNeedsVerification" style="font-size: 13px; font-weight: 600; cursor: pointer; color: var(--navy-slate);">
+              Tandai sebagai data yang "Perlu Verifikasi"
+            </label>
+          </div>
+
+          <div class="modal-footer" style="margin-top: 20px; padding-bottom: 0;">
+            <button type="button" class="btn btn-secondary" onclick="closeFormModal()">Batal</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitForm">Simpan Data Desa</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: TAMBAH TAHUN ANGGARAN -->
+  <div class="modal-backdrop" id="modalAddYear">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Tambah Tahun Anggaran Baru</h3>
+        <button class="modal-close" onclick="closeAddYearModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label>Tahun Anggaran Baru (Contoh: 2027)</label>
+          <input type="number" class="form-control" id="inputNewYear" min="2020" max="2050" value="2027">
+        </div>
+
+        <div style="background: var(--bg-secondary); padding: 12px; border-radius: var(--radius-md); font-size: 12.5px;">
+          <label style="font-weight: 700; display: block; margin-bottom: 6px;">Opsi Inisialisasi Data:</label>
+          <label style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; cursor: pointer;">
+            <input type="radio" name="newYearOption" value="COPY" checked>
+            <span>Salin daftar desa dari tahun aktif (Status di-reset ke Belum Bayar/Belum Lengkap)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="radio" name="newYearOption" value="EMPTY">
+            <span>Mulai tahun baru dengan data kosong</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeAddYearModal()">Batal</button>
+        <button class="btn btn-primary" onclick="submitNewYear()">Buat Tahun Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: KONFIRMASI HAPUS -->
+  <div class="modal-backdrop" id="modalConfirmDelete">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: var(--status-red);">Konfirmasi Hapus Data</h3>
+        <button class="modal-close" onclick="closeDeleteModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13.5px; color: var(--navy-slate); line-height: 1.5;">
+          Apakah Anda yakin ingin menghapus data desa <b id="delDesaName">-</b> dari rekap tahun <b id="delYear">-</b>?
+        </p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+          Tindakan ini tidak dapat dibatalkan, namun riwayat penghapusan akan tetap tercatat pada log audit.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDeleteModal()">Batalkan</button>
+        <button class="btn btn-danger" id="btnExecuteDelete">Ya, Hapus Desa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+// REKAP DESA — MONITORING LPJ
+// Senior Web Application Developer & System Analyst Architecture
+// Production JavaScript Module for GitHub Deployment
+
+const DEFAULT_DATA_2025 = [{"id": "desa-2025-01", "no": 1, "desa": "Tanete Pao", "kades": "Basri, S.Pd.", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "tanggalBayar": "2025-03-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250312-0881", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Ada yang kurang TTD Kades", "needsVerification": true}, {"id": "desa-2025-02", "no": 2, "desa": "Dungkait", "kades": "H. Rusli", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "tanggalBayar": "2025-02-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250224-0412", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-03", "no": 3, "desa": "Ahu", "kades": "Muhammad Jafar", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "tanggalBayar": "2025-03-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250318-0914", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Menunggu TTD Kades untuk PKS dan Kwitansi LBH", "needsVerification": true}, {"id": "desa-2025-04", "no": 4, "desa": "Labuang Rano", "kades": "Rustam", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "tanggalBayar": "2025-03-25", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250325-1033", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Kuitansi LPJ dan PKS menunggu stempel basah desa", "needsVerification": true}, {"id": "desa-2025-05", "no": 5, "desa": "Pasabu", "kades": "Syamsuddin, S.E.", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tapalang Barat", "tanggalBayar": "2025-04-02", "nominal": 15000000, "catatanBayar": "Tunai bendahara", "infoTambahanBayar": "Tanda terima kuitansi kas no. 042/TB/2025", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Pj. Kades dinas luar, berkas tertahan di kantor desa", "needsVerification": true}, {"id": "desa-2025-06", "no": 6, "desa": "Pangasaan", "kades": "Abdul Rahman", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Menunggu pencairan ADD Tahap 1", "pks": "done", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Belum bayar dan dokumen fisik belum ditandatangani", "needsVerification": true}, {"id": "desa-2025-07", "no": 7, "desa": "Bambu", "kades": "Hartono", "jabatan": "Definitif", "kecamatan": "Mamuju", "tanggalBayar": "2025-02-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250215-0120", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen dan LPJ selesai lengkap", "needsVerification": false}, {"id": "desa-2025-08", "no": 8, "desa": "Tadui", "kades": "Saharuddin", "jabatan": "Definitif", "kecamatan": "Mamuju", "tanggalBayar": "2025-02-20", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250220-0315", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan terverifikasi", "needsVerification": false}, {"id": "desa-2025-09", "no": 9, "desa": "Batu Pannu", "kades": "Dahlan", "jabatan": "Plt. Kepala Desa", "kecamatan": "Mamuju", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Pergantian Plt. Kades masih transisi administrasi", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu SK definitif dan pembahasan APBDes", "needsVerification": true}, {"id": "desa-2025-10", "no": 10, "desa": "Tanambuah", "kades": "Muh. Nasrullah", "jabatan": "Definitif", "kecamatan": "Sampaga", "tanggalBayar": "2025-01-28", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250128-0044", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap, rujukan regulasi siap", "needsVerification": false}, {"id": "desa-2025-11", "no": 11, "desa": "Bunde", "kades": "Amiruddin", "jabatan": "Definitif", "kecamatan": "Sampaga", "tanggalBayar": "2025-02-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250210-0199", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap tanpa catatan revisi", "needsVerification": false}, {"id": "desa-2025-12", "no": 12, "desa": "Tarailu", "kades": "H. Sahid", "jabatan": "Definitif", "kecamatan": "Sampaga", "tanggalBayar": "2025-03-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250314-0842", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "LPJ dan tanda terima selesai", "needsVerification": false}, {"id": "desa-2025-13", "no": 13, "desa": "Losso", "kades": "Marzuki", "jabatan": "Definitif", "kecamatan": "Sampaga", "tanggalBayar": "2025-04-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250410-1120", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Semua berkas tervalidasi", "needsVerification": false}, {"id": "desa-2025-14", "no": 14, "desa": "Kakullasan", "kades": "Yosep", "jabatan": "Definitif", "kecamatan": "Tommo", "tanggalBayar": "2025-03-08", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250308-0711", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Berkas lengkap dan sesuai format APBDes", "needsVerification": false}, {"id": "desa-2025-15", "no": 15, "desa": "Campaloga", "kades": "I Nyoman Sukadana", "jabatan": "Definitif", "kecamatan": "Tommo", "tanggalBayar": "2025-03-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250322-0988", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Berkas lengkap", "needsVerification": false}, {"id": "desa-2025-16", "no": 16, "desa": "Malino", "kades": "Markus", "jabatan": "Definitif", "kecamatan": "Tommo", "tanggalBayar": "2025-04-05", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250405-1077", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Arsip hardcopy tersimpan di folder LBH", "needsVerification": false}, {"id": "desa-2025-17", "no": 17, "desa": "Rantemario", "kades": "Bambang Irawan", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tommo", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Kendala rekening kas desa belum update spesimen TTD", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Menunggu TTD Pj Kades baru", "needsVerification": true}, {"id": "desa-2025-18", "no": 18, "desa": "Galung", "kades": "Ma'ruf, S.Sos.", "jabatan": "Definitif", "kecamatan": "Tapalang", "tanggalBayar": "2025-02-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250218-0288", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan lunas", "needsVerification": false}, {"id": "desa-2025-19", "no": 19, "desa": "Orobatu", "kades": "Masri", "jabatan": "Definitif", "kecamatan": "Tapalang", "tanggalBayar": "2025-03-01", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250301-0512", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen rampung 100%", "needsVerification": false}, {"id": "desa-2025-20", "no": 20, "desa": "Tampalang", "kades": "H. Baharuddin", "jabatan": "Definitif", "kecamatan": "Tapalang", "tanggalBayar": "2025-03-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250315-0855", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-21", "no": 21, "desa": "Taan", "kades": "M. Kasim", "jabatan": "Definitif", "kecamatan": "Tapalang", "tanggalBayar": "2025-03-28", "nominal": 15000000, "catatanBayar": "Tunai bendahara", "infoTambahanBayar": "Tanda terima kuitansi kas no. 035/TB/2025", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS belum ditandatangani Kades", "needsVerification": true}, {"id": "desa-2025-22", "no": 22, "desa": "Simboro", "kades": "Syahrir", "jabatan": "Definitif", "kecamatan": "Simboro", "tanggalBayar": "2025-03-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250310-0750", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-23", "no": 23, "desa": "Botteng", "kades": "Dirham", "jabatan": "Definitif", "kecamatan": "Simboro", "tanggalBayar": "2025-02-28", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250228-0498", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen lengkap dan terarsip", "needsVerification": false}, {"id": "desa-2025-24", "no": 24, "desa": "Salletto", "kades": "M. Yunus", "jabatan": "Definitif", "kecamatan": "Simboro", "tanggalBayar": "2025-04-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250412-1145", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Kuitansi LBH belum ditandatangani", "needsVerification": true}, {"id": "desa-2025-25", "no": 25, "desa": "Kalukku", "kades": "Arman", "jabatan": "Definitif", "kecamatan": "Kalukku", "tanggalBayar": "2025-02-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250212-0210", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-26", "no": 26, "desa": "Beru-beru", "kades": "Asrul", "jabatan": "Definitif", "kecamatan": "Kalukku", "tanggalBayar": "2025-03-02", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250302-0544", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-27", "no": 27, "desa": "Kabuloang", "kades": "Dahlan R.", "jabatan": "Definitif", "kecamatan": "Kalukku", "tanggalBayar": "2025-03-16", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250316-0870", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-28", "no": 28, "desa": "Sondoang", "kades": "M. Tahir", "jabatan": "Definitif", "kecamatan": "Kalukku", "tanggalBayar": "2025-03-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250324-1015", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "TTD Kades tertunda menunggu kepulangan umrah", "needsVerification": true}, {"id": "desa-2025-29", "no": 29, "desa": "Babana", "kades": "M. Arif", "jabatan": "Definitif", "kecamatan": "Budong-Budong", "tanggalBayar": "2025-02-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250214-0230", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan lunas", "needsVerification": false}, {"id": "desa-2025-30", "no": 30, "desa": "Barakkang", "kades": "Burhanuddin", "jabatan": "Definitif", "kecamatan": "Budong-Budong", "tanggalBayar": "2025-02-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250226-0440", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-31", "no": 31, "desa": "Bojo", "kades": "Zulkifli", "jabatan": "Definitif", "kecamatan": "Budong-Budong", "tanggalBayar": "2025-03-09", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250309-0733", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-32", "no": 32, "desa": "Kire", "kades": "Iskandar", "jabatan": "Definitif", "kecamatan": "Budong-Budong", "tanggalBayar": "2025-03-29", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250329-1050", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum di TTD Kades", "needsVerification": true}, {"id": "desa-2025-33", "no": 33, "desa": "Pasapa", "kades": "Bahar", "jabatan": "Definitif", "kecamatan": "Budong-Budong", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Proses pencairan ADD masih di DPMD", "pks": "done", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Belum bayar, dokumen kuitansi belum terbit", "needsVerification": true}, {"id": "desa-2025-34", "no": 34, "desa": "Topoyo", "kades": "I Made Sujana", "jabatan": "Definitif", "kecamatan": "Topoyo", "tanggalBayar": "2025-02-16", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250216-0260", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan terverifikasi", "needsVerification": false}, {"id": "desa-2025-35", "no": 35, "desa": "Bambamanurung", "kades": "Suryadi", "jabatan": "Definitif", "kecamatan": "Topoyo", "tanggalBayar": "2025-03-04", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250304-0601", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-36", "no": 36, "desa": "Budong-Budong", "kades": "Agus Salim", "jabatan": "Definitif", "kecamatan": "Topoyo", "tanggalBayar": "2025-03-17", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250317-0895", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen lengkap", "needsVerification": false}, {"id": "desa-2025-37", "no": 37, "desa": "Tabolang", "kades": "Sukirman", "jabatan": "Definitif", "kecamatan": "Topoyo", "tanggalBayar": "2025-03-31", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250331-1066", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Menunggu tandatangan kepala desa pada kuitansi", "needsVerification": true}, {"id": "desa-2025-38", "no": 38, "desa": "Tobadak", "kades": "Wayan Suwena", "jabatan": "Definitif", "kecamatan": "Tobadak", "tanggalBayar": "2025-02-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250222-0380", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-39", "no": 39, "desa": "Mahahe", "kades": "Sutrisno", "jabatan": "Definitif", "kecamatan": "Tobadak", "tanggalBayar": "2025-03-07", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250307-0690", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-40", "no": 40, "desa": "Sejati", "kades": "Kasmir", "jabatan": "Definitif", "kecamatan": "Tobadak", "tanggalBayar": "2025-03-27", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250327-1044", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-41", "no": 41, "desa": "Polong Aan", "kades": "Sudirman", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tobadak", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Tahap pengajuan berkas di bank", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Pj. Kades baru dilantik, belum TTD dokumen", "needsVerification": true}, {"id": "desa-2025-42", "no": 42, "desa": "Pangale", "kades": "Muh. Tahir", "jabatan": "Definitif", "kecamatan": "Pangale", "tanggalBayar": "2025-02-19", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250219-0305", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen dan kuitansi lengkap", "needsVerification": false}, {"id": "desa-2025-43", "no": 43, "desa": "Polo Camba", "kades": "Syamsul Alam", "jabatan": "Definitif", "kecamatan": "Pangale", "tanggalBayar": "2025-03-11", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250311-0810", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-44", "no": 44, "desa": "Lamba-lamba", "kades": "Hamzah", "jabatan": "Plt. Kepala Desa", "kecamatan": "Pangale", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Dalam konfirmasi bendahara desa", "pks": "belum ada data", "kwitansiLbh": "belum ada data", "kwitansiLpj": "belum ada data", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Belum ada data dokumen maupun realisasi bayar", "needsVerification": true}, {"id": "desa-2025-45", "no": 45, "desa": "Karossa", "kades": "H. Ismail", "jabatan": "Definitif", "kecamatan": "Karossa", "tanggalBayar": "2025-02-27", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250227-0470", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan terverifikasi", "needsVerification": false}, {"id": "desa-2025-46", "no": 46, "desa": "Lara", "kades": "Nur Alam", "jabatan": "Definitif", "kecamatan": "Karossa", "tanggalBayar": "2025-03-13", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250313-0830", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-47", "no": 47, "desa": "Sanjango", "kades": "M. Basir", "jabatan": "Definitif", "kecamatan": "Karossa", "tanggalBayar": "2025-04-06", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250406-1100", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-48", "no": 48, "desa": "Benggaulu", "kades": "Junaedi", "jabatan": "Definitif", "kecamatan": "Karossa", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Menunggu pengesahan perubahan APBDes", "pks": "done", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Kuitansi belum siap, menunggu transfer dana desa", "needsVerification": true}, {"id": "desa-2025-49", "no": 49, "desa": "Bonehau", "kades": "Kornelius", "jabatan": "Definitif", "kecamatan": "Bonehau", "tanggalBayar": "2025-03-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250326-1038", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-50", "no": 50, "desa": "Hinua", "kades": "Paulus", "jabatan": "Definitif", "kecamatan": "Bonehau", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Belum ada pembayaran", "infoTambahanBayar": "Akses komunikasi terbatas, dijadwalkan ke Mamuju minggu depan", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Menunggu kehadiran Kades di ibukota kabupaten untuk TTD berkas", "needsVerification": true}];
+
+// APPLICATION STATE
+let state = {
+  activeYear: "2025",
+  availableYears: ["2025", "2026", "2027", "2028", "2029", "2030", "2031"],
+  activeView: "dashboard",
+  tableViewMode: "table", // "table" or "cards"
+  searchQuery: "",
+  filters: {
+    kecamatan: "",
+    statusBayar: "",
+    statusDokumen: "",
+    statusTtd: "",
+    statusKeseluruhan: ""
+  },
+  sort: {
+    column: "no",
+    asc: true
+  },
+  pagination: {
+    page: 1,
+    pageSize: 50
+  },
+  selectedDesaId: null,
+  importParsedData: null,
+  auditLogs: []
+};
+
+// INITIALIZATION
+document.addEventListener("DOMContentLoaded", () => {
+  loadStateFromStorage();
+  initYearSelector();
+  renderAllViews();
+  initPrintTimestamp();
+});
+
+// LOCAL STORAGE MANAGEMENT
+function getStorageKey(year) {
+  return `rekap_desa_data_${year}`;
+}
+
+function loadStateFromStorage() {
+  const savedYears = localStorage.getItem("rekap_desa_years");
+  if (savedYears) {
+    try {
+      state.availableYears = JSON.parse(savedYears);
+    } catch(e) {
+      console.error(e);
+    }
+  } else {
+    localStorage.setItem("rekap_desa_years", JSON.stringify(state.availableYears));
+  }
+
+  // 2025 has default initial sample dataset
+  ensureYearDataInitialized("2025", DEFAULT_DATA_2025);
+
+  // 2026 - 2031 start empty if not already set
+  ["2026", "2027", "2028", "2029", "2030", "2031"].forEach(y => {
+    ensureYearDataInitialized(y, []);
+  });
+
+  const savedLogs = localStorage.getItem("rekap_desa_audit_logs");
+  if (savedLogs) {
+    try {
+      state.auditLogs = JSON.parse(savedLogs);
+    } catch(e) {
+      state.auditLogs = [];
+    }
+  } else {
+    state.auditLogs = [
+      {
+        timestamp: "2025-09-12 15:30:00",
+        desa: "Dungkait",
+        field: "Status LPJ Desa TTD",
+        oldVal: "BELUM TTD",
+        newVal: "DONE",
+        operator: "Ahmad Subhan, S.H."
+      },
+      {
+        timestamp: "2025-09-10 10:15:00",
+        desa: "Tanete Pao",
+        field: "Catatan Pembayaran",
+        oldVal: "Menunggu konfirmasi",
+        newVal: "Transfer Bank BPD Sulselbar",
+        operator: "Ahmad Subhan, S.H."
+      }
+    ];
+    saveAuditLogs();
+  }
+}
+
+function ensureYearDataInitialized(year, defaultDataset) {
+  const key = getStorageKey(year);
+  const existing = localStorage.getItem(key);
+  if (existing === null) {
+    localStorage.setItem(key, JSON.stringify(defaultDataset));
+  }
+}
+
+function getYearData(year) {
+  const key = getStorageKey(year || state.activeYear);
+  const dataStr = localStorage.getItem(key);
+  if (!dataStr) return [];
+  try {
+    return JSON.parse(dataStr);
+  } catch (e) {
+    console.error("Error parsing year data:", e);
+    return [];
+  }
+}
+
+function saveYearData(year, data) {
+  const key = getStorageKey(year || state.activeYear);
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function saveAuditLogs() {
+  localStorage.setItem("rekap_desa_audit_logs", JSON.stringify(state.auditLogs));
+}
+
+function addAuditLog(desa, field, oldVal, newVal) {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  
+  const logEntry = {
+    timestamp: timeStr,
+    desa: desa,
+    field: field,
+    oldVal: oldVal || "(kosong)",
+    newVal: newVal || "(kosong)",
+    operator: "Ahmad Subhan, S.H."
+  };
+  state.auditLogs.unshift(logEntry);
+  if (state.auditLogs.length > 500) state.auditLogs.pop();
+  saveAuditLogs();
+}
+
+// COPY MASTER DESA FROM 2025
+function copyMasterDesaFrom2025(targetYear) {
+  const baseData = getYearData("2025");
+  if (!baseData || baseData.length === 0) {
+    alert("Data tahun 2025 kosong, tidak dapat menyalin master desa.");
+    return;
+  }
+
+  if (confirm(`Apakah Anda yakin ingin menyalin ${baseData.length} master desa dari tahun 2025 ke tahun ${targetYear}?\n\nCatatan: Nama desa, kepala desa, dan kecamatan akan disalin, sementara status pembayaran dan kelengkapan dokumen di-reset ke 'Belum'.`)) {
+    const copied = baseData.map((d, i) => ({
+      id: `desa-${targetYear}-${String(i+1).padStart(2, "0")}`,
+      no: i + 1,
+      desa: d.desa,
+      kades: d.kades || "",
+      jabatan: d.jabatan || "Definitif",
+      kecamatan: d.kecamatan,
+      statusBayar: "BELUM BAYAR",
+      tanggalBayar: "",
+      nominal: 0,
+      catatanBayar: "",
+      infoTambahanBayar: "",
+      pks: "belum",
+      kwitansiLbh: "belum",
+      kwitansiLpj: "belum",
+      pksDesaTtd: "belum ttd",
+      kwitansiLbhDesaTtd: "belum ttd",
+      kwitansiLpjDesaTtd: "belum ttd",
+      keterangan: "Disalin dari master 2025 (Siap dimonitor)",
+      needsVerification: false
+    }));
+
+    saveYearData(targetYear, copied);
+    addAuditLog(`Tahun Anggaran ${targetYear}`, "Salin Master Desa", "Kosong", `${copied.length} Desa disalin dari 2025`);
+    renderAllViews();
+    showToast(`Berhasil menyalin ${copied.length} master desa ke tahun ${targetYear}!`, "success");
+  }
+}
+
+// BUSINESS LOGIC: AUTO-STATUS CALCULATIONS
+function calcStatusBayar(item) {
+  if ((item.nominal && Number(item.nominal) > 0) || (item.tanggalBayar && item.tanggalBayar.trim() !== "") || item.statusBayar === "SUDAH BAYAR") {
+    return "SUDAH BAYAR";
+  }
+  return "BELUM BAYAR";
+}
+
+function calcStatusDokumen(item) {
+  const docFields = ["pks", "kwitansiLbh", "kwitansiLpj", "pksDesaTtd", "kwitansiLbhDesaTtd", "kwitansiLpjDesaTtd"];
+  for (const field of docFields) {
+    const val = (item[field] || "").toLowerCase().trim();
+    if (val !== "done") {
+      return "BELUM LENGKAP";
+    }
+  }
+  return "LENGKAP";
+}
+
+function calcStatusTTD(item) {
+  const ttdFields = ["pksDesaTtd", "kwitansiLbhDesaTtd", "kwitansiLpjDesaTtd"];
+  for (const field of ttdFields) {
+    const val = (item[field] || "").toLowerCase().trim();
+    if (val !== "done") {
+      return "BELUM LENGKAP";
+    }
+  }
+  return "LENGKAP";
+}
+
+function calcStatusKeseluruhan(item) {
+  const bayar = calcStatusBayar(item);
+  const doc = calcStatusDokumen(item);
+
+  if (bayar === "SUDAH BAYAR" && doc === "LENGKAP") {
+    return "SELESAI";
+  } else if (bayar === "SUDAH BAYAR" && doc === "BELUM LENGKAP") {
+    return "PERLU MELENGKAPI DOKUMEN";
+  } else {
+    return "BELUM BAYAR";
+  }
+}
+
+function calcPrioritas(item) {
+  const bayar = calcStatusBayar(item);
+  const doc = calcStatusDokumen(item);
+  
+  if (bayar === "BELUM BAYAR") {
+    return "TINGGI";
+  }
+
+  const docFields = ["pks", "kwitansiLbh", "kwitansiLpj", "pksDesaTtd", "kwitansiLbhDesaTtd", "kwitansiLpjDesaTtd"];
+  let missingCount = 0;
+  for (const f of docFields) {
+    if ((item[f] || "").toLowerCase().trim() !== "done") missingCount++;
+  }
+
+  if (missingCount >= 3) return "TINGGI";
+  if (missingCount >= 1) return "SEDANG";
+  if (item.needsVerification || (item.keterangan && item.keterangan.trim() !== "")) return "RENDAH";
+  return "SELESAI";
+}
+
+// AGGREGATE STATISTICS
+function computeStatistics(data) {
+  const total = data.length;
+  let sudahBayar = 0;
+  let totalNominal = 0;
+  let docLengkap = 0;
+  let ttdLengkap = 0;
+  let perluTindakLanjut = 0;
+
+  const kecMap = {};
+
+  data.forEach(item => {
+    const bayar = calcStatusBayar(item);
+    const doc = calcStatusDokumen(item);
+    const ttd = calcStatusTTD(item);
+    const prioritas = calcPrioritas(item);
+
+    if (bayar === "SUDAH BAYAR") {
+      sudahBayar++;
+      totalNominal += Number(item.nominal || 0);
+    }
+
+    if (doc === "LENGKAP") docLengkap++;
+    if (ttd === "LENGKAP") ttdLengkap++;
+    if (prioritas !== "SELESAI") perluTindakLanjut++;
+
+    const kec = item.kecamatan || "Lainnya";
+    if (!kecMap[kec]) {
+      kecMap[kec] = {
+        nama: kec,
+        total: 0,
+        sudahBayar: 0,
+        belumBayar: 0,
+        docLengkap: 0,
+        docBelum: 0,
+        ttdBelum: 0
+      };
+    }
+    kecMap[kec].total++;
+    if (bayar === "SUDAH BAYAR") kecMap[kec].sudahBayar++;
+    else kecMap[kec].belumBayar++;
+
+    if (doc === "LENGKAP") kecMap[kec].docLengkap++;
+    else kecMap[kec].docBelum++;
+
+    if (ttd !== "LENGKAP") kecMap[kec].ttdBelum++;
+  });
+
+  const belumBayar = total - sudahBayar;
+  const docBelum = total - docLengkap;
+  const ttdBelum = total - ttdLengkap;
+  
+  const pctBayar = total > 0 ? Math.round((sudahBayar / total) * 100) : 0;
+  const pctDoc = total > 0 ? Math.round((docLengkap / total) * 100) : 0;
+  const pctTtd = total > 0 ? Math.round((ttdLengkap / total) * 100) : 0;
+  const progressOverall = total > 0 ? Math.round(((sudahBayar * 0.4) + (docLengkap * 0.3) + (ttdLengkap * 0.3)) / total * 100) : 0;
+
+  let topTtdIssueKec = "Tapalang Barat";
+  let maxTtdIssueCount = 0;
+  for (const k in kecMap) {
+    if (kecMap[k].ttdBelum > maxTtdIssueCount) {
+      maxTtdIssueCount = kecMap[k].ttdBelum;
+      topTtdIssueKec = k;
+    }
+  }
+
+  return {
+    total,
+    sudahBayar,
+    belumBayar,
+    totalNominal,
+    docLengkap,
+    docBelum,
+    ttdLengkap,
+    ttdBelum,
+    perluTindakLanjut,
+    pctBayar,
+    pctDoc,
+    pctTtd,
+    progressOverall,
+    kecMap,
+    topTtdIssueKec,
+    maxTtdIssueCount
+  };
+}
+
+// UI RENDERERS
+function renderAllViews() {
+  const data = getYearData(state.activeYear);
+  const stats = computeStatistics(data);
+
+  renderDashboard(data, stats);
+  renderRekapDesa();
+  renderKecamatanTable(stats);
+  renderPembayaranTable(data, stats);
+  renderDokumenTable(data);
+  renderTtdTable(data);
+  renderTindakLanjut();
+  renderStatistikCharts(stats);
+  renderAuditTable();
+  populateKecamatanOptions(data);
+  updateBadgesAndHeaders(stats);
+}
+
+function updateBadgesAndHeaders(stats) {
+  const sbTot = document.getElementById("sidebarTotalBadge");
+  if (sbTot) sbTot.textContent = stats.total;
+  const sbIss = document.getElementById("sidebarIssuesBadge");
+  if (sbIss) sbIss.textContent = stats.perluTindakLanjut;
+  const hNotif = document.getElementById("headerNotifBadge");
+  if (hNotif) hNotif.textContent = stats.perluTindakLanjut;
+  document.querySelectorAll(".print-year-target").forEach(el => el.textContent = state.activeYear);
+}
+
+function renderDashboard(data, stats) {
+  const el = id => document.getElementById(id);
+  
+  // If year is empty, show empty state prompt
+  const alertBanner = el("dashAlertBanner");
+  if (stats.total === 0) {
+    if (alertBanner) {
+      alertBanner.innerHTML = `
+        <div class="alert-left">
+          <span class="alert-icon">ℹ️</span>
+          <div>
+            <div class="alert-title">DATA TAHUN ${state.activeYear} MASIH KOSONG</div>
+            <div class="alert-desc">Belum ada desa yang terdaftar untuk tahun anggaran ${state.activeYear}. Anda dapat menyalin data master desa dari tahun 2025 atau memasukkan data baru.</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary btn-sm" onclick="copyMasterDesaFrom2025('${state.activeYear}')">📥 Salin 50 Desa dari 2025</button>
+          <button class="btn btn-secondary btn-sm" onclick="openAddDesaModal()">+ Tambah Manual</button>
+        </div>
+      `;
+    }
+  } else {
+    if (alertBanner) {
+      alertBanner.innerHTML = `
+        <div class="alert-left">
+          <span class="alert-icon">⚠️</span>
+          <div>
+            <div class="alert-title">PERHATIAN ADMINISTRASI TAHUN ${state.activeYear}</div>
+            <div class="alert-desc" id="dashAlertText">${stats.perluTindakLanjut} desa masih memiliki dokumen atau tanda tangan yang belum lengkap.</div>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="switchView('tindak-lanjut')">Lihat Daftar Tindak Lanjut →</button>
+      `;
+    }
+  }
+
+  if (el("statTotalDesa")) el("statTotalDesa").textContent = stats.total;
+  if (el("statSudahBayar")) el("statSudahBayar").textContent = stats.sudahBayar;
+  if (el("statNominalBayar")) el("statNominalBayar").textContent = `${formatRupiah(stats.totalNominal)} (${stats.pctBayar}%)`;
+  if (el("statBelumBayar")) el("statBelumBayar").textContent = stats.belumBayar;
+  if (el("statPctBelumBayar")) el("statPctBelumBayar").textContent = stats.total > 0 ? `${100 - stats.pctBayar}% dari total desa` : "-";
+  if (el("statDocLengkap")) el("statDocLengkap").textContent = stats.docLengkap;
+  if (el("statPctDocLengkap")) el("statPctDocLengkap").textContent = stats.total > 0 ? `${stats.pctDoc}% selesai seluruhnya` : "-";
+  if (el("statDocBelum")) el("statDocBelum").textContent = stats.docBelum;
+  if (el("statTindakLanjut")) el("statTindakLanjut").textContent = stats.perluTindakLanjut;
+
+  if (el("heroProgressPct")) el("heroProgressPct").textContent = `${stats.progressOverall}% Selesai`;
+  if (el("heroProgressBar")) el("heroProgressBar").style.width = `${stats.progressOverall}%`;
+  if (el("heroLunasTxt")) el("heroLunasTxt").textContent = `Pembayaran: ${stats.sudahBayar} / ${stats.total} Desa (${stats.pctBayar}%)`;
+  if (el("heroDocTxt")) el("heroDocTxt").textContent = `Dokumen Lengkap: ${stats.docLengkap} / ${stats.total} Desa (${stats.pctDoc}%)`;
+  if (el("heroTtdTxt")) el("heroTtdTxt").textContent = `TTD Desa Lengkap: ${stats.ttdLengkap} / ${stats.total} Desa (${stats.pctTtd}%)`;
+
+  if (el("progBayarVal")) el("progBayarVal").textContent = `${stats.pctBayar}%`;
+  if (el("progBayarFill")) el("progBayarFill").style.width = `${stats.pctBayar}%`;
+  if (el("progDocVal")) el("progDocVal").textContent = `${stats.pctDoc}%`;
+  if (el("progDocFill")) el("progDocFill").style.width = `${stats.pctDoc}%`;
+  if (el("progTtdVal")) el("progTtdVal").textContent = `${stats.pctTtd}%`;
+  if (el("progTtdFill")) el("progTtdFill").style.width = `${stats.pctTtd}%`;
+  if (el("progSelesaiVal")) el("progSelesaiVal").textContent = `${stats.pctDoc}%`;
+  if (el("progSelesaiFill")) el("progSelesaiFill").style.width = `${stats.pctDoc}%`;
+
+  const insightList = el("dashboardInsightList");
+  if (insightList) {
+    if (stats.total === 0) {
+      insightList.innerHTML = `
+        <div class="insight-item type-attention">
+          <div class="insight-icon">📋</div>
+          <div class="insight-content">
+            <h4>TAHUN BARU TERSEDIA</h4>
+            <p>Tahun anggaran <b>${state.activeYear}</b> masih kosong. Klik tombol <b>'Salin 50 Desa dari 2025'</b> untuk memulai tahun ini dengan daftar desa lengkap.</p>
+          </div>
+        </div>
+      `;
+    } else {
+      insightList.innerHTML = `
+        <div class="insight-item type-attention">
+          <div class="insight-icon">⚠️</div>
+          <div class="insight-content">
+            <h4>PERHATIAN TERBANYAK</h4>
+            <p>Desa dengan dokumen belum TTD terbanyak berada pada <b>Kecamatan ${stats.topTtdIssueKec}</b> (${stats.maxTtdIssueCount} desa belum tuntas ttd).</p>
+          </div>
+        </div>
+
+        <div class="insight-item type-payment">
+          <div class="insight-icon">💳</div>
+          <div class="insight-content">
+            <h4>PEMBAYARAN</h4>
+            <p>Sebanyak <b>${stats.sudahBayar} desa</b> (${stats.pctBayar}%) telah melakukan pembayaran dengan total realisasi <b>${formatRupiah(stats.totalNominal)}</b>.</p>
+          </div>
+        </div>
+
+        <div class="insight-item type-document">
+          <div class="insight-icon">📑</div>
+          <div class="insight-content">
+            <h4>DOKUMEN & LPJ</h4>
+            <p>Masih terdapat <b>${stats.docBelum} desa</b> (${100 - stats.pctDoc}%) dengan dokumen PKS atau kwitansi yang belum lengkap.</p>
+          </div>
+        </div>
+      `;
+    }
+  }
+}
+
+// FILTERING LOGIC
+function getFilteredData() {
+  const rawData = getYearData(state.activeYear);
+  return rawData.filter(item => {
+    if (state.searchQuery) {
+      const q = state.searchQuery.toLowerCase();
+      const matchDesa = (item.desa || "").toLowerCase().includes(q);
+      const matchKades = (item.kades || "").toLowerCase().includes(q);
+      const matchKec = (item.kecamatan || "").toLowerCase().includes(q);
+      const matchKet = (item.keterangan || "").toLowerCase().includes(q);
+      if (!matchDesa && !matchKades && !matchKec && !matchKet) return false;
+    }
+
+    if (state.filters.kecamatan && item.kecamatan !== state.filters.kecamatan) return false;
+    if (state.filters.statusBayar && calcStatusBayar(item) !== state.filters.statusBayar) return false;
+    if (state.filters.statusDokumen && calcStatusDokumen(item) !== state.filters.statusDokumen) return false;
+    if (state.filters.statusTtd && calcStatusTTD(item) !== state.filters.statusTtd) return false;
+    if (state.filters.statusKeseluruhan && calcStatusKeseluruhan(item) !== state.filters.statusKeseluruhan) return false;
+
+    return true;
+  });
+}
+
+function renderRekapDesa() {
+  const rawData = getYearData(state.activeYear);
+  const filtered = getFilteredData();
+
+  filtered.sort((a, b) => {
+    let vA = a[state.sort.column];
+    let vB = b[state.sort.column];
+
+    if (state.sort.column === "statusBayar") {
+      vA = calcStatusBayar(a);
+      vB = calcStatusBayar(b);
+    } else if (state.sort.column === "statusAll") {
+      vA = calcStatusKeseluruhan(a);
+      vB = calcStatusKeseluruhan(b);
+    }
+
+    if (typeof vA === "string") vA = vA.toLowerCase();
+    if (typeof vB === "string") vB = vB.toLowerCase();
+
+    if (vA < vB) return state.sort.asc ? -1 : 1;
+    if (vA > vB) return state.sort.asc ? 1 : -1;
+    return 0;
+  });
+
+  const countDisp = document.getElementById("tableCountDisplay");
+  if (countDisp) {
+    countDisp.innerHTML = `Menampilkan <b>${filtered.length}</b> dari <b>${rawData.length}</b> desa (Tahun ${state.activeYear})`;
+  }
+
+  const pageSize = state.pagination.pageSize;
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  if (state.pagination.page > totalPages) state.pagination.page = 1;
+
+  const startIndex = (state.pagination.page - 1) * pageSize;
+  const pagedData = filtered.slice(startIndex, startIndex + pageSize);
+
+  const tbody = document.getElementById("mainTableBody");
+  if (tbody) {
+    if (rawData.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="16" style="text-align:center; padding: 50px 20px; color: var(--navy-slate);">
+            <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
+            <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">Data Desa Tahun ${state.activeYear} Masih Kosong</h4>
+            <p style="font-size: 12.5px; color: var(--text-muted); max-width: 500px; margin: 0 auto 16px;">
+              Belum ada rekaman desa pada tahun anggaran ini. Anda dapat menyalin data master 50 desa dari tahun 2025 secara otomatis dengan status baru yang siap dimonitor.
+            </p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+              <button class="btn btn-primary" onclick="copyMasterDesaFrom2025('${state.activeYear}')">📥 Salin 50 Desa dari 2025</button>
+              <button class="btn btn-secondary" onclick="openAddDesaModal()">+ Tambah Desa Manual</button>
+              <button class="btn btn-secondary" onclick="switchView('import')">📥 Import Excel/CSV</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    } else if (pagedData.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="16" style="text-align:center; padding: 40px; color: var(--text-muted);">
+        <b>Data desa tidak ditemukan</b><br><span style="font-size: 12px;">Coba sesuaikan kata kunci pencarian atau reset filter.</span>
+      </td></tr>`;
+    } else {
+      tbody.innerHTML = pagedData.map((item, idx) => {
+        const realIdx = startIndex + idx + 1;
+        const statusBayar = calcStatusBayar(item);
+        const statusAll = calcStatusKeseluruhan(item);
+
+        return `
+          <tr>
+            <td><b>${realIdx}</b></td>
+            <td>
+              <div style="font-weight: 700; color: var(--navy-slate);">${escapeHtml(item.desa)}</div>
+              ${item.needsVerification ? "<span class='badge badge-verification'>Perlu Verifikasi</span>" : ""}
+            </td>
+            <td>
+              <div>${escapeHtml(item.kades || "-")}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(item.jabatan || "Definitif")}</div>
+            </td>
+            <td><span class="badge" style="background: #f1f5f9; color: #334155;">${escapeHtml(item.kecamatan)}</span></td>
+            <td>${renderBayarBadge(statusBayar)}</td>
+            <td>${formatDate(item.tanggalBayar)}</td>
+            <td style="font-weight: 600;">${item.nominal ? formatRupiah(item.nominal) : "-"}</td>
+            <td>${renderDocBadge(item.pks)}</td>
+            <td>${renderDocBadge(item.kwitansiLbh)}</td>
+            <td>${renderDocBadge(item.kwitansiLpj)}</td>
+            <td>${renderTtdBadge(item.pksDesaTtd)}</td>
+            <td>${renderTtdBadge(item.kwitansiLbhDesaTtd)}</td>
+            <td>${renderTtdBadge(item.kwitansiLpjDesaTtd)}</td>
+            <td>${renderStatusAllBadge(statusAll)}</td>
+            <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(item.keterangan || "")}">
+              ${escapeHtml(item.keterangan || "-")}
+            </td>
+            <td style="text-align: center;">
+              <div style="display: flex; gap: 4px; justify-content: center;">
+                <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')" title="Lihat Detail">👁️</button>
+                <button class="btn btn-secondary btn-sm" onclick="openEditDesaModal('${item.id}')" title="Edit Data">✏️</button>
+                <button class="btn btn-danger btn-sm" onclick="promptDeleteDesa('${item.id}')" title="Hapus Data">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+  }
+
+  renderCardsMode(pagedData, rawData.length);
+  renderPaginationControls(totalPages);
+}
+
+function renderCardsMode(items, rawTotal) {
+  const container = document.getElementById("cardsWrapper");
+  if (!container) return;
+
+  if (rawTotal === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
+        <h4 style="font-size: 16px; font-weight: 800; color: var(--navy-slate);">Data Tahun ${state.activeYear} Masih Kosong</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin: 6px 0 16px;">
+          Gunakan tombol di bawah untuk menyalin daftar desa dari tahun 2025.
+        </p>
+        <button class="btn btn-primary" onclick="copyMasterDesaFrom2025('${state.activeYear}')">📥 Salin 50 Desa dari 2025</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (items.length === 0) {
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Data desa tidak ditemukan.</div>';
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+    const statusBayar = calcStatusBayar(item);
+    const prioritas = calcPrioritas(item);
+
+    return `
+      <div class="desa-record-card">
+        <div class="dcard-header">
+          <div class="dcard-title">
+            <h4>${escapeHtml(item.desa)}</h4>
+            <p>Kec. ${escapeHtml(item.kecamatan)} • Kades: ${escapeHtml(item.kades || "-")}</p>
+          </div>
+          <span class="priority-pill priority-${prioritas.toLowerCase()}">${prioritas}</span>
+        </div>
+
+        <div class="dcard-row">
+          <span>Status Pembayaran:</span>
+          <span>${renderBayarBadge(statusBayar)}</span>
+        </div>
+
+        <div class="dcard-row">
+          <span>Nominal / Tanggal:</span>
+          <span><b>${item.nominal ? formatRupiah(item.nominal) : "Rp 0"}</b> (${formatDate(item.tanggalBayar)})</span>
+        </div>
+
+        <div class="dcard-docs-grid">
+          <div class="dcard-doc-col">
+            <span>PKS</span>
+            ${renderDocBadge(item.pks)}
+          </div>
+          <div class="dcard-doc-col">
+            <span>Kwt LBH</span>
+            ${renderDocBadge(item.kwitansiLbh)}
+          </div>
+          <div class="dcard-doc-col">
+            <span>Kwt LPJ</span>
+            ${renderDocBadge(item.kwitansiLpj)}
+          </div>
+          <div class="dcard-doc-col">
+            <span>PKS TTD</span>
+            ${renderTtdBadge(item.pksDesaTtd)}
+          </div>
+          <div class="dcard-doc-col">
+            <span>LBH TTD</span>
+            ${renderTtdBadge(item.kwitansiLbhDesaTtd)}
+          </div>
+          <div class="dcard-doc-col">
+            <span>LPJ TTD</span>
+            ${renderTtdBadge(item.kwitansiLpjDesaTtd)}
+          </div>
+        </div>
+
+        ${item.keterangan ? `<div style="font-size: 12px; background: #fffbeb; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #f59e0b;">${escapeHtml(item.keterangan)}</div>` : ""}
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px;">
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail</button>
+          <button class="btn btn-primary btn-sm" onclick="openEditDesaModal('${item.id}')">Edit</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderPaginationControls(totalPages) {
+  const container = document.getElementById("paginationBtns");
+  if (!container) return;
+  let btns = "";
+
+  btns += `<button class="page-btn" ${state.pagination.page === 1 ? "disabled" : ""} onclick="gotoPage(${state.pagination.page - 1})">«</button>`;
+
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= state.pagination.page - 1 && p <= state.pagination.page + 1)) {
+      btns += `<button class="page-btn ${state.pagination.page === p ? "active" : ""}" onclick="gotoPage(${p})">${p}</button>`;
+    } else if (p === state.pagination.page - 2 || p === state.pagination.page + 2) {
+      btns += "<span style='padding: 0 4px;'>...</span>";
+    }
+  }
+
+  btns += `<button class="page-btn" ${state.pagination.page === totalPages ? "disabled" : ""} onclick="gotoPage(${state.pagination.page + 1})">»</button>`;
+  container.innerHTML = btns;
+}
+
+function gotoPage(p) {
+  state.pagination.page = p;
+  renderRekapDesa();
+}
+
+function changePageSize(size) {
+  state.pagination.pageSize = Number(size);
+  state.pagination.page = 1;
+  renderRekapDesa();
+}
+
+function setTableViewMode(mode) {
+  state.tableViewMode = mode;
+  document.getElementById("btnModeTable").classList.toggle("active", mode === "table");
+  document.getElementById("btnModeCards").classList.toggle("active", mode === "cards");
+  document.getElementById("tableWrapper").style.display = mode === "table" ? "block" : "none";
+  document.getElementById("cardsWrapper").style.display = mode === "cards" ? "grid" : "none";
+}
+
+// BADGE GENERATORS
+function renderBayarBadge(status) {
+  if (status === "SUDAH BAYAR") {
+    return "<span class='badge badge-done'>🟢 SUDAH BAYAR</span>";
+  }
+  return "<span class='badge badge-belum'>🔴 BELUM BAYAR</span>";
+}
+
+function renderDocBadge(val) {
+  const v = (val || "").toLowerCase().trim();
+  if (v === "done") return "<span class='badge badge-done'>🟢 DONE</span>";
+  if (v === "belum") return "<span class='badge badge-belum'>🔴 BELUM</span>";
+  return "<span class='badge badge-kosong'>⚪ BELUM DIISI</span>";
+}
+
+function renderTtdBadge(val) {
+  const v = (val || "").toLowerCase().trim();
+  if (v === "done") return "<span class='badge badge-done'>🟢 DONE</span>";
+  if (v === "belum ttd") return "<span class='badge badge-belum-ttd'>🟡 BELUM TTD</span>";
+  if (v === "belum") return "<span class='badge badge-belum'>🔴 BELUM</span>";
+  return "<span class='badge badge-kosong'>⚪ BELUM DIISI</span>";
+}
+
+function renderStatusAllBadge(status) {
+  if (status === "SELESAI") {
+    return "<span class='badge badge-selesai'>🟢 SELESAI</span>";
+  } else if (status === "PERLU MELENGKAPI DOKUMEN") {
+    return "<span class='badge badge-perlu-dokumen'>🟡 PERLU DOKUMEN</span>";
+  } else {
+    return "<span class='badge badge-belum-bayar'>🔴 BELUM BAYAR</span>";
+  }
+}
+
+// REKAP PER KECAMATAN TABLE
+function renderKecamatanTable(stats) {
+  const tbody = document.getElementById("kecamatanTableBody");
+  if (!tbody) return;
+  const kecArray = Object.values(stats.kecMap);
+
+  if (kecArray.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">Belum ada data kecamatan untuk tahun ${state.activeYear}.</td></tr>`;
+    return;
+  }
+
+  kecArray.sort((a, b) => b.total - a.total);
+
+  let counter = 1;
+  tbody.innerHTML = kecArray.map(kec => {
+    const pct = kec.total > 0 ? Math.round((kec.docLengkap / kec.total) * 100) : 0;
+
+    return `
+      <tr style="cursor: pointer;" onclick="filterByKecamatanFromTable('${escapeHtml(kec.nama)}')">
+        <td><b>${counter++}</b></td>
+        <td style="font-weight: 700; color: var(--navy-slate);">${escapeHtml(kec.nama)}</td>
+        <td><b>${kec.total}</b></td>
+        <td><span class='badge badge-done'>🟢 ${kec.sudahBayar}</span></td>
+        <td><span class='badge badge-belum'>🔴 ${kec.belumBayar}</span></td>
+        <td><span class='badge badge-done'>🟢 ${kec.docLengkap}</span></td>
+        <td><span class="badge ${kec.docBelum > 0 ? "badge-belum-ttd" : "badge-kosong"}">${kec.docBelum}</span></td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="progress-track" style="flex: 1; height: 8px;">
+              <div class="progress-fill fill-green" style="width: ${pct}%;"></div>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; width: 34px;">${pct}%</span>
+          </div>
+        </td>
+        <td style="text-align: center;">
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); filterByKecamatanFromTable('${escapeHtml(kec.nama)}')">
+            Lihat Desa →
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function filterByKecamatanFromTable(kecNama) {
+  state.filters.kecamatan = kecNama;
+  const sel = document.getElementById("filterKecamatan");
+  if (sel) sel.value = kecNama;
+  switchView("rekap-desa");
+  applyFilters();
+}
+
+// REKAP PEMBAYARAN TABLE
+function renderPembayaranTable(data, stats) {
+  const el = id => document.getElementById(id);
+  if (el("payRealisasiNominal")) el("payRealisasiNominal").textContent = formatRupiah(stats.totalNominal);
+  if (el("payRealisasiCount")) el("payRealisasiCount").textContent = `${stats.sudahBayar} dari ${stats.total} Desa telah membayar`;
+  if (el("payTunggakanNominal")) el("payTunggakanNominal").textContent = formatRupiah(stats.belumBayar * 15000000);
+  if (el("payTunggakanCount")) el("payTunggakanCount").textContent = `${stats.belumBayar} Desa belum membayar`;
+
+  const tbody = document.getElementById("pembayaranTableBody");
+  if (!tbody) return;
+
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">Belum ada data pembayaran untuk tahun ${state.activeYear}.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map((item, idx) => {
+    const statusBayar = calcStatusBayar(item);
+    return `
+      <tr>
+        <td>${idx + 1}</td>
+        <td style="font-weight: 700;">${escapeHtml(item.desa)}</td>
+        <td>${escapeHtml(item.kecamatan)}</td>
+        <td>${renderBayarBadge(statusBayar)}</td>
+        <td>${formatDate(item.tanggalBayar)}</td>
+        <td style="font-weight: 700;">${item.nominal ? formatRupiah(item.nominal) : "-"}</td>
+        <td>${escapeHtml(item.catatanBayar || "-")}</td>
+        <td style="font-size: 11px; color: var(--text-muted);">${escapeHtml(item.infoTambahanBayar || "-")}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openEditDesaModal('${item.id}')">Update Bayar</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function filterBayarDirect(type) {
+  if (type === "ALL") state.filters.statusBayar = "";
+  else if (type === "PAID") state.filters.statusBayar = "SUDAH BAYAR";
+  else if (type === "UNPAID") state.filters.statusBayar = "BELUM BAYAR";
+  
+  const sel = document.getElementById("filterBayar");
+  if (sel) sel.value = state.filters.statusBayar;
+  switchView("rekap-desa");
+  applyFilters();
+}
+
+// DOKUMEN TABLE
+function renderDokumenTable(data) {
+  const tbody = document.getElementById("dokumenTableBody");
+  if (!tbody) return;
+
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">Belum ada dokumen untuk tahun ${state.activeYear}.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map((item, idx) => {
+    const docStatus = calcStatusDokumen(item);
+    return `
+      <tr>
+        <td>${idx + 1}</td>
+        <td style="font-weight: 700;">${escapeHtml(item.desa)}</td>
+        <td>${escapeHtml(item.kecamatan)}</td>
+        <td>${renderDocBadge(item.pks)}</td>
+        <td>${renderDocBadge(item.kwitansiLbh)}</td>
+        <td>${renderDocBadge(item.kwitansiLpj)}</td>
+        <td>
+          <span class="badge ${docStatus === "LENGKAP" ? "badge-done" : "badge-belum"}">
+            ${docStatus === "LENGKAP" ? "🟢 LENGKAP" : "🔴 BELUM LENGKAP"}
+          </span>
+        </td>
+        <td style="font-size: 12px; color: var(--text-muted);">${escapeHtml(item.keterangan || "-")}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+// TTD TABLE
+function renderTtdTable(data) {
+  const tbody = document.getElementById("ttdTableBody");
+  if (!tbody) return;
+
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--text-muted); padding: 30px;">Belum ada data pengesahan untuk tahun ${state.activeYear}.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map((item, idx) => {
+    const ttdStatus = calcStatusTTD(item);
+    return `
+      <tr>
+        <td>${idx + 1}</td>
+        <td style="font-weight: 700;">${escapeHtml(item.desa)}</td>
+        <td>${escapeHtml(item.kades || "-")}</td>
+        <td>${escapeHtml(item.kecamatan)}</td>
+        <td>${renderTtdBadge(item.pksDesaTtd)}</td>
+        <td>${renderTtdBadge(item.kwitansiLbhDesaTtd)}</td>
+        <td>${renderTtdBadge(item.kwitansiLpjDesaTtd)}</td>
+        <td>
+          <span class="badge ${ttdStatus === "LENGKAP" ? "badge-done" : "badge-belum-ttd"}">
+            ${ttdStatus === "LENGKAP" ? "🟢 LENGKAP" : "🟡 BELUM LENGKAP"}
+          </span>
+        </td>
+        <td style="font-size: 12px; color: var(--status-red);">${escapeHtml(item.keterangan || "-")}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openEditDesaModal('${item.id}')">Update TTD</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+// PERLU TINDAK LANJUT VIEW
+function renderTindakLanjut() {
+  const data = getYearData(state.activeYear);
+  const container = document.getElementById("tindakLanjutContainer");
+  if (!container) return;
+  const pSel = document.getElementById("filterPrioritySelect");
+  const priorityFilter = pSel ? pSel.value : "ALL";
+
+  if (data.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 8px;">ℹ️</div>
+        <h4 style="font-size: 16px; font-weight: 800; color: var(--navy-slate);">Tahun ${state.activeYear} Belum Memiliki Data Desa</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin: 6px 0 16px;">
+          Silakan salin master desa dari tahun 2025 untuk mulai mengawasi kelengkapan dokumen tahun ${state.activeYear}.
+        </p>
+        <button class="btn btn-primary" onclick="copyMasterDesaFrom2025('${state.activeYear}')">📥 Salin 50 Desa dari 2025</button>
+      </div>
+    `;
+    return;
+  }
+
+  const issuesList = [];
+
+  data.forEach(item => {
+    const bayar = calcStatusBayar(item);
+    const prioritas = calcPrioritas(item);
+
+    if (prioritas !== "SELESAI") {
+      if (priorityFilter !== "ALL" && prioritas !== priorityFilter) return;
+
+      const issues = [];
+      if (bayar === "BELUM BAYAR") issues.push("🔴 Belum melakukan pembayaran iuran / tagihan");
+      if ((item.pks || "").toLowerCase() !== "done") issues.push("🔴 Dokumen PKS belum lengkap / ada");
+      if ((item.kwitansiLbh || "").toLowerCase() !== "done") issues.push("🔴 Kwitansi LBH belum ada");
+      if ((item.kwitansiLpj || "").toLowerCase() !== "done") issues.push("🔴 Kwitansi LPJ belum ada");
+      if ((item.pksDesaTtd || "").toLowerCase() !== "done") issues.push("🟡 PKS Desa TTD belum ditandatangani Kades");
+      if ((item.kwitansiLbhDesaTtd || "").toLowerCase() !== "done") issues.push("🟡 Kwitansi LBH Desa TTD belum ditandatangani Kades");
+      if ((item.kwitansiLpjDesaTtd || "").toLowerCase() !== "done") issues.push("🟡 Kwitansi LPJ Desa TTD belum ditandatangani Kades");
+
+      issuesList.push({
+        item,
+        bayar,
+        prioritas,
+        issues
+      });
+    }
+  });
+
+  if (issuesList.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; text-align: center;">
+        <div style="font-size: 38px; margin-bottom: 8px;">🎉</div>
+        <h4 style="font-size: 16px; font-weight: 700; color: var(--navy-slate);">Luar Biasa! Tidak Ada Desa yang Perlu Ditindaklanjuti</h4>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Seluruh desa telah memenuhi kewajiban pembayaran dan kelengkapan administrasi LPJ.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = issuesList.map(entry => {
+    const item = entry.item;
+    return `
+      <div class="desa-record-card" style="border-left: 4px solid ${entry.prioritas === "TINGGI" ? "#dc2626" : (entry.prioritas === "SEDANG" ? "#f59e0b" : "#10b981")};">
+        <div class="dcard-header">
+          <div>
+            <h4 style="font-size: 17px; font-weight: 800;">${escapeHtml(item.desa)}</h4>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              Kecamatan ${escapeHtml(item.kecamatan)} • Kades: ${escapeHtml(item.kades || "-")}
+            </p>
+          </div>
+          <span class="priority-pill priority-${entry.prioritas.toLowerCase()}">Prioritas ${entry.prioritas}</span>
+        </div>
+
+        <div style="font-size: 12.5px;">
+          <div style="font-weight: 700; color: var(--navy-slate); margin-bottom: 6px;">Status Pembayaran:</div>
+          <div>${renderBayarBadge(entry.bayar)} ${item.nominal ? `(Nominal: ${formatRupiah(item.nominal)})` : ""}</div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;">
+          <div style="font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+            Rincian Masalah / Hambatan:
+          </div>
+          <ul style="list-style: none; padding-left: 0; font-size: 12.5px; line-height: 1.6;">
+            ${entry.issues.map(iss => `<li>${iss}</li>`).join("")}
+          </ul>
+        </div>
+
+        ${item.keterangan ? `
+          <div style="font-size: 12.5px; background: #fffbeb; border: 1px solid #fef08a; padding: 8px 12px; border-radius: var(--radius-sm); color: #92400e;">
+            <b>Keterangan:</b> "${escapeHtml(item.keterangan)}"
+          </div>
+        ` : ""}
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;">
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Lihat Berkas</button>
+          <button class="btn btn-primary btn-sm" onclick="openEditDesaModal('${item.id}')">Tindak Lanjuti / Perbarui Data</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// STATISTIK CHARTS
+function renderStatistikCharts(stats) {
+  const payContainer = document.getElementById("statPayChartContainer");
+  if (payContainer) {
+    const paidWidth = stats.pctBayar;
+    const unpaidWidth = stats.total > 0 ? 100 - stats.pctBayar : 0;
+
+    payContainer.innerHTML = `
+      <div style="margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 13px; margin-bottom: 6px;">
+          <span>Sudah Bayar (${stats.sudahBayar} Desa)</span>
+          <span style="color: var(--status-green);">${stats.pctBayar}%</span>
+        </div>
+        <div class="progress-track" style="height: 16px;">
+          <div class="progress-fill fill-green" style="width: ${paidWidth}%;"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 13px; margin-bottom: 6px;">
+          <span>Belum Bayar (${stats.belumBayar} Desa)</span>
+          <span style="color: var(--status-red);">${unpaidWidth}%</span>
+        </div>
+        <div class="progress-track" style="height: 16px;">
+          <div class="progress-fill" style="width: ${unpaidWidth}%; background: var(--status-red);"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  const docContainer = document.getElementById("statDocChartContainer");
+  if (docContainer) {
+    docContainer.innerHTML = `
+      <div style="margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 13px; margin-bottom: 6px;">
+          <span>Kelengkapan Dokumen Fisik (PKS & Kwitansi)</span>
+          <span style="color: var(--primary-purple);">${stats.pctDoc}%</span>
+        </div>
+        <div class="progress-track" style="height: 16px;">
+          <div class="progress-fill fill-purple" style="width: ${stats.pctDoc}%;"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 13px; margin-bottom: 6px;">
+          <span>Kelengkapan TTD Kepala Desa</span>
+          <span style="color: #0284c7;">${stats.pctTtd}%</span>
+        </div>
+        <div class="progress-track" style="height: 16px;">
+          <div class="progress-fill fill-blue" style="width: ${stats.pctTtd}%;"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  const kecContainer = document.getElementById("statKecBarChartContainer");
+  if (kecContainer) {
+    const kecArray = Object.values(stats.kecMap).sort((a, b) => b.total - a.total);
+
+    if (kecArray.length === 0) {
+      kecContainer.innerHTML = "<div style='color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;'>Belum ada data kecamatan untuk tahun ini.</div>";
+    } else {
+      kecContainer.innerHTML = kecArray.map(kec => {
+        const pct = kec.total > 0 ? Math.round((kec.docLengkap / kec.total) * 100) : 0;
+        return `
+          <div style="margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; margin-bottom: 4px;">
+              <span>Kecamatan ${escapeHtml(kec.nama)} (${kec.total} Desa)</span>
+              <span>${kec.docLengkap}/${kec.total} Selesai (${pct}%)</span>
+            </div>
+            <div class="progress-track" style="height: 10px;">
+              <div class="progress-fill fill-green" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+}
+
+// AUDIT LOG TABLE
+function renderAuditTable() {
+  const tbody = document.getElementById("auditTableBody");
+  if (!tbody) return;
+  if (!state.auditLogs || state.auditLogs.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='6' style='text-align: center; color: var(--text-muted); padding: 30px;'>Belum ada catatan log aktivitas.</td></tr>";
+    return;
+  }
+
+  tbody.innerHTML = state.auditLogs.map(log => `
+    <tr>
+      <td><span style="font-family: monospace; font-size: 12px;">${escapeHtml(log.timestamp)}</span></td>
+      <td style="font-weight: 700;">${escapeHtml(log.desa)}</td>
+      <td><span class="badge" style="background: #f1f5f9;">${escapeHtml(log.field)}</span></td>
+      <td style="color: var(--status-red); text-decoration: line-through;">${escapeHtml(log.oldVal)}</td>
+      <td style="color: var(--status-green); font-weight: 600;">${escapeHtml(log.newVal)}</td>
+      <td style="font-size: 12px; color: var(--text-muted);">${escapeHtml(log.operator)}</td>
+    </tr>
+  `).join("");
+}
+
+function clearAuditLogs() {
+  if (confirm("Apakah Anda yakin ingin mengosongkan seluruh riwayat log aktivitas?")) {
+    state.auditLogs = [];
+    saveAuditLogs();
+    renderAuditTable();
+    showToast("Riwayat perubahan telah dibersihkan.", "warning");
+  }
+}
+
+// YEAR MANAGEMENT
+function initYearSelector() {
+  const select = document.getElementById("yearSelector");
+  if (select) {
+    select.innerHTML = state.availableYears.map(y => `
+      <option value="${y}" ${y === state.activeYear ? "selected" : ""}>${y}</option>
+    `).join("");
+  }
+
+  const stList = document.getElementById("settingsYearsList");
+  if (stList) stList.textContent = state.availableYears.join(", ");
+}
+
+function changeYear(newYear) {
+  state.activeYear = newYear;
+  state.pagination.page = 1;
+  resetFiltersSilently();
+  renderAllViews();
+  showToast(`Beralih ke database tahun anggaran ${newYear}`, "success");
+}
+
+function openAddYearModal() {
+  document.getElementById("modalAddYear").classList.add("active");
+}
+
+function closeAddYearModal() {
+  document.getElementById("modalAddYear").classList.remove("active");
+}
+
+function submitNewYear() {
+  const inputYear = document.getElementById("inputNewYear").value.trim();
+  if (!inputYear) {
+    alert("Silakan masukkan tahun anggaran yang valid.");
+    return;
+  }
+
+  if (state.availableYears.includes(inputYear)) {
+    alert(`Tahun ${inputYear} sudah terdaftar.`);
+    return;
+  }
+
+  const option = document.querySelector("input[name='newYearOption']:checked").value;
+  let newDataset = [];
+
+  if (option === "COPY") {
+    const currentData = getYearData("2025");
+    newDataset = currentData.map((d, i) => ({
+      ...d,
+      id: `desa-${inputYear}-${String(i+1).padStart(2, "0")}`,
+      no: i + 1,
+      tanggalBayar: "",
+      nominal: 0,
+      catatanBayar: "",
+      infoTambahanBayar: "",
+      pks: "belum",
+      kwitansiLbh: "belum",
+      kwitansiLpj: "belum",
+      pksDesaTtd: "belum ttd",
+      kwitansiLbhDesaTtd: "belum ttd",
+      kwitansiLpjDesaTtd: "belum ttd",
+      keterangan: "Data disalin dari tahun 2025",
+      needsVerification: false
+    }));
+  }
+
+  state.availableYears.push(inputYear);
+  state.availableYears.sort();
+  localStorage.setItem("rekap_desa_years", JSON.stringify(state.availableYears));
+  saveYearData(inputYear, newDataset);
+
+  addAuditLog(`Tahun Anggaran ${inputYear}`, "Pembuatan Tahun Baru", "-", `Inisialisasi ${newDataset.length} desa`);
+
+  closeAddYearModal();
+  initYearSelector();
+  changeYear(inputYear);
+}
+
+// MODAL DETAIL DESA
+function openDetailModal(id) {
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === id);
+  if (!item) return;
+
+  state.selectedDesaId = id;
+
+  document.getElementById("detailModalDesaName").textContent = item.desa;
+  document.getElementById("detailModalSub").textContent = `Kecamatan ${item.kecamatan} • Kades: ${item.kades || "-"}`;
+
+  document.getElementById("dIdentitasDesa").textContent = item.desa;
+  document.getElementById("dIdentitasKecamatan").textContent = item.kecamatan;
+  document.getElementById("dIdentitasKades").textContent = item.kades || "-";
+  document.getElementById("dIdentitasJabatan").textContent = item.jabatan || "Definitif";
+
+  const statusBayar = calcStatusBayar(item);
+  document.getElementById("dPayStatusBadge").innerHTML = renderBayarBadge(statusBayar);
+  document.getElementById("dPayNominal").textContent = item.nominal ? formatRupiah(item.nominal) : "Rp 0";
+  document.getElementById("dPayTanggal").textContent = formatDate(item.tanggalBayar);
+  document.getElementById("dPayCatatan").textContent = item.catatanBayar || "-";
+  document.getElementById("dPayRef").textContent = item.infoTambahanBayar || "-";
+
+  document.getElementById("dDocPksBadge").innerHTML = renderDocBadge(item.pks);
+  document.getElementById("dDocLbhBadge").innerHTML = renderDocBadge(item.kwitansiLbh);
+  document.getElementById("dDocLpjBadge").innerHTML = renderDocBadge(item.kwitansiLpj);
+  document.getElementById("dDocTtdPksBadge").innerHTML = renderTtdBadge(item.pksDesaTtd);
+  document.getElementById("dDocTtdLbhBadge").innerHTML = renderTtdBadge(item.kwitansiLbhDesaTtd);
+  document.getElementById("dDocTtdLpjBadge").innerHTML = renderTtdBadge(item.kwitansiLpjDesaTtd);
+
+  document.getElementById("dCatatanKhusus").textContent = item.keterangan || "Tidak ada catatan khusus untuk desa ini.";
+
+  const desaLogs = state.auditLogs.filter(l => (l.desa || "").toLowerCase() === (item.desa || "").toLowerCase());
+  const logsContainer = document.getElementById("dDesaAuditLogs");
+  if (desaLogs.length > 0) {
+    logsContainer.innerHTML = desaLogs.map(l => `
+      <div style="padding: 6px 0; border-bottom: 1px dashed var(--border-color);">
+        <b>${l.timestamp}</b>: ${l.field} (${l.oldVal} → ${l.newVal})
+      </div>
+    `).join("");
+  } else {
+    logsContainer.innerHTML = "Belum ada riwayat perubahan yang tercatat.";
+  }
+
+  document.getElementById("btnEditFromDetail").onclick = () => {
+    closeDetailModal();
+    openEditDesaModal(id);
+  };
+
+  switchDetailTab("tab-identitas");
+  document.getElementById("modalDetailDesa").classList.add("active");
+}
+
+function closeDetailModal() {
+  document.getElementById("modalDetailDesa").classList.remove("active");
+}
+
+function switchDetailTab(tabId) {
+  document.querySelectorAll(".dtab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".dtab-content").forEach(c => c.classList.remove("active"));
+
+  if (window.event && window.event.target && window.event.target.classList) {
+    window.event.target.classList.add("active");
+  }
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add("active");
+}
+
+// MODAL FORM CRUD
+function openAddDesaModal() {
+  document.getElementById("formModalTitle").textContent = "Tambah Data Desa Baru";
+  document.getElementById("desaCrudForm").reset();
+  document.getElementById("formDesaId").value = "";
+  document.getElementById("duplicateWarningBox").style.display = "none";
+  document.getElementById("modalFormDesa").classList.add("active");
+}
+
+function openEditDesaModal(id) {
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === id);
+  if (!item) return;
+
+  document.getElementById("formModalTitle").textContent = `Edit Data Desa: ${item.desa}`;
+  document.getElementById("formDesaId").value = item.id;
+  document.getElementById("duplicateWarningBox").style.display = "none";
+
+  document.getElementById("fDesa").value = item.desa || "";
+  document.getElementById("fKecamatan").value = item.kecamatan || "";
+  document.getElementById("fKades").value = item.kades || "";
+  document.getElementById("fJabatan").value = item.jabatan || "Definitif";
+
+  const statusBayar = calcStatusBayar(item);
+  document.getElementById("fStatusBayar").value = statusBayar;
+  document.getElementById("fTanggalBayar").value = item.tanggalBayar || "";
+  document.getElementById("fNominal").value = item.nominal ? formatRupiahNumberOnly(item.nominal) : "";
+  document.getElementById("fCatatanBayar").value = item.catatanBayar || "";
+  document.getElementById("fInfoBayar").value = item.infoTambahanBayar || "";
+
+  document.getElementById("fPks").value = (item.pks || "done").toLowerCase();
+  document.getElementById("fKwitansiLbh").value = (item.kwitansiLbh || "done").toLowerCase();
+  document.getElementById("fKwitansiLpj").value = (item.kwitansiLpj || "done").toLowerCase();
+
+  document.getElementById("fPksTtd").value = (item.pksDesaTtd || "done").toLowerCase();
+  document.getElementById("fKwitansiLbhTtd").value = (item.kwitansiLbhDesaTtd || "done").toLowerCase();
+  document.getElementById("fKwitansiLpjTtd").value = (item.kwitansiLpjDesaTtd || "done").toLowerCase();
+
+  document.getElementById("fKeterangan").value = item.keterangan || "";
+  document.getElementById("fNeedsVerification").checked = !!item.needsVerification;
+
+  document.getElementById("modalFormDesa").classList.add("active");
+}
+
+function closeFormModal() {
+  document.getElementById("modalFormDesa").classList.remove("active");
+}
+
+function checkDuplicate() {
+  const desaVal = document.getElementById("fDesa").value.trim().toLowerCase();
+  const kecVal = document.getElementById("fKecamatan").value.trim().toLowerCase();
+  const editId = document.getElementById("formDesaId").value;
+
+  if (!desaVal || !kecVal) return;
+
+  const data = getYearData(state.activeYear);
+  const dup = data.find(x => x.id !== editId && x.desa.toLowerCase() === desaVal && x.kecamatan.toLowerCase() === kecVal);
+
+  const warnBox = document.getElementById("duplicateWarningBox");
+  if (dup) {
+    warnBox.style.display = "block";
+    warnBox.setAttribute("data-dup-id", dup.id);
+  } else {
+    warnBox.style.display = "none";
+  }
+}
+
+function viewDuplicateRecord() {
+  const dupId = document.getElementById("duplicateWarningBox").getAttribute("data-dup-id");
+  if (dupId) {
+    closeFormModal();
+    openDetailModal(dupId);
+  }
+}
+
+function updateDuplicateRecord() {
+  const dupId = document.getElementById("duplicateWarningBox").getAttribute("data-dup-id");
+  if (dupId) {
+    openEditDesaModal(dupId);
+  }
+}
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+
+  const id = document.getElementById("formDesaId").value;
+  const desaName = document.getElementById("fDesa").value.trim();
+  const kecName = document.getElementById("fKecamatan").value.trim();
+
+  if (!desaName || !kecName) {
+    alert("Nama Desa dan Kecamatan wajib diisi!");
+    return;
+  }
+
+  const data = getYearData(state.activeYear);
+  const rawNominal = document.getElementById("fNominal").value.replace(/[^0-9]/g, "");
+  const nominal = rawNominal ? Number(rawNominal) : 0;
+
+  const newRecord = {
+    id: id || `desa-${Date.now()}`,
+    no: id ? (data.find(x => x.id === id)?.no || data.length + 1) : data.length + 1,
+    desa: desaName,
+    kades: document.getElementById("fKades").value.trim(),
+    jabatan: document.getElementById("fJabatan").value,
+    kecamatan: kecName,
+    statusBayar: document.getElementById("fStatusBayar").value,
+    tanggalBayar: document.getElementById("fTanggalBayar").value,
+    nominal: nominal,
+    catatanBayar: document.getElementById("fCatatanBayar").value.trim(),
+    infoTambahanBayar: document.getElementById("fInfoBayar").value.trim(),
+    pks: document.getElementById("fPks").value,
+    kwitansiLbh: document.getElementById("fKwitansiLbh").value,
+    kwitansiLpj: document.getElementById("fKwitansiLpj").value,
+    pksDesaTtd: document.getElementById("fPksTtd").value,
+    kwitansiLbhDesaTtd: document.getElementById("fKwitansiLbhTtd").value,
+    kwitansiLpjDesaTtd: document.getElementById("fKwitansiLpjTtd").value,
+    keterangan: document.getElementById("fKeterangan").value.trim(),
+    needsVerification: document.getElementById("fNeedsVerification").checked
+  };
+
+  if (id) {
+    const idx = data.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      const old = data[idx];
+      if (old.desa !== newRecord.desa) addAuditLog(newRecord.desa, "Nama Desa", old.desa, newRecord.desa);
+      if (old.nominal !== newRecord.nominal) addAuditLog(newRecord.desa, "Nominal Bayar", formatRupiah(old.nominal), formatRupiah(newRecord.nominal));
+      if (old.statusBayar !== newRecord.statusBayar) addAuditLog(newRecord.desa, "Status Bayar", old.statusBayar, newRecord.statusBayar);
+      if (old.pksDesaTtd !== newRecord.pksDesaTtd) addAuditLog(newRecord.desa, "PKS Desa TTD", old.pksDesaTtd, newRecord.pksDesaTtd);
+      if (old.kwitansiLpjDesaTtd !== newRecord.kwitansiLpjDesaTtd) addAuditLog(newRecord.desa, "Kwitansi LPJ TTD", old.kwitansiLpjDesaTtd, newRecord.kwitansiLpjDesaTtd);
+
+      data[idx] = newRecord;
+      showToast(`Data desa ${desaName} berhasil diperbarui.`, "success");
+    }
+  } else {
+    data.push(newRecord);
+    addAuditLog(newRecord.desa, "Penambahan Desa", "-", "Desa baru ditambahkan");
+    showToast(`Desa baru ${desaName} berhasil ditambahkan.`, "success");
+  }
+
+  saveYearData(state.activeYear, data);
+  closeFormModal();
+  renderAllViews();
+}
+
+// DELETE MODAL
+function promptDeleteDesa(id) {
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === id);
+  if (!item) return;
+
+  document.getElementById("delDesaName").textContent = item.desa;
+  document.getElementById("delYear").textContent = state.activeYear;
+
+  document.getElementById("btnExecuteDelete").onclick = () => {
+    executeDeleteDesa(id);
+  };
+
+  document.getElementById("modalConfirmDelete").classList.add("active");
+}
+
+function closeDeleteModal() {
+  document.getElementById("modalConfirmDelete").classList.remove("active");
+}
+
+function executeDeleteDesa(id) {
+  let data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === id);
+  const desaName = item ? item.desa : "Desa";
+
+  data = data.filter(x => x.id !== id);
+  data.forEach((d, i) => d.no = i + 1);
+
+  saveYearData(state.activeYear, data);
+  addAuditLog(desaName, "Penghapusan Desa", desaName, "Dihapus dari database");
+
+  closeDeleteModal();
+  renderAllViews();
+  showToast(`Data desa ${desaName} telah dihapus.`, "danger");
+}
+
+// FILTERS & SEARCH
+function applyFilters() {
+  const el = id => document.getElementById(id);
+  if (el("filterKecamatan")) state.filters.kecamatan = el("filterKecamatan").value;
+  if (el("filterBayar")) state.filters.statusBayar = el("filterBayar").value;
+  if (el("filterDokumen")) state.filters.statusDokumen = el("filterDokumen").value;
+  if (el("filterTtd")) state.filters.statusTtd = el("filterTtd").value;
+  if (el("filterStatusAll")) state.filters.statusKeseluruhan = el("filterStatusAll").value;
+  state.pagination.page = 1;
+
+  renderRekapDesa();
+}
+
+function resetFilters() {
+  resetFiltersSilently();
+  renderRekapDesa();
+  showToast("Filter telah di-reset ke default.", "success");
+}
+
+function resetFiltersSilently() {
+  state.filters = {
+    kecamatan: "",
+    statusBayar: "",
+    statusDokumen: "",
+    statusTtd: "",
+    statusKeseluruhan: ""
+  };
+  state.searchQuery = "";
+  const el = id => document.getElementById(id);
+  if (el("filterKecamatan")) el("filterKecamatan").value = "";
+  if (el("filterBayar")) el("filterBayar").value = "";
+  if (el("filterDokumen")) el("filterDokumen").value = "";
+  if (el("filterTtd")) el("filterTtd").value = "";
+  if (el("filterStatusAll")) el("filterStatusAll").value = "";
+  if (el("globalSearchInput")) el("globalSearchInput").value = "";
+}
+
+function handleGlobalSearch(val) {
+  state.searchQuery = val.trim();
+  state.pagination.page = 1;
+
+  if (state.searchQuery && state.activeView !== "rekap-desa") {
+    switchView("rekap-desa");
+  }
+
+  renderRekapDesa();
+}
+
+function sortTable(column) {
+  if (state.sort.column === column) {
+    state.sort.asc = !state.sort.asc;
+  } else {
+    state.sort.column = column;
+    state.sort.asc = true;
+  }
+  renderRekapDesa();
+}
+
+function populateKecamatanOptions(data) {
+  const setKec = new Set();
+  // Include all subdistricts from 2025 as baseline
+  const d25 = getYearData("2025");
+  d25.forEach(d => { if (d.kecamatan) setKec.add(d.kecamatan); });
+  data.forEach(d => { if (d.kecamatan) setKec.add(d.kecamatan); });
+
+  const arr = Array.from(setKec).sort();
+  const select = document.getElementById("filterKecamatan");
+  if (select) {
+    const curVal = select.value;
+    select.innerHTML = "<option value=''>Semua Kecamatan</option>" + arr.map(k => `
+      <option value="${k}" ${k === curVal ? "selected" : ""}>${k}</option>
+    `).join("");
+  }
+
+  const dl = document.getElementById("kecamatanList");
+  if (dl) {
+    dl.innerHTML = arr.map(k => `<option value="${k}">`).join("");
+  }
+}
+
+// VIEW SWITCHER
+function switchView(viewId) {
+  state.activeView = viewId;
+
+  document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
+  const targetNav = document.querySelector(`.menu-item[onclick*="${viewId}"]`);
+  if (targetNav) targetNav.classList.add("active");
+
+  document.querySelectorAll(".app-view").forEach(v => v.classList.remove("active"));
+  const targetView = document.getElementById(`view-${viewId}`);
+  if (targetView) targetView.classList.add("active");
+
+  const titles = {
+    "dashboard": ["Dashboard Monitoring LPJ", `Gambaran Menyeluruh Status Administrasi & Pembayaran Desa (${state.activeYear})`],
+    "rekap-desa": ["Rekapitulasi Desa", `Tabel Utama Monitoring Kelengkapan & Pembayaran Desa (${state.activeYear})`],
+    "kecamatan": ["Rekap Kecamatan", `Agregasi Kinerja Per Wilayah Kecamatan (${state.activeYear})`],
+    "pembayaran": ["Pengawasan Pembayaran", `Monitoring Keuangan, Realisasi & Tunggakan Iuran (${state.activeYear})`],
+    "dokumen": ["Kelengkapan Dokumen LPJ", `Pemeriksaan Berkas Fisik PKS & Kwitansi LPJ (${state.activeYear})`],
+    "ttd": ["Status Tanda Tangan Desa", `Monitoring Tanda Tangan Pengesahan oleh Kepala Desa (${state.activeYear})`],
+    "tindak-lanjut": ["Perlu Tindak Lanjut", `Daftar Desa yang Masih Memerlukan Atensi & Aksi Cepat (${state.activeYear})`],
+    "statistik": ["Analisis & Grafik Kinerja", `Visualisasi Tren Pembayaran dan Penyelesaian Administrasi (${state.activeYear})`],
+    "import": ["Import Data Massal", `Unggah Berkas Excel (.xlsx) atau File CSV (${state.activeYear})`],
+    "export": ["Ekspor & Laporan", `Unduh Berkas Excel, CSV, atau Cetak Resmi PDF (${state.activeYear})`],
+    "audit": ["Log Riwayat Perubahan", "Kronologi Perubahan Status & Data Desa oleh Operator"],
+    "pengaturan": ["Pengaturan Sistem & Cadangan", "Manajemen Tahun Anggaran dan Backup Database"]
+  };
+
+  if (titles[viewId]) {
+    const titleEl = document.getElementById("headerPageTitle");
+    const subEl = document.getElementById("headerPageSubtitle");
+    if (titleEl) titleEl.textContent = titles[viewId][0];
+    if (subEl) subEl.textContent = titles[viewId][1];
+  }
+
+  if (window.innerWidth <= 900) {
+    const sb = document.getElementById("appSidebar");
+    const bd = document.getElementById("sidebarBackdrop");
+    if (sb) sb.classList.remove("open");
+    if (bd) bd.classList.remove("active");
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById("appSidebar");
+  const bd = document.getElementById("sidebarBackdrop");
+  if (!sb) return;
+  const isOpen = sb.classList.contains("open");
+
+  if (isOpen) {
+    sb.classList.remove("open");
+    if (bd) bd.classList.remove("active");
+  } else {
+    sb.classList.add("open");
+    if (bd) bd.classList.add("active");
+  }
+}
+
+// IMPORT MODULE
+function handleFileSelected(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  const ext = file.name.split(".").pop().toLowerCase();
+
+  const fBadge = document.getElementById("importFileBadge");
+  if (fBadge) fBadge.textContent = file.name;
+
+  if (ext === "csv") {
+    reader.onload = (evt) => {
+      parseCSVAndPreview(evt.target.result);
+    };
+    reader.readAsText(file);
+  } else if (ext === "xlsx" || ext === "xls") {
+    reader.onload = (evt) => {
+      if (typeof XLSX !== "undefined") {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+          parseMatrixAndPreview(json);
+        } catch(err) {
+          alert("Gagal membaca berkas Excel: " + err.message);
+        }
+      } else {
+        alert("Library Excel belum siap. Silakan gunakan format CSV atau periksa koneksi.");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    alert("Format berkas tidak didukung. Harap pilih file .xlsx atau .csv");
+  }
+}
+
+function parseCSVAndPreview(csvText) {
+  const lines = csvText.split(/\r\n|\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length < 2) {
+    alert("Berkas CSV kosong atau tidak memiliki baris data!");
+    return;
+  }
+
+  const matrix = lines.map(line => {
+    const res = [];
+    let curr = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') inQuotes = !inQuotes;
+      else if (c === "," && !inQuotes) {
+        res.push(curr.trim());
+        curr = "";
+      } else {
+        curr += c;
+      }
+    }
+    res.push(curr.trim());
+    return res;
+  });
+
+  parseMatrixAndPreview(matrix);
+}
+
+function parseMatrixAndPreview(matrix) {
+  if (!matrix || matrix.length < 2) return;
+
+  const headers = matrix[0].map(h => String(h || "").trim());
+  const rows = matrix.slice(1);
+
+  const colMap = {
+    desa: findCol(headers, ["desa", "nama desa"]),
+    kades: findCol(headers, ["kades", "nama kades", "kepala desa"]),
+    jabatan: findCol(headers, ["jabatan", "status jabatan"]),
+    kecamatan: findCol(headers, ["kecamatan", "camat"]),
+    statusBayar: findCol(headers, ["status bayar", "bayar"]),
+    tanggalBayar: findCol(headers, ["tanggal bayar", "tgl bayar", "tanggal"]),
+    nominal: findCol(headers, ["nominal", "catatan pembayaran", "biaya"]),
+    pks: findCol(headers, ["pks"]),
+    kwitansiLbh: findCol(headers, ["kwitansi lbh", "lbh"]),
+    kwitansiLpj: findCol(headers, ["kwitansi lpj", "lpj"]),
+    pksDesaTtd: findCol(headers, ["pks desa ttd", "pks ttd"]),
+    kwitansiLbhDesaTtd: findCol(headers, ["kwitansi lbh desa ttd", "lbh ttd"]),
+    kwitansiLpjDesaTtd: findCol(headers, ["kwitansi lpj desa ttd", "lpj ttd"]),
+    keterangan: findCol(headers, ["keterangan", "catatan"])
+  };
+
+  const parsedRecords = [];
+  rows.forEach((r, idx) => {
+    const desa = (colMap.desa !== -1 ? r[colMap.desa] : r[1]) || "";
+    if (!desa) return;
+
+    parsedRecords.push({
+      id: `desa-imp-${Date.now()}-${idx}`,
+      no: idx + 1,
+      desa: String(desa).trim(),
+      kades: colMap.kades !== -1 ? String(r[colMap.kades] || "").trim() : "",
+      jabatan: colMap.jabatan !== -1 ? String(r[colMap.jabatan] || "Definitif").trim() : "Definitif",
+      kecamatan: colMap.kecamatan !== -1 ? String(r[colMap.kecamatan] || "Mamuju").trim() : "Mamuju",
+      tanggalBayar: colMap.tanggalBayar !== -1 ? String(r[colMap.tanggalBayar] || "").trim() : "",
+      nominal: colMap.nominal !== -1 ? parseNominal(r[colMap.nominal]) : 0,
+      catatanBayar: colMap.nominal !== -1 ? String(r[colMap.nominal] || "") : "",
+      pks: colMap.pks !== -1 ? normalizeStatus(r[colMap.pks]) : "belum",
+      kwitansiLbh: colMap.kwitansiLbh !== -1 ? normalizeStatus(r[colMap.kwitansiLbh]) : "belum",
+      kwitansiLpj: colMap.kwitansiLpj !== -1 ? normalizeStatus(r[colMap.kwitansiLpj]) : "belum",
+      pksDesaTtd: colMap.pksDesaTtd !== -1 ? normalizeStatus(r[colMap.pksDesaTtd]) : "belum ttd",
+      kwitansiLbhDesaTtd: colMap.kwitansiLbhDesaTtd !== -1 ? normalizeStatus(r[colMap.kwitansiLbhDesaTtd]) : "belum ttd",
+      kwitansiLpjDesaTtd: colMap.kwitansiLpjDesaTtd !== -1 ? normalizeStatus(r[colMap.kwitansiLpjDesaTtd]) : "belum ttd",
+      keterangan: colMap.keterangan !== -1 ? String(r[colMap.keterangan] || "") : "",
+      needsVerification: false
+    });
+  });
+
+  state.importParsedData = parsedRecords;
+
+  const prevArea = document.getElementById("importPreviewArea");
+  if (prevArea) prevArea.style.display = "block";
+  const pCount = document.getElementById("importPreviewCount");
+  if (pCount) pCount.textContent = parsedRecords.length;
+
+  const pTable = document.getElementById("importPreviewTable");
+  if (pTable) {
+    pTable.innerHTML = `
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Desa</th>
+          <th>Kecamatan</th>
+          <th>Kades</th>
+          <th>Nominal</th>
+          <th>Status PKS</th>
+          <th>Status LPJ</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${parsedRecords.slice(0, 10).map((r, i) => `
+          <tr>
+            <td>${i+1}</td>
+            <td><b>${escapeHtml(r.desa)}</b></td>
+            <td>${escapeHtml(r.kecamatan)}</td>
+            <td>${escapeHtml(r.kades || "-")}</td>
+            <td>${formatRupiah(r.nominal)}</td>
+            <td>${r.pks}</td>
+            <td>${r.kwitansiLpj}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    `;
+
+    if (parsedRecords.length > 10) {
+      pTable.innerHTML += `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">... dan ${parsedRecords.length - 10} baris lainnya ...</td></tr>`;
+    }
+  }
+}
+
+function findCol(headers, possibleNames) {
+  for (let i = 0; i < headers.length; i++) {
+    const h = headers[i].toLowerCase();
+    for (const name of possibleNames) {
+      if (h.includes(name)) return i;
+    }
+  }
+  return -1;
+}
+
+function normalizeStatus(str) {
+  const s = String(str || "").toLowerCase().trim();
+  if (s === "done" || s === "lengkap" || s === "sudah") return "done";
+  if (s.includes("belum ttd")) return "belum ttd";
+  if (s.includes("belum")) return "belum";
+  return "belum";
+}
+
+function parseNominal(val) {
+  if (typeof val === "number") return val;
+  const clean = String(val || "").replace(/[^0-9]/g, "");
+  return clean ? Number(clean) : 0;
+}
+
+function cancelImport() {
+  state.importParsedData = null;
+  const prevArea = document.getElementById("importPreviewArea");
+  if (prevArea) prevArea.style.display = "none";
+  const fInput = document.getElementById("importFileInput");
+  if (fInput) fInput.value = "";
+}
+
+function executeImport() {
+  if (!state.importParsedData || state.importParsedData.length === 0) return;
+
+  const mode = document.querySelector("input[name='importMode']:checked").value;
+  let current = getYearData(state.activeYear);
+
+  if (mode === "APPEND") {
+    current = current.concat(state.importParsedData);
+  } else {
+    state.importParsedData.forEach(newItem => {
+      const matchIdx = current.findIndex(x => x.desa.toLowerCase() === newItem.desa.toLowerCase() && x.kecamatan.toLowerCase() === newItem.kecamatan.toLowerCase());
+      if (matchIdx !== -1) {
+        current[matchIdx] = { ...current[matchIdx], ...newItem, id: current[matchIdx].id };
+      } else {
+        current.push(newItem);
+      }
+    });
+  }
+
+  current.forEach((d, i) => d.no = i + 1);
+  saveYearData(state.activeYear, current);
+  addAuditLog(`Import ${state.importParsedData.length} Desa`, "Import Data File", "-", `Mode: ${mode}`);
+
+  showToast(`Berhasil mengimpor ${state.importParsedData.length} data desa ke tahun ${state.activeYear}!`, "success");
+  cancelImport();
+  renderAllViews();
+  switchView("rekap-desa");
+}
+
+// EXPORT MODULE (EXCEL, CSV, PRINT)
+function exportDataExcel() {
+  const data = getFilteredData();
+  if (data.length === 0) {
+    alert("Tidak ada data desa yang cocok dengan filter untuk diekspor!");
+    return;
+  }
+
+  const exportRows = data.map((item, idx) => ({
+    "No": idx + 1,
+    "Nama Desa": item.desa,
+    "Nama Kepala Desa": item.kades || "-",
+    "Status Jabatan": item.jabatan || "Definitif",
+    "Kecamatan": item.kecamatan,
+    "Status Bayar": calcStatusBayar(item),
+    "Tanggal Bayar": item.tanggalBayar || "-",
+    "Nominal (Rp)": item.nominal || 0,
+    "Catatan Pembayaran": item.catatanBayar || "-",
+    "PKS": item.pks,
+    "Kwitansi LBH": item.kwitansiLbh,
+    "Kwitansi LPJ": item.kwitansiLpj,
+    "PKS Desa TTD": item.pksDesaTtd,
+    "Kwitansi LBH Desa TTD": item.kwitansiLbhDesaTtd,
+    "Kwitansi LPJ Desa TTD": item.kwitansiLpjDesaTtd,
+    "Status Keseluruhan": calcStatusKeseluruhan(item),
+    "Keterangan": item.keterangan || "-"
+  }));
+
+  if (typeof XLSX !== "undefined") {
+    const worksheet = XLSX.utils.json_to_sheet(exportRows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, `Rekap Desa ${state.activeYear}`);
+    XLSX.writeFile(workbook, `REKAP_DESA_LPJ_${state.activeYear}.xlsx`);
+    showToast("Berkas Excel berhasil diunduh.", "success");
+  } else {
+    exportDataCSV();
+  }
+}
+
+function exportDataCSV() {
+  const data = getFilteredData();
+  if (data.length === 0) return;
+
+  const headers = ["No", "Desa", "Nama Kades", "Jabatan", "Kecamatan", "Status Bayar", "Tanggal Bayar", "Nominal", "Catatan Bayar", "PKS", "Kwitansi LBH", "Kwitansi LPJ", "PKS TTD", "LBH TTD", "LPJ TTD", "Status", "Keterangan"];
+  
+  const rows = data.map((item, idx) => [
+    idx + 1,
+    '"' + (item.desa || '').replace(/"/g, '""') + '"',
+    '"' + (item.kades || '').replace(/"/g, '""') + '"',
+    '"' + (item.jabatan || '').replace(/"/g, '""') + '"',
+    '"' + (item.kecamatan || '').replace(/"/g, '""') + '"',
+    '"' + calcStatusBayar(item) + '"',
+    '"' + (item.tanggalBayar || '') + '"',
+    item.nominal || 0,
+    '"' + (item.catatanBayar || '').replace(/"/g, '""') + '"',
+    '"' + (item.pks || '') + '"',
+    '"' + (item.kwitansiLbh || '') + '"',
+    '"' + (item.kwitansiLpj || '') + '"',
+    '"' + (item.pksDesaTtd || '') + '"',
+    '"' + (item.kwitansiLbhDesaTtd || '') + '"',
+    '"' + (item.kwitansiLpjDesaTtd || '') + '"',
+    '"' + calcStatusKeseluruhan(item) + '"',
+    '"' + (item.keterangan || '').replace(/"/g, '""') + '"'
+  ]);
+
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `REKAP_DESA_LPJ_${state.activeYear}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast("Berkas CSV berhasil diunduh.", "success");
+}
+
+function printOfficialRecap() {
+  initPrintTimestamp();
+  window.print();
+}
+
+function initPrintTimestamp() {
+  const now = new Date();
+  const options = { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" };
+  const pt = document.getElementById("printTimestamp");
+  if (pt) pt.textContent = now.toLocaleDateString("id-ID", options) + " WITA";
+}
+
+// BACKUP & RESTORE JSON
+function backupDatabaseJSON() {
+  const backupObj = {
+    backupDate: new Date().toISOString(),
+    availableYears: state.availableYears,
+    auditLogs: state.auditLogs,
+    datasets: {}
+  };
+
+  state.availableYears.forEach(y => {
+    backupObj.datasets[y] = getYearData(y);
+  });
+
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
+  const downloadAnchor = document.createElement("a");
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `BACKUP_REKAP_DESA_${new Date().toISOString().slice(0, 10)}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+  showToast("Database berhasil dibackup ke JSON.", "success");
+}
+
+function handleRestoreJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      const backupObj = JSON.parse(evt.target.result);
+      if (backupObj.availableYears && backupObj.datasets) {
+        state.availableYears = backupObj.availableYears;
+        localStorage.setItem("rekap_desa_years", JSON.stringify(state.availableYears));
+
+        for (const y in backupObj.datasets) {
+          saveYearData(y, backupObj.datasets[y]);
+        }
+
+        if (backupObj.auditLogs) {
+          state.auditLogs = backupObj.auditLogs;
+          saveAuditLogs();
+        }
+
+        initYearSelector();
+        renderAllViews();
+        showToast("Database berhasil dipulihkan dari berkas cadangan!", "success");
+      } else {
+        alert("Format berkas JSON tidak sesuai!");
+      }
+    } catch(err) {
+      alert("Gagal membaca berkas cadangan: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function confirmResetSampleData() {
+  if (confirm("Perhatian: Tindakan ini akan mengembalikan dataset ke data bawaan awal (50 desa pada tahun 2025 dan mengosongkan tahun lainnya). Lanjutkan?")) {
+    saveYearData("2025", DEFAULT_DATA_2025);
+    ["2026", "2027", "2028", "2029", "2030", "2031"].forEach(y => saveYearData(y, []));
+    state.activeYear = "2025";
+    state.availableYears = ["2025", "2026", "2027", "2028", "2029", "2030", "2031"];
+    localStorage.setItem("rekap_desa_years", JSON.stringify(state.availableYears));
+    renderAllViews();
+    showToast("Dataset telah direset ke data sampel 2025.", "warning");
+  }
+}
+
+// HELPERS & FORMATTERS
+function formatRupiah(amount) {
+  return "Rp " + Number(amount || 0).toLocaleString("id-ID");
+}
+
+function formatRupiahNumberOnly(amount) {
+  return Number(amount || 0).toLocaleString("id-ID");
+}
+
+function formatRupiahInput(input) {
+  let val = input.value.replace(/[^0-9]/g, "");
+  if (val) {
+    input.value = Number(val).toLocaleString("id-ID");
+  } else {
+    input.value = "";
+  }
+}
+
+function formatDate(dateStr) {
+  if (!dateStr || dateStr.trim() === "") return "-";
+  try {
+    const parts = dateStr.split("-");
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    return dateStr;
+  } catch(e) {
+    return dateStr;
+  }
+}
+
+function escapeHtml(text) {
+  if (!text) return "";
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function showToast(message, type = "info") {
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<span>${type === "success" ? "✅" : (type === "danger" ? "❌" : "ℹ️")}</span><span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+    toast.style.transition = "all 0.3s ease";
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+</script>
+</body>
+</html>

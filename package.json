@@ -1,0 +1,20 @@
+{
+  "name": "rekap-desa-monitoring-lpj",
+  "version": "1.0.0",
+  "description": "Aplikasi Web Monitoring Rekapitulasi LPJ dan Pembayaran Desa Tahunan",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "rekap-desa",
+    "lpj",
+    "monitoring",
+    "administrasi-desa",
+    "mamuju",
+    "pks",
+    "dashboard"
+  ],
+  "author": "Ahmad Subhan Suaib, S.H.",
+  "license": "MIT"
+}

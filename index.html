@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REKAP DESA — Monitoring LPJ Tahunan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- MOBILE BACKDROP FOR SIDEBAR -->
+  <div class="modal-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="appSidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">RD</div>
+      <div class="brand-text">
+        <h1>REKAP DESA</h1>
+        <p>Monitoring LPJ Tahunan</p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-header">Menu Utama</div>
+      <a class="menu-item active" onclick="switchView('dashboard')">
+        <div class="menu-left">
+          <span>🏠</span>
+          <span>Dashboard</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('rekap-desa')">
+        <div class="menu-left">
+          <span>📋</span>
+          <span>Rekap Desa</span>
+        </div>
+        <span class="menu-badge count-blue" id="sidebarTotalBadge">50</span>
+      </a>
+      <a class="menu-item" onclick="switchView('kecamatan')">
+        <div class="menu-left">
+          <span>🏘️</span>
+          <span>Rekap Kecamatan</span>
+        </div>
+      </a>
+
+      <div class="menu-header">Monitoring Khusus</div>
+      <a class="menu-item" onclick="switchView('pembayaran')">
+        <div class="menu-left">
+          <span>💰</span>
+          <span>Status Pembayaran</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('dokumen')">
+        <div class="menu-left">
+          <span>📑</span>
+          <span>Dokumen LPJ</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('ttd')">
+        <div class="menu-left">
+          <span>✍️</span>
+          <span>Status TTD</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('tindak-lanjut')">
+        <div class="menu-left">
+          <span>⚠️</span>
+          <span>Perlu Tindak Lanjut</span>
+        </div>
+        <span class="menu-badge" id="sidebarIssuesBadge">17</span>
+      </a>
+
+      <div class="menu-header">Analisis & Integrasi</div>
+      <a class="menu-item" onclick="switchView('statistik')">
+        <div class="menu-left">
+          <span>📊</span>
+          <span>Statistik & Grafik</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('import')">
+        <div class="menu-left">
+          <span>📥</span>
+          <span>Import Data</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('export')">
+        <div class="menu-left">
+          <span>📤</span>
+          <span>Export Data</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('audit')">
+        <div class="menu-left">
+          <span>🕒</span>
+          <span>Riwayat Perubahan</span>
+        </div>
+      </a>
+      <a class="menu-item" onclick="switchView('pengaturan')">
+        <div class="menu-left">
+          <span>⚙️</span>
+          <span>Pengaturan & Backup</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="operator-card">
+        <div class="operator-avatar">AS</div>
+        <div class="operator-info">
+          <div class="operator-name">Ahmad Subhan, S.H.</div>
+          <div class="operator-role">Minzathu Law Offices</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="app-main">
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="page-title-area">
+          <h2 id="headerPageTitle">Dashboard Monitoring LPJ</h2>
+          <p id="headerPageSubtitle">Gambaran Menyeluruh Status Administrasi & Pembayaran Desa</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- TAHUN AKTIF SELECTOR -->
+        <div class="year-pill">
+          <span class="year-label">Tahun:</span>
+          <select class="year-select" id="yearSelector" onchange="changeYear(this.value)">
+          </select>
+        </div>
+
+        <button class="btn btn-outline-purple btn-sm" onclick="openAddYearModal()" title="Tambah Tahun Baru">
+          + Tahun
+        </button>
+
+        <!-- SEARCH INPUT -->
+        <div class="header-search">
+          <span class="header-search-icon">🔍</span>
+          <input type="text" id="globalSearchInput" placeholder="Cari desa, kades, camat..." oninput="handleGlobalSearch(this.value)">
+        </div>
+
+        <!-- NOTIF BUTTON -->
+        <button class="notif-bell-btn" onclick="switchView('tindak-lanjut')" title="Desa perlu tindak lanjut">
+          <span>🔔</span>
+          <span class="notif-badge-pill" id="headerNotifBadge">17</span>
+        </button>
+
+        <!-- QUICK ADD DESA -->
+        <button class="btn btn-primary" onclick="openAddDesaModal()">
+          <span>+</span>
+          <span>Tambah Desa</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="content-container">
+
+      <!-- PRINT OFFICIAL HEADER (Only shown on window.print) -->
+      <div class="print-official-header" id="printOfficialHeader">
+        <h2 style="font-size: 18pt; font-weight: 800; margin-bottom: 4px;">REKAP MONITORING LPJ & ADMINISTRASI DESA TAHUN <span class="print-year-target">2026</span></h2>
+        <p style="font-size: 11pt; color: #333; margin-bottom: 2px;">Minzathu & Minzathu Law Offices — Pendampingan & Konsultan Hukum Pemerintah Desa</p>
+        <p style="font-size: 9.5pt; color: #555;">Dicetak pada: <span id="printTimestamp"></span> | Wilayah: Kabupaten Mamuju & Mamuju Tengah</p>
+      </div>
+
+      <!-- VIEW 1: DASHBOARD UTAMA -->
+      <section class="app-view active" id="view-dashboard">
+
+        <!-- TOP ATTENTION BANNER -->
+        <div class="alert-banner" id="dashAlertBanner">
+          <div class="alert-left">
+            <span class="alert-icon">⚠️</span>
+            <div>
+              <div class="alert-title">PERHATIAN ADMINISTRASI</div>
+              <div class="alert-desc" id="dashAlertText">17 desa masih memiliki dokumen atau tanda tangan yang belum lengkap.</div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="switchView('tindak-lanjut')">Lihat Daftar Tindak Lanjut →</button>
+        </div>
+
+        <!-- 6 STATISTIK CARDS -->
+        <div class="stats-grid">
+          <div class="stat-card c-total">
+            <div class="stat-header">
+              <span class="stat-label">Total Desa</span>
+              <div class="stat-icon">🏘️</div>
+            </div>
+            <div class="stat-value" id="statTotalDesa">50</div>
+            <div class="stat-sub">Terdaftar pada tahun aktif</div>
+          </div>
+
+          <div class="stat-card c-success">
+            <div class="stat-header">
+              <span class="stat-label">Sudah Bayar</span>
+              <div class="stat-icon">💳</div>
+            </div>
+            <div class="stat-value" id="statSudahBayar">42</div>
+            <div class="stat-sub" id="statNominalBayar">Rp 630.000.000 (84%)</div>
+          </div>
+
+          <div class="stat-card c-danger">
+            <div class="stat-header">
+              <span class="stat-label">Belum Bayar</span>
+              <div class="stat-icon">⏳</div>
+            </div>
+            <div class="stat-value" id="statBelumBayar">8</div>
+            <div class="stat-sub" id="statPctBelumBayar">16% dari total desa</div>
+          </div>
+
+          <div class="stat-card c-doc-ok">
+            <div class="stat-header">
+              <span class="stat-label">Dokumen Lengkap</span>
+              <div class="stat-icon">📁</div>
+            </div>
+            <div class="stat-value" id="statDocLengkap">33</div>
+            <div class="stat-sub" id="statPctDocLengkap">66% selesai seluruhnya</div>
+          </div>
+
+          <div class="stat-card c-doc-no">
+            <div class="stat-header">
+              <span class="stat-label">Belum Lengkap</span>
+              <div class="stat-icon">📝</div>
+            </div>
+            <div class="stat-value" id="statDocBelum">17</div>
+            <div class="stat-sub">PKS/Kwitansi/TTD kurang</div>
+          </div>
+
+          <div class="stat-card c-warning">
+            <div class="stat-header">
+              <span class="stat-label">Perlu Tindak Lanjut</span>
+              <div class="stat-icon">🚨</div>
+            </div>
+            <div class="stat-value" id="statTindakLanjut">17</div>
+            <div class="stat-sub">Membutuhkan atensi operator</div>
+          </div>
+        </div>
+
+        <!-- PROGRESS HERO CARD -->
+        <div class="progress-hero-card">
+          <div class="progress-hero-top">
+            <div class="hero-title">
+              <h3>Progress Tahunan Penyelesaian LPJ & Administrasi</h3>
+              <p>Indeks agregat penyelesaian kewajiban pembayaran, kelengkapan berkas PKS, dan TTD LPJ</p>
+            </div>
+            <div class="hero-pct" id="heroProgressPct">78% Selesai</div>
+          </div>
+
+          <div class="hero-bar-track">
+            <div class="hero-bar-fill" id="heroProgressBar" style="width: 78%;"></div>
+          </div>
+
+          <div class="hero-details-row">
+            <div class="hero-detail-item">
+              <span class="dot dot-green"></span>
+              <span id="heroLunasTxt">Pembayaran: 42 / 50 Desa (84%)</span>
+            </div>
+            <div class="hero-detail-item">
+              <span class="dot dot-gold"></span>
+              <span id="heroDocTxt">Dokumen Lengkap: 33 / 50 Desa (66%)</span>
+            </div>
+            <div class="hero-detail-item">
+              <span class="dot dot-red"></span>
+              <span id="heroTtdTxt">TTD Desa Lengkap: 35 / 50 Desa (70%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS STRIP -->
+        <div class="quick-actions-bar">
+          <span class="qa-label">Aksi Cepat:</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddDesaModal()">+ Tambah Desa Baru</button>
+          <button class="btn btn-secondary btn-sm" onclick="switchView('import')">📥 Import Data Excel/CSV</button>
+          <button class="btn btn-secondary btn-sm" onclick="switchView('export')">📤 Export Rekapitulasi</button>
+          <button class="btn btn-gold btn-sm" onclick="switchView('tindak-lanjut')">⚠️ Lihat Desa Belum Selesai</button>
+          <button class="btn btn-outline-purple btn-sm" onclick="printOfficialRecap()">🖨️ Cetak Rekap Resmi</button>
+        </div>
+
+        <!-- INSIGHTS & PROGRESS VISUALIZATIONS -->
+        <div class="dashboard-two-col">
+          <div class="card">
+            <div class="card-header-flex">
+              <h3 class="card-title">💡 Insight & Catatan Penting Otomatis</h3>
+              <span class="badge badge-done" style="font-size: 11px;">Real-time</span>
+            </div>
+            <div class="insight-list" id="dashboardInsightList">
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-flex">
+              <h3 class="card-title">📊 Rincian Capaian Kinerja Administrasi</h3>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Progress Pembayaran (Lunas)</span>
+                <span id="progBayarVal">84%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-green" id="progBayarFill" style="width: 84%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Kelengkapan Dokumen Fisik (PKS & Kwitansi)</span>
+                <span id="progDocVal">76%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-purple" id="progDocFill" style="width: 76%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item">
+              <div class="progress-metric-header">
+                <span>Tanda Tangan Dokumen oleh Kepala Desa</span>
+                <span id="progTtdVal">70%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-blue" id="progTtdFill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-metric-item" style="margin-top: 20px;">
+              <div class="progress-metric-header">
+                <span>Status Keseluruhan Selesai 100%</span>
+                <span id="progSelesaiVal">66%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-gold" id="progSelesaiFill" style="width: 66%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VIEW 2: TABEL REKAP DESA UTAMA -->
+      <section class="app-view" id="view-rekap-desa">
+        <div class="filter-panel">
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label>Kecamatan</label>
+              <select class="form-control" id="filterKecamatan" onchange="applyFilters()">
+                <option value="">Semua Kecamatan</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Pembayaran</label>
+              <select class="form-control" id="filterBayar" onchange="applyFilters()">
+                <option value="">Semua Status</option>
+                <option value="SUDAH BAYAR">🟢 Sudah Bayar</option>
+                <option value="BELUM BAYAR">🔴 Belum Bayar</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Dokumen</label>
+              <select class="form-control" id="filterDokumen" onchange="applyFilters()">
+                <option value="">Semua Dokumen</option>
+                <option value="LENGKAP">🟢 Lengkap</option>
+                <option value="BELUM LENGKAP">🔴 Belum Lengkap</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status TTD Kades</label>
+              <select class="form-control" id="filterTtd" onchange="applyFilters()">
+                <option value="">Semua TTD</option>
+                <option value="LENGKAP">🟢 Lengkap</option>
+                <option value="BELUM LENGKAP">🟡 Belum Lengkap</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Status Keseluruhan</label>
+              <select class="form-control" id="filterStatusAll" onchange="applyFilters()">
+                <option value="">Semua Status</option>
+                <option value="SELESAI">🟢 Selesai</option>
+                <option value="PERLU MELENGKAPI DOKUMEN">🟡 Perlu Melengkapi Dokumen</option>
+                <option value="BELUM BAYAR">🔴 Belum Bayar</option>
+              </select>
+            </div>
+
+            <div class="filter-actions">
+              <button class="btn btn-secondary btn-sm" onclick="resetFilters()" title="Reset semua filter">
+                ↺ Reset Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-toolbar">
+            <div class="table-count" id="tableCountDisplay">
+              Menampilkan <b>50</b> dari <b>50</b> desa
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div class="table-view-toggle">
+                <button class="toggle-btn active" id="btnModeTable" onclick="setTableViewMode('table')">Tabel</button>
+                <button class="toggle-btn" id="btnModeCards" onclick="setTableViewMode('cards')">Kartu</button>
+              </div>
+
+              <button class="btn btn-primary btn-sm" onclick="openAddDesaModal()">
+                + Tambah Desa
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive" id="tableWrapper">
+            <table class="data-table" id="mainDataTable">
+              <thead>
+                <tr>
+                  <th onclick="sortTable('no')">No ↕</th>
+                  <th onclick="sortTable('desa')">Desa ↕</th>
+                  <th onclick="sortTable('kades')">Nama Kades ↕</th>
+                  <th onclick="sortTable('kecamatan')">Kecamatan ↕</th>
+                  <th onclick="sortTable('statusBayar')">Status Bayar ↕</th>
+                  <th onclick="sortTable('tanggalBayar')">Tgl Bayar ↕</th>
+                  <th onclick="sortTable('nominal')">Nominal ↕</th>
+                  <th onclick="sortTable('pks')">PKS ↕</th>
+                  <th onclick="sortTable('kwitansiLbh')">Kwitansi LBH ↕</th>
+                  <th onclick="sortTable('kwitansiLpj')">Kwitansi LPJ ↕</th>
+                  <th onclick="sortTable('pksDesaTtd')">PKS TTD ↕</th>
+                  <th onclick="sortTable('kwitansiLbhDesaTtd')">LBH TTD ↕</th>
+                  <th onclick="sortTable('kwitansiLpjDesaTtd')">LPJ TTD ↕</th>
+                  <th onclick="sortTable('statusAll')">Status ↕</th>
+                  <th>Keterangan</th>
+                  <th style="text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="mainTableBody">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cards-grid-view" id="cardsWrapper" style="display: none;">
+          </div>
+
+          <div class="table-pagination">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>Tampilkan per halaman:</span>
+              <select class="form-control" style="width: 75px; height: 32px;" id="pageSizeSelect" onchange="changePageSize(this.value)">
+                <option value="15">15</option>
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="9999">Semua</option>
+              </select>
+            </div>
+
+            <div class="pagination-btns" id="paginationBtns">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: REKAP KECAMATAN -->
+      <section class="app-view" id="view-kecamatan">
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Rekapitulasi Administrasi & Keuangan Per Kecamatan</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Klik salah satu baris kecamatan untuk langsung memfilter daftar desa di kecamatan tersebut.
+              </p>
+            </div>
+            <button class="btn btn-outline-purple btn-sm" onclick="printOfficialRecap()">🖨️ Cetak Rekap Kecamatan</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Kecamatan</th>
+                  <th>Total Desa</th>
+                  <th>Sudah Bayar</th>
+                  <th>Belum Bayar</th>
+                  <th>Dokumen Lengkap</th>
+                  <th>Belum Lengkap</th>
+                  <th style="width: 250px;">Progress Penyelesaian</th>
+                  <th style="text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kecamatanTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: MONITORING PEMBAYARAN -->
+      <section class="app-view" id="view-pembayaran">
+        <div class="stats-grid" style="margin-bottom: 20px;">
+          <div class="stat-card c-success">
+            <div class="stat-header">
+              <span class="stat-label">Total Realisasi Bayar</span>
+              <div class="stat-icon">💰</div>
+            </div>
+            <div class="stat-value" id="payRealisasiNominal">Rp 630.000.000</div>
+            <div class="stat-sub" id="payRealisasiCount">42 Desa telah membayar</div>
+          </div>
+
+          <div class="stat-card c-danger">
+            <div class="stat-header">
+              <span class="stat-label">Tunggakan / Belum Bayar</span>
+              <div class="stat-icon">⚠️</div>
+            </div>
+            <div class="stat-value" id="payTunggakanNominal">Rp 120.000.000</div>
+            <div class="stat-sub" id="payTunggakanCount">8 Desa belum membayar</div>
+          </div>
+
+          <div class="stat-card c-total">
+            <div class="stat-header">
+              <span class="stat-label">Rata-rata Iuran / Desa</span>
+              <div class="stat-icon">📊</div>
+            </div>
+            <div class="stat-value">Rp 15.000.000</div>
+            <div class="stat-sub">Sesuai Kontrak PKS Tahunan</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-flex">
+            <h3 class="card-title">Daftar Status Pembayaran Seluruh Desa</h3>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="filterBayarDirect('ALL')">Semua</button>
+              <button class="btn btn-success btn-sm" onclick="filterBayarDirect('PAID')">Sudah Bayar</button>
+              <button class="btn btn-danger btn-sm" onclick="filterBayarDirect('UNPAID')">Belum Bayar</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kecamatan</th>
+                  <th>Status Bayar</th>
+                  <th>Tanggal Bayar</th>
+                  <th>Nominal</th>
+                  <th>Catatan Pembayaran</th>
+                  <th>No. Referensi / Bukti</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="pembayaranTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: DOKUMEN LPJ -->
+      <section class="app-view" id="view-dokumen">
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Matriks Pengawasan Dokumen LPJ & PKS</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted);">
+                Monitoring 3 dokumen utama: Perjanjian Kerja Sama (PKS), Kwitansi LBH, dan Kwitansi LPJ.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kecamatan</th>
+                  <th>PKS</th>
+                  <th>Kwitansi LBH</th>
+                  <th>Kwitansi LPJ</th>
+                  <th>Status Dokumen</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="dokumenTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 6: STATUS TANDA TANGAN (TTD) -->
+      <section class="app-view" id="view-ttd">
+        <div class="alert-banner" style="margin-bottom: 16px;">
+          <div class="alert-left">
+            <span class="alert-icon">✍️</span>
+            <div>
+              <div class="alert-title">PENGAWASAN TANDA TANGAN KEPALA DESA</div>
+              <div class="alert-desc">
+                Desa dengan dokumen belum TTD terbanyak berada pada <b>Kecamatan Tapalang Barat</b> (5 Desa: Tanete Pao, Ahu, Labuang Rano, Pasabu, Pangasaan).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-flex">
+            <h3 class="card-title">Status Pengesahan Tanda Tangan Desa</h3>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Desa</th>
+                  <th>Kepala Desa</th>
+                  <th>Kecamatan</th>
+                  <th>PKS TTD</th>
+                  <th>Kwitansi LBH TTD</th>
+                  <th>Kwitansi LPJ TTD</th>
+                  <th>Status TTD</th>
+                  <th>Catatan / Masalah</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="ttdTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 7: MENU "PERLU TINDAK LANJUT" -->
+      <section class="app-view" id="view-tindak-lanjut">
+        <div class="filter-panel" style="margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--navy-slate);">Daftar Desa yang Membutuhkan Tindak Lanjut Segera</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Memuat desa yang belum bayar, berkas belum lengkap, tanda tangan kurang, atau memiliki catatan khusus.
+              </p>
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Filter Prioritas:</span>
+              <select class="form-control" style="width: 170px;" id="filterPrioritySelect" onchange="renderTindakLanjut()">
+                <option value="ALL">Semua Prioritas</option>
+                <option value="TINGGI">🔴 Prioritas Tinggi</option>
+                <option value="SEDANG">🟡 Prioritas Sedang</option>
+                <option value="RENDAH">🟢 Prioritas Rendah</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid-view" id="tindakLanjutContainer" style="padding: 0;">
+        </div>
+      </section>
+
+      <!-- VIEW 8: STATISTIK & GRAFIK -->
+      <section class="app-view" id="view-statistik">
+        <div class="dashboard-two-col" style="margin-bottom: 24px;">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 16px;">Komparasi Status Pembayaran</h3>
+            <div id="statPayChartContainer">
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 16px;">Kelengkapan Dokumen & Tanda Tangan</h3>
+            <div id="statDocChartContainer">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 16px;">Peringkat Penyelesaian Per Kecamatan</h3>
+          <div id="statKecBarChartContainer">
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 9: IMPORT DATA -->
+      <section class="app-view" id="view-import">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 18px; margin-bottom: 6px;">Import Data Rekap Desa (Excel / CSV)</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+            Unggah berkas Excel (.xlsx, .xls) atau file teks CSV untuk memasukkan atau memperbarui data desa secara massal.
+          </p>
+
+          <div style="border: 2px dashed var(--primary-purple-border); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center; background: var(--primary-purple-soft); margin-bottom: 20px; cursor: pointer;" onclick="document.getElementById('importFileInput').click()">
+            <div style="font-size: 42px; margin-bottom: 12px;">📁</div>
+            <h4 style="font-size: 16px; font-weight: 700; color: var(--primary-purple-dark); margin-bottom: 4px;">Klik untuk Memilih Berkas atau Tarik File ke Sini</h4>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Mendukung format: .xlsx, .xls, dan .csv</p>
+            <input type="file" id="importFileInput" accept=".csv, .xlsx, .xls" style="display: none;" onchange="handleFileSelected(event)">
+          </div>
+
+          <div id="importPreviewArea" style="display: none;">
+            <div class="card-header-flex">
+              <h4 style="font-size: 14px; font-weight: 700;">Pratinjau Data yang Terdeteksi (<span id="importPreviewCount">0</span> baris)</h4>
+              <span class="badge badge-done" id="importFileBadge">filename.xlsx</span>
+            </div>
+
+            <div id="importWarningBox" style="display: none; background: #fffbeb; border: 1px solid #fef08a; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12px; color: #854d0e; margin-bottom: 12px;">
+              ⚠️ Ditemukan beberapa kolom yang tidak standar, sistem akan menyesuaikan secara otomatis tanpa menghapus data asli.
+            </div>
+
+            <div class="table-responsive" style="max-height: 280px; margin-bottom: 16px;">
+              <table class="data-table" id="importPreviewTable">
+              </table>
+            </div>
+
+            <div style="background: var(--bg-secondary); padding: 14px 18px; border-radius: var(--radius-md); margin-bottom: 16px;">
+              <label style="font-weight: 700; font-size: 13px; display: block; margin-bottom: 8px;">Pilih Tindakan Penyimpanan:</label>
+              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                  <input type="radio" name="importMode" value="MERGE" checked>
+                  <span><b>Perbarui Data yang Cocok</b> (Update data desa yang sudah ada & tambahkan yang baru)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                  <input type="radio" name="importMode" value="APPEND">
+                  <span><b>Tambahkan Saja</b> (Tambahkan seluruh baris baru)</span>
+                </label>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+              <button class="btn btn-secondary" onclick="cancelImport()">Batalkan</button>
+              <button class="btn btn-primary" onclick="executeImport()">Proses dan Simpan ke Database</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 10: EXPORT DATA -->
+      <section class="app-view" id="view-export">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 18px; margin-bottom: 6px;">Ekspor Rekapitulasi Data Desa</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+            Unduh laporan rekapitulasi desa dalam berbagai format. Hasil ekspor mematuhi filter kecamatan dan status yang sedang aktif.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">📊</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Format Excel (.xlsx)</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Format spreadsheet lengkap dengan header, kolom terstruktur, dan format nominal.</p>
+              <button class="btn btn-success" style="width: 100%; justify-content: center;" onclick="exportDataExcel()">
+                Unduh Excel (.xlsx)
+              </button>
+            </div>
+
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">📑</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Format CSV (.csv)</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Format teks universal dengan delimiter koma, mudah dibuka di aplikasi spreadsheet.</p>
+              <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="exportDataCSV()">
+                Unduh CSV (.csv)
+              </button>
+            </div>
+
+            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">🖨️</div>
+              <h4 style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Cetak / Simpan PDF</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Tata letak cetak resmi bersih khusus dokumen fisik dengan kop kantor advokat.</p>
+              <button class="btn btn-outline-purple" style="width: 100%; justify-content: center;" onclick="printOfficialRecap()">
+                Buka Cetak / PDF
+              </button>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 14px 18px;">
+            <div style="font-size: 12.5px; font-weight: 600; color: var(--navy-slate);">
+              Status Filter Saat Ini:
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="exportFilterSummary">
+              Tahun: 2026 | Sesuai filter yang aktif di tabel
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 11: RIWAYAT PERUBAHAN (AUDIT LOG) -->
+      <section class="app-view" id="view-audit">
+        <div class="card">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title">Log Riwayat Perubahan & Pengawasan</h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Mencatat kronologi setiap aksi penambahan, pengubahan status pembayaran, dokumen, atau keterangan.
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="clearAuditLogs()">Bersihkan Riwayat</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Waktu (Tgl/Jam)</th>
+                  <th>Nama Desa</th>
+                  <th>Bidang yang Diubah</th>
+                  <th>Nilai Sebelum</th>
+                  <th>Nilai Sesudah</th>
+                  <th>Operator</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 12: PENGATURAN & BACKUP -->
+      <section class="app-view" id="view-pengaturan">
+        <div class="card" style="max-width: 800px; margin: 0 auto 20px;">
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Manajemen Tahun & Arsip</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+            Setiap tahun memiliki database independen sehingga data tahun 2025 tidak bercampur dengan 2026 atau 2027.
+          </p>
+
+          <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 24px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="openAddYearModal()">+ Tambah Tahun Anggaran Baru</button>
+            <span style="font-size: 12.5px; color: var(--text-muted);">Tahun terdaftar: <b id="settingsYearsList">2026, 2025</b></span>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Backup & Pemulihan Database</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
+            Simpan seluruh database lokal ke dalam berkas JSON atau pulihkan data dari cadangan yang telah disimpan.
+          </p>
+
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="backupDatabaseJSON()">📥 Backup Database (JSON)</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('restoreFileInput').click()">📤 Pulihkan Database (JSON)</button>
+            <button class="btn btn-danger" onclick="confirmResetSampleData()">↺ Reset ke Dataset Standar</button>
+            <input type="file" id="restoreFileInput" accept=".json" style="display: none;" onchange="handleRestoreJSON(event)">
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Informasi Pengembang & Aplikasi</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+            Sistem Informasi Monitoring Administrasi LPJ & Konsultan Hukum Desa.
+          </p>
+
+          <div style="font-size: 13px; line-height: 1.6; color: var(--navy-slate);">
+            <div><b>Nama Aplikasi:</b> REKAP DESA — MONITORING LPJ</div>
+            <div><b>Versi:</b> 1.0.0 Production LTS (Modular Vanilla JS / HTML5)</div>
+            <div><b>Klien Utama:</b> Minzathu & Minzathu Law Offices (Mamuju, Sulawesi Barat)</div>
+            <div><b>Wilayah Kerja:</b> Kabupaten Mamuju & Kabupaten Mamuju Tengah</div>
+            <div><b>Penyimpanan:</b> HTML5 LocalStorage Persistence (Siap integrasi API Supabase / PostgreSQL)</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL 1: DETAIL DESA LENGKAP -->
+  <div class="modal-backdrop" id="modalDetailDesa">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="detailModalDesaName">Desa Tanete Pao</h3>
+          <p style="font-size: 12px; color: var(--text-muted);" id="detailModalSub">Kecamatan Tapalang Barat • Kades: Basri, S.Pd.</p>
+        </div>
+        <button class="modal-close" onclick="closeDetailModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-tabs">
+          <button class="dtab-btn active" onclick="switchDetailTab('tab-identitas')">Identitas & Wilayah</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-keuangan')">Pembayaran</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-dokumen')">Dokumen Checklist</button>
+          <button class="dtab-btn" onclick="switchDetailTab('tab-catatan')">Catatan & Log</button>
+        </div>
+
+        <!-- TAB 1: IDENTITAS -->
+        <div class="dtab-content active" id="tab-identitas">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nama Desa</div>
+              <div style="font-size: 17px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasDesa">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Kecamatan</div>
+              <div style="font-size: 17px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasKecamatan">-</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nama Kepala Desa</div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--navy-slate);" id="dIdentitasKades">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Status Jabatan</div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--navy-slate);" id="dIdentitasJabatan">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: KEUANGAN -->
+        <div class="dtab-content" id="tab-keuangan">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Status Pembayaran</div>
+              <div style="margin-top: 4px;" id="dPayStatusBadge">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nominal Pembayaran</div>
+              <div style="font-size: 18px; font-weight: 800; color: var(--navy-slate); margin-top: 2px;" id="dPayNominal">-</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Tanggal Realisasi</div>
+              <div style="font-size: 14px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayTanggal">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Metode / Catatan Pembayaran</div>
+              <div style="font-size: 14px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayCatatan">-</div>
+            </div>
+          </div>
+
+          <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nomor Resi / Referensi Transaksi</div>
+            <div style="font-size: 13.5px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;" id="dPayRef">-</div>
+          </div>
+        </div>
+
+        <!-- TAB 3: DOKUMEN CHECKLIST -->
+        <div class="dtab-content" id="tab-dokumen">
+          <div class="doc-checklist-card">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">1. Dokumen Fisik / Administrasi</h4>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>📄</span><span>Perjanjian Kerja Sama (PKS)</span></div>
+              <span id="dDocPksBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>🧾</span><span>Kwitansi LBH</span></div>
+              <span id="dDocLbhBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>📑</span><span>Kwitansi LPJ</span></div>
+              <span id="dDocLpjBadge">-</span>
+            </div>
+          </div>
+
+          <div class="doc-checklist-card">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">2. Tanda Tangan Dokumen Oleh Desa (Kepala Desa)</h4>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>PKS Desa TTD</span></div>
+              <span id="dDocTtdPksBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LBH Desa TTD</span></div>
+              <span id="dDocTtdLbhBadge">-</span>
+            </div>
+            <div class="doc-check-item">
+              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LPJ Desa TTD</span></div>
+              <span id="dDocTtdLpjBadge">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: CATATAN & LOG -->
+        <div class="dtab-content" id="tab-catatan">
+          <div class="card" style="background: var(--bg-secondary); padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Catatan Khusus / Keterangan</div>
+            <div style="font-size: 14px; color: var(--navy-slate); margin-top: 4px; font-style: italic;" id="dCatatanKhusus">-</div>
+          </div>
+
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--navy-slate); margin-bottom: 8px;">Riwayat Perubahan Terakhir Desa Ini</div>
+            <div id="dDesaAuditLogs" style="font-size: 12px; color: var(--text-muted);">
+              Belum ada catatan perubahan khusus.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDetailModal()">Tutup</button>
+        <button class="btn btn-primary" id="btnEditFromDetail">✏️ Edit Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: FORM TAMBAH / EDIT DESA -->
+  <div class="modal-backdrop" id="modalFormDesa">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3 id="formModalTitle">Tambah Data Desa Baru</h3>
+        <button class="modal-close" onclick="closeFormModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="desaCrudForm" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="formDesaId">
+
+          <!-- DUPLICATE WARNING BOX -->
+          <div id="duplicateWarningBox" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px;">
+            <div style="font-weight: 700; color: #991b1b; font-size: 13px;">⚠️ Data Desa Kemungkinan Sudah Tersedia!</div>
+            <div style="font-size: 12px; color: #b91c1c; margin-top: 2px;">
+              Ditemukan nama desa dan kecamatan yang sama pada tahun ini.
+            </div>
+            <div style="margin-top: 8px; display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="viewDuplicateRecord()">Lihat Data</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="updateDuplicateRecord()">Update Data Ini</button>
+            </div>
+          </div>
+
+          <!-- IDENTITAS -->
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Nama Desa <span class="required">*</span></label>
+              <input type="text" class="form-control" id="fDesa" required placeholder="Contoh: Tanete Pao" onblur="checkDuplicate()">
+            </div>
+
+            <div class="form-field">
+              <label>Kecamatan <span class="required">*</span></label>
+              <input type="text" class="form-control" id="fKecamatan" required list="kecamatanList" placeholder="Pilih atau ketik kecamatan..." onblur="checkDuplicate()">
+              <datalist id="kecamatanList"></datalist>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Nama Kepala Desa</label>
+              <input type="text" class="form-control" id="fKades" placeholder="Nama lengkap kepala desa...">
+            </div>
+
+            <div class="form-field">
+              <label>Status / Jabatan</label>
+              <select class="form-control" id="fJabatan">
+                <option value="Definitif">Definitif</option>
+                <option value="Pj. Kepala Desa">Pj. Kepala Desa</option>
+                <option value="Plt. Kepala Desa">Plt. Kepala Desa</option>
+                <option value="Pejabat">Pejabat</option>
+              </select>
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 18px 0;">
+
+          <!-- PEMBAYARAN -->
+          <div style="font-size: 14px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px;">
+            💰 Informasi Pembayaran
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>Status Bayar</label>
+              <select class="form-control" id="fStatusBayar">
+                <option value="BELUM BAYAR">Belum Bayar</option>
+                <option value="SUDAH BAYAR">Sudah Bayar</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Tanggal Pembayaran</label>
+              <input type="date" class="form-control" id="fTanggalBayar">
+            </div>
+
+            <div class="form-field">
+              <label>Nominal Pembayaran (Rp)</label>
+              <input type="text" class="form-control" id="fNominal" placeholder="15.000.000" oninput="formatRupiahInput(this)">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Catatan Pembayaran</label>
+              <input type="text" class="form-control" id="fCatatanBayar" placeholder="Contoh: Transfer Bank BPD Sulselbar">
+            </div>
+
+            <div class="form-field">
+              <label>No. Referensi / Bukti</label>
+              <input type="text" class="form-control" id="fInfoBayar" placeholder="Contoh: TRF-BPD/2026/0881">
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 18px 0;">
+
+          <!-- DOKUMEN & TTD -->
+          <div style="font-size: 14px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px;">
+            📑 Status Kelengkapan Dokumen & Tanda Tangan
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>PKS</label>
+              <select class="form-control" id="fPks">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LBH</label>
+              <select class="form-control" id="fKwitansiLbh">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LPJ</label>
+              <select class="form-control" id="fKwitansiLpj">
+                <option value="done">🟢 Done / Lengkap</option>
+                <option value="belum">🔴 Belum</option>
+                <option value="belum ada data">⚪ Kosong / Belum Ada Data</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label>PKS Desa TTD</label>
+              <select class="form-control" id="fPksTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LBH Desa TTD</label>
+              <select class="form-control" id="fKwitansiLbhTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Kwitansi LPJ Desa TTD</label>
+              <select class="form-control" id="fKwitansiLpjTtd">
+                <option value="done">🟢 Done (Sudah TTD)</option>
+                <option value="belum ttd">🟡 Belum TTD</option>
+                <option value="belum">🔴 Belum Ada Berkas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Keterangan / Catatan Khusus</label>
+            <textarea class="form-control" id="fKeterangan" rows="2" placeholder="Contoh: Ada yang kurang TTD Kades"></textarea>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+            <input type="checkbox" id="fNeedsVerification" style="width: 16px; height: 16px; cursor: pointer;">
+            <label for="fNeedsVerification" style="font-size: 13px; font-weight: 600; cursor: pointer; color: var(--navy-slate);">
+              Tandai sebagai data yang "Perlu Verifikasi"
+            </label>
+          </div>
+
+          <div class="modal-footer" style="margin-top: 20px; padding-bottom: 0;">
+            <button type="button" class="btn btn-secondary" onclick="closeFormModal()">Batal</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitForm">Simpan Data Desa</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: TAMBAH TAHUN ANGGARAN -->
+  <div class="modal-backdrop" id="modalAddYear">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Tambah Tahun Anggaran Baru</h3>
+        <button class="modal-close" onclick="closeAddYearModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label>Tahun Anggaran Baru (Contoh: 2027)</label>
+          <input type="number" class="form-control" id="inputNewYear" min="2020" max="2050" value="2027">
+        </div>
+
+        <div style="background: var(--bg-secondary); padding: 12px; border-radius: var(--radius-md); font-size: 12.5px;">
+          <label style="font-weight: 700; display: block; margin-bottom: 6px;">Opsi Inisialisasi Data:</label>
+          <label style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; cursor: pointer;">
+            <input type="radio" name="newYearOption" value="COPY" checked>
+            <span>Salin daftar desa dari tahun aktif (Status di-reset ke Belum Bayar/Belum Lengkap)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="radio" name="newYearOption" value="EMPTY">
+            <span>Mulai tahun baru dengan data kosong</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeAddYearModal()">Batal</button>
+        <button class="btn btn-primary" onclick="submitNewYear()">Buat Tahun Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: KONFIRMASI HAPUS -->
+  <div class="modal-backdrop" id="modalConfirmDelete">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: var(--status-red);">Konfirmasi Hapus Data</h3>
+        <button class="modal-close" onclick="closeDeleteModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13.5px; color: var(--navy-slate); line-height: 1.5;">
+          Apakah Anda yakin ingin menghapus data desa <b id="delDesaName">-</b> dari rekap tahun <b id="delYear">-</b>?
+        </p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+          Tindakan ini tidak dapat dibatalkan, namun riwayat penghapusan akan tetap tercatat pada log audit.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDeleteModal()">Batalkan</button>
+        <button class="btn btn-danger" id="btnExecuteDelete">Ya, Hapus Desa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
