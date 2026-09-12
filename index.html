@@ -170,7 +170,7 @@
       <div class="print-official-header" id="printOfficialHeader">
         <h2 style="font-size: 18pt; font-weight: 800; margin-bottom: 4px;">REKAP MONITORING LPJ & ADMINISTRASI DESA TAHUN <span class="print-year-target">2026</span></h2>
         <p style="font-size: 11pt; color: #333; margin-bottom: 2px;">Minzathu & Minzathu Law Offices — Pendampingan & Konsultan Hukum Pemerintah Desa</p>
-        <p style="font-size: 9.5pt; color: #555;">Dicetak pada: <span id="printTimestamp"></span> | Wilayah: Kabupaten Mamuju & Mamuju Tengah</p>
+        <p style="font-size: 9.5pt; color: #555;">Dicetak pada: <span id="printTimestamp"></span> | Wilayah: Kabupaten Mamuju, Provinsi Sulawesi Barat</p>
       </div>
 
       <!-- VIEW 1: DASHBOARD UTAMA -->
@@ -350,6 +350,20 @@
         <div class="filter-panel">
           <div class="filter-grid">
             <div class="filter-group">
+              <label>Provinsi</label>
+              <select class="form-control" id="filterProvinsi" onchange="applyFilters()">
+                <option value="">Semua Provinsi</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>Kabupaten</label>
+              <select class="form-control" id="filterKabupaten" onchange="applyFilters()">
+                <option value="">Semua Kabupaten</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
               <label>Kecamatan</label>
               <select class="form-control" id="filterKecamatan" onchange="applyFilters()">
                 <option value="">Semua Kecamatan</option>
@@ -427,6 +441,8 @@
                   <th onclick="sortTable('desa')">Desa ↕</th>
                   <th onclick="sortTable('kades')">Nama Kades ↕</th>
                   <th onclick="sortTable('kecamatan')">Kecamatan ↕</th>
+                  <th onclick="sortTable('kabupaten')">Kabupaten ↕</th>
+                  <th onclick="sortTable('provinsi')">Provinsi ↕</th>
                   <th onclick="sortTable('statusBayar')">Status Bayar ↕</th>
                   <th onclick="sortTable('tanggalBayar')">Tgl Bayar ↕</th>
                   <th onclick="sortTable('nominal')">Nominal ↕</th>
@@ -902,6 +918,17 @@
             </div>
           </div>
 
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Kabupaten / Kota</div>
+              <div style="font-size: 15px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasKabupaten">-</div>
+            </div>
+            <div class="card" style="background: var(--bg-secondary); padding: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Provinsi</div>
+              <div style="font-size: 15px; font-weight: 800; color: var(--navy-slate);" id="dIdentitasProvinsi">-</div>
+            </div>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div class="card" style="background: var(--bg-secondary); padding: 16px;">
               <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Nama Kepala Desa</div>
@@ -1027,7 +1054,7 @@
             </div>
           </div>
 
-          <!-- IDENTITAS -->
+          <!-- IDENTITAS & WILAYAH -->
           <div class="form-grid-2">
             <div class="form-field">
               <label>Nama Desa <span class="required">*</span></label>
@@ -1038,6 +1065,31 @@
               <label>Kecamatan <span class="required">*</span></label>
               <input type="text" class="form-control" id="fKecamatan" required list="kecamatanList" placeholder="Pilih atau ketik kecamatan..." onblur="checkDuplicate()">
               <datalist id="kecamatanList"></datalist>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label>Kabupaten / Kota</label>
+              <input type="text" class="form-control" id="fKabupaten" list="kabupatenList" placeholder="Contoh: Kabupaten Mamuju">
+              <datalist id="kabupatenList">
+                <option value="Kabupaten Mamuju">
+                <option value="Kabupaten Mamuju Tengah">
+                <option value="Kabupaten Pasangkayu">
+                <option value="Kabupaten Majene">
+                <option value="Kabupaten Polewali Mandar">
+                <option value="Kabupaten Mamasa">
+              </datalist>
+            </div>
+
+            <div class="form-field">
+              <label>Provinsi</label>
+              <input type="text" class="form-control" id="fProvinsi" list="provinsiList" placeholder="Contoh: Sulawesi Barat">
+              <datalist id="provinsiList">
+                <option value="Sulawesi Barat">
+                <option value="Sulawesi Selatan">
+                <option value="Sulawesi Tengah">
+              </datalist>
             </div>
           </div>
 
