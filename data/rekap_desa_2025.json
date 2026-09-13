@@ -1148,5 +1148,36 @@
     "kwitansiLpjDesaTtd": "belum",
     "keterangan": "Terkendala akses transportasi pengiriman berkas",
     "needsVerification": false
+  },
+  {
+    "id": "desa-1789279180611",
+    "no": 51,
+    "desa": "sukadamai",
+    "kades": "Baharuddin",
+    "jabatan": "Definitif",
+    "kecamatan": "papalang",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "SUDAH BAYAR",
+    "tanggalBayar": "2025-12-31",
+    "nominal": 15000000,
+    "catatanBayar": "tunai",
+    "infoTambahanBayar": "",
+    "pks": "done",
+    "kwitansiLbh": "done",
+    "kwitansiLpj": "done",
+    "pksDesaTtd": "belum ttd",
+    "kwitansiLbhDesaTtd": "belum ttd",
+    "kwitansiLpjDesaTtd": "belum ttd",
+    "keterangan": "belum di ttd dan di stempel pihak desa",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
