@@ -1,15 +1,15 @@
 // REKAP DESA — MONITORING LPJ
 // Senior Web Application Developer & System Analyst Architecture
-// Production JavaScript Module with Kabupaten & Provinsi Integration
+// Production JavaScript Module with GitHub Cloud Sync & PDF Documents Support
 
-const DEFAULT_DATA_2025 = [{"id": "desa-2025-01", "no": 1, "desa": "Tanete Pao", "kades": "Basri, S.Pd.", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250312-0881", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Ada yang kurang TTD Kades", "needsVerification": true}, {"id": "desa-2025-02", "no": 2, "desa": "Dungkait", "kades": "H. Rusli", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250224-0312", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false}, {"id": "desa-2025-03", "no": 3, "desa": "Ahu", "kades": "Jalaluddin", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-20", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250320-1120", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Menunggu konfirmasi Kades", "needsVerification": false}, {"id": "desa-2025-04", "no": 4, "desa": "Labuang Rano", "kades": "Saharuddin", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-25", "nominal": 15000000, "catatanBayar": "Tunai melalui Bendahara Desa", "infoTambahanBayar": "KWT-LBH/2025/03/018", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "PKS dan LPJ belum TTD", "needsVerification": false}, {"id": "desa-2025-05", "no": 5, "desa": "Pasabu", "kades": "Burhan", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-04-02", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250402-0441", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS dan Kwitansi LBH belum TTD", "needsVerification": false}, {"id": "desa-2025-06", "no": 6, "desa": "Pangasaan", "kades": "Sudirman", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-04-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250410-0902", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Kwitansi belum TTD", "needsVerification": false}, {"id": "desa-2025-07", "no": 7, "desa": "Galung", "kades": "M. Dahlan", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250210-0115", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false}, {"id": "desa-2025-08", "no": 8, "desa": "Orobatu", "kades": "Nurdin", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250218-0284", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false}, {"id": "desa-2025-09", "no": 9, "desa": "Tampalang", "kades": "Samsul Alam", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-01", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250301-0551", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-10", "no": 10, "desa": "Taan", "kades": "Rahmatullah", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250315-0812", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false}, {"id": "desa-2025-11", "no": 11, "desa": "Bela", "kades": "Amran", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu pencairan ADD", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Pencairan APBDes Tahap 1 tertunda", "needsVerification": false}, {"id": "desa-2025-12", "no": 12, "desa": "Bambu", "kades": "Hartono", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250215-0220", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen dan LPJ selesai lengkap", "needsVerification": false}, {"id": "desa-2025-13", "no": 13, "desa": "Karampuang", "kades": "Mahyuddin", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-28", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250228-0519", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false}, {"id": "desa-2025-14", "no": 14, "desa": "Tadui", "kades": "Baharuddin", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-05", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250305-0633", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-15", "no": 15, "desa": "Batu Pannu", "kades": "H. Usman", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Keterlambatan verifikasi internal", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu penetapan bendahara baru", "needsVerification": false}, {"id": "desa-2025-16", "no": 16, "desa": "Simboro", "kades": "H. Darwis", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250212-0190", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-17", "no": 17, "desa": "Botteng", "kades": "Yusuf", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-20", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250220-0341", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-18", "no": 18, "desa": "Botteng Utara", "kades": "Nasir", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-08", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250308-0711", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-19", "no": 19, "desa": "Salletto", "kades": "Sulaiman", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250314-0801", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Kwitansi LBH belum TTD", "needsVerification": false}, {"id": "desa-2025-20", "no": 20, "desa": "Sumare", "kades": "M. Tahir", "jabatan": "Pj. Kepala Desa", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Pergantian penjabat kades", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Proses pergantian Pj Kades", "needsVerification": false}, {"id": "desa-2025-21", "no": 21, "desa": "Beru-beru", "kades": "H. Amiruddin", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250214-0211", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan tertib", "needsVerification": false}, {"id": "desa-2025-22", "no": 22, "desa": "Kabuloang", "kades": "Suaib", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250222-0391", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-23", "no": 23, "desa": "Sondoang", "kades": "H. Hasan", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-02", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250302-0570", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-24", "no": 24, "desa": "Uhaimate", "kades": "H. Arifin", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250310-0745", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-25", "no": 25, "desa": "Keang", "kades": "Adi Saputra", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250318-0914", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-26", "no": 26, "desa": "Guliling", "kades": "Mustafa", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250322-1008", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false}, {"id": "desa-2025-27", "no": 27, "desa": "Belang-belang", "kades": "Abdul Rahman", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu dana transfer", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu pencairan dana transfer tahap 1", "needsVerification": false}, {"id": "desa-2025-28", "no": 28, "desa": "Tanambuah", "kades": "Muh. Nasrullah", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-05", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250305-0641", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap, rujukan regulasi siap", "needsVerification": false}, {"id": "desa-2025-29", "no": 29, "desa": "Bunde", "kades": "H. Syamsuddin", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-17", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250217-0266", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-30", "no": 30, "desa": "Losso", "kades": "H. Ramli", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-25", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250225-0450", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-31", "no": 31, "desa": "Salukayu", "kades": "Ilham", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250312-0799", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-32", "no": 32, "desa": "Tarailu", "kades": "Sahabuddin", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250326-1180", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-33", "no": 33, "desa": "Kakullasan", "kades": "Yosep", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250318-0925", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Berkas lengkap dan sesuai format APBDes", "needsVerification": false}, {"id": "desa-2025-34", "no": 34, "desa": "Campaloga", "kades": "Marthen", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250226-0482", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-35", "no": 35, "desa": "Malino", "kades": "Wayan S.", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-07", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250307-0690", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-36", "no": 36, "desa": "Rantemario", "kades": "Simon", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-16", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250316-0855", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-37", "no": 37, "desa": "Sandana", "kades": "Paulus", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250324-1090", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false}, {"id": "desa-2025-38", "no": 38, "desa": "Tommo", "kades": "Kornelius", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu musyawarah desa", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu musyawarah desa khusus", "needsVerification": false}, {"id": "desa-2025-39", "no": 39, "desa": "Bonehau", "kades": "Lukas", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-19", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250219-0320", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-40", "no": 40, "desa": "Banua Ada", "kades": "Yulianus", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-27", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250227-0501", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-41", "no": 41, "desa": "Hinua", "kades": "Mikael", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-09", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250309-0730", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-42", "no": 42, "desa": "Lumika", "kades": "Stevanus", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-21", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250321-0980", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false}, {"id": "desa-2025-43", "no": 43, "desa": "Mabu", "kades": "Daud", "jabatan": "Pj. Kepala Desa", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Kendala administrasi pedalaman", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Kendala administrasi desa pedalaman", "needsVerification": false}, {"id": "desa-2025-44", "no": 44, "desa": "Kalumpang", "kades": "Daniel", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-21", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250221-0375", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-45", "no": 45, "desa": "Karama", "kades": "Benyamin", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-01", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250301-0562", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-46", "no": 46, "desa": "Karataun", "kades": "Yohanis", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-11", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250311-0777", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false}, {"id": "desa-2025-47", "no": 47, "desa": "Kondo Bulo", "kades": "Markus", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-19", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250319-0940", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false}, {"id": "desa-2025-48", "no": 48, "desa": "Tumonga", "kades": "Petrus", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Keterlambatan verifikasi berkas", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Keterlambatan verifikasi kecamatan", "needsVerification": false}, {"id": "desa-2025-49", "no": 49, "desa": "Bala-Balakang", "kades": "H. Mahmud", "jabatan": "Definitif", "kecamatan": "Kepulauan Bala-Balakang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250314-0810", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap berkas kepulauan", "needsVerification": false}, {"id": "desa-2025-50", "no": 50, "desa": "Bala-Balakang Timur", "kades": "Kasman", "jabatan": "Definitif", "kecamatan": "Kepulauan Bala-Balakang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Terkendala pengiriman fisik berkas", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Terkendala akses transportasi pengiriman berkas", "needsVerification": false}];
+const DEFAULT_DATA_2025 = [{"id": "desa-2025-01", "no": 1, "desa": "Tanete Pao", "kades": "Basri, S.Pd.", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250312-0881", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Ada yang kurang TTD Kades", "needsVerification": true, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-02", "no": 2, "desa": "Dungkait", "kades": "H. Rusli", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250224-0312", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-03", "no": 3, "desa": "Ahu", "kades": "Jalaluddin", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-20", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250320-1120", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Menunggu konfirmasi Kades", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-04", "no": 4, "desa": "Labuang Rano", "kades": "Saharuddin", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-25", "nominal": 15000000, "catatanBayar": "Tunai melalui Bendahara Desa", "infoTambahanBayar": "KWT-LBH/2025/03/018", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "PKS dan LPJ belum TTD", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-05", "no": 5, "desa": "Pasabu", "kades": "Burhan", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-04-02", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250402-0441", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS dan Kwitansi LBH belum TTD", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-06", "no": 6, "desa": "Pangasaan", "kades": "Sudirman", "jabatan": "Definitif", "kecamatan": "Tapalang Barat", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-04-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250410-0902", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "belum ttd", "keterangan": "Kwitansi belum TTD", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-07", "no": 7, "desa": "Galung", "kades": "M. Dahlan", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250210-0115", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-08", "no": 8, "desa": "Orobatu", "kades": "Nurdin", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250218-0284", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-09", "no": 9, "desa": "Tampalang", "kades": "Samsul Alam", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-01", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250301-0551", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-10", "no": 10, "desa": "Taan", "kades": "Rahmatullah", "jabatan": "Definitif", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250315-0812", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-11", "no": 11, "desa": "Bela", "kades": "Amran", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tapalang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu pencairan ADD", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Pencairan APBDes Tahap 1 tertunda", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-12", "no": 12, "desa": "Bambu", "kades": "Hartono", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-15", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250215-0220", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Dokumen dan LPJ selesai lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-13", "no": 13, "desa": "Karampuang", "kades": "Mahyuddin", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-28", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250228-0519", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-14", "no": 14, "desa": "Tadui", "kades": "Baharuddin", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-05", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250305-0633", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-15", "no": 15, "desa": "Batu Pannu", "kades": "H. Usman", "jabatan": "Definitif", "kecamatan": "Mamuju", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Keterlambatan verifikasi internal", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu penetapan bendahara baru", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-16", "no": 16, "desa": "Simboro", "kades": "H. Darwis", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250212-0190", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-17", "no": 17, "desa": "Botteng", "kades": "Yusuf", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-20", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250220-0341", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-18", "no": 18, "desa": "Botteng Utara", "kades": "Nasir", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-08", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250308-0711", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-19", "no": 19, "desa": "Salletto", "kades": "Sulaiman", "jabatan": "Definitif", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250314-0801", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "belum ttd", "kwitansiLpjDesaTtd": "done", "keterangan": "Kwitansi LBH belum TTD", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-20", "no": 20, "desa": "Sumare", "kades": "M. Tahir", "jabatan": "Pj. Kepala Desa", "kecamatan": "Simboro", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Pergantian penjabat kades", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Proses pergantian Pj Kades", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-21", "no": 21, "desa": "Beru-beru", "kades": "H. Amiruddin", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250214-0211", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan tertib", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-22", "no": 22, "desa": "Kabuloang", "kades": "Suaib", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250222-0391", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-23", "no": 23, "desa": "Sondoang", "kades": "H. Hasan", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-02", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250302-0570", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-24", "no": 24, "desa": "Uhaimate", "kades": "H. Arifin", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-10", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250310-0745", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-25", "no": 25, "desa": "Keang", "kades": "Adi Saputra", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250318-0914", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-26", "no": 26, "desa": "Guliling", "kades": "Mustafa", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-22", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250322-1008", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-27", "no": 27, "desa": "Belang-belang", "kades": "Abdul Rahman", "jabatan": "Definitif", "kecamatan": "Kalukku", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu dana transfer", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu pencairan dana transfer tahap 1", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-28", "no": 28, "desa": "Tanambuah", "kades": "Muh. Nasrullah", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-05", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250305-0641", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Selesai ttd dan lpj lengkap, rujukan regulasi siap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-29", "no": 29, "desa": "Bunde", "kades": "H. Syamsuddin", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-17", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250217-0266", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-30", "no": 30, "desa": "Losso", "kades": "H. Ramli", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-25", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250225-0450", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-31", "no": 31, "desa": "Salukayu", "kades": "Ilham", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-12", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250312-0799", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-32", "no": 32, "desa": "Tarailu", "kades": "Sahabuddin", "jabatan": "Definitif", "kecamatan": "Sampaga", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250326-1180", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-33", "no": 33, "desa": "Kakullasan", "kades": "Yosep", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-18", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250318-0925", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Berkas lengkap dan sesuai format APBDes", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-34", "no": 34, "desa": "Campaloga", "kades": "Marthen", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-26", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250226-0482", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-35", "no": 35, "desa": "Malino", "kades": "Wayan S.", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-07", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250307-0690", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-36", "no": 36, "desa": "Rantemario", "kades": "Simon", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-16", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250316-0855", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-37", "no": 37, "desa": "Sandana", "kades": "Paulus", "jabatan": "Definitif", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-24", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250324-1090", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-38", "no": 38, "desa": "Tommo", "kades": "Kornelius", "jabatan": "Pj. Kepala Desa", "kecamatan": "Tommo", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Menunggu musyawarah desa", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Menunggu musyawarah desa khusus", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-39", "no": 39, "desa": "Bonehau", "kades": "Lukas", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-19", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250219-0320", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-40", "no": 40, "desa": "Banua Ada", "kades": "Yulianus", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-27", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250227-0501", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-41", "no": 41, "desa": "Hinua", "kades": "Mikael", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-09", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250309-0730", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-42", "no": 42, "desa": "Lumika", "kades": "Stevanus", "jabatan": "Definitif", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-21", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250321-0980", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap dan sah", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-43", "no": 43, "desa": "Mabu", "kades": "Daud", "jabatan": "Pj. Kepala Desa", "kecamatan": "Bonehau", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Kendala administrasi pedalaman", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Kendala administrasi desa pedalaman", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-44", "no": 44, "desa": "Kalumpang", "kades": "Daniel", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-02-21", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250221-0375", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-45", "no": 45, "desa": "Karama", "kades": "Benyamin", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-01", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250301-0562", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-46", "no": 46, "desa": "Karataun", "kades": "Yohanis", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-11", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250311-0777", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-47", "no": 47, "desa": "Kondo Bulo", "kades": "Markus", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-19", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250319-0940", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "belum ttd", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "PKS Desa belum TTD Kades", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-48", "no": 48, "desa": "Tumonga", "kades": "Petrus", "jabatan": "Definitif", "kecamatan": "Kalumpang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Keterlambatan verifikasi berkas", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Keterlambatan verifikasi kecamatan", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-49", "no": 49, "desa": "Bala-Balakang", "kades": "H. Mahmud", "jabatan": "Definitif", "kecamatan": "Kepulauan Bala-Balakang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "SUDAH BAYAR", "tanggalBayar": "2025-03-14", "nominal": 15000000, "catatanBayar": "Transfer Bank BPD Sulselbar", "infoTambahanBayar": "TRF-BPD/MJU/20250314-0810", "pks": "done", "kwitansiLbh": "done", "kwitansiLpj": "done", "pksDesaTtd": "done", "kwitansiLbhDesaTtd": "done", "kwitansiLpjDesaTtd": "done", "keterangan": "Lengkap berkas kepulauan", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}, {"id": "desa-2025-50", "no": 50, "desa": "Bala-Balakang Timur", "kades": "Kasman", "jabatan": "Definitif", "kecamatan": "Kepulauan Bala-Balakang", "kabupaten": "Kabupaten Mamuju", "provinsi": "Sulawesi Barat", "statusBayar": "BELUM BAYAR", "tanggalBayar": "", "nominal": 0, "catatanBayar": "Terkendala pengiriman fisik berkas", "infoTambahanBayar": "-", "pks": "belum", "kwitansiLbh": "belum", "kwitansiLpj": "belum", "pksDesaTtd": "belum", "kwitansiLbhDesaTtd": "belum", "kwitansiLpjDesaTtd": "belum", "keterangan": "Terkendala akses transportasi pengiriman berkas", "needsVerification": false, "pdfFiles": {"pks": null, "kwitansiLbh": null, "kwitansiLpj": null, "pksDesaTtd": null, "kwitansiLbhDesaTtd": null, "kwitansiLpjDesaTtd": null}}];
 
 // APPLICATION STATE
 let state = {
   activeYear: "2025",
   availableYears: ["2025", "2026", "2027", "2028", "2029", "2030", "2031"],
   activeView: "dashboard",
-  tableViewMode: "table", // "table" or "cards"
+  tableViewMode: "table",
   searchQuery: "",
   filters: {
     provinsi: "",
@@ -30,15 +30,30 @@ let state = {
   },
   selectedDesaId: null,
   importParsedData: null,
-  auditLogs: []
+  auditLogs: [],
+  githubConfig: {
+    owner: "subhanhusain9811-lab",
+    repo: "subhan-rekap-lpj-dan-monitoring-desa",
+    branch: "main",
+    token: "",
+    autoSync: true,
+    connected: false,
+    lastSync: null
+  }
 };
 
 // INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
   loadStateFromStorage();
+  loadGitHubConfig();
   initYearSelector();
   renderAllViews();
   initPrintTimestamp();
+
+  // If token exists, automatically attempt background sync / connection check
+  if (state.githubConfig.token) {
+    autoSyncWithGitHub();
+  }
 });
 
 // LOCAL STORAGE MANAGEMENT
@@ -58,10 +73,8 @@ function loadStateFromStorage() {
     localStorage.setItem("rekap_desa_years", JSON.stringify(state.availableYears));
   }
 
-  // 2025 has default initial sample dataset (Kabupaten Mamuju, Sulawesi Barat)
   ensureYearDataInitialized("2025", DEFAULT_DATA_2025);
 
-  // 2026 - 2031 start empty if not already set
   ["2026", "2027", "2028", "2029", "2030", "2031"].forEach(y => {
     ensureYearDataInitialized(y, []);
   });
@@ -143,6 +156,428 @@ function addAuditLog(desa, field, oldVal, newVal) {
   saveAuditLogs();
 }
 
+// ==============================================
+// GITHUB CLOUD DATABASE & SYNC ENGINE
+// ==============================================
+
+function loadGitHubConfig() {
+  const savedConfig = localStorage.getItem("rekap_desa_github_config");
+  if (savedConfig) {
+    try {
+      const parsed = JSON.parse(savedConfig);
+      state.githubConfig = { ...state.githubConfig, ...parsed };
+    } catch(e) {
+      console.error(e);
+    }
+  }
+  updateGitHubStatusUI();
+}
+
+function saveGitHubConfig() {
+  localStorage.setItem("rekap_desa_github_config", JSON.stringify(state.githubConfig));
+}
+
+function getGitHubHeaders() {
+  const headers = {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json"
+  };
+  if (state.githubConfig.token && state.githubConfig.token.trim() !== "") {
+    headers["Authorization"] = `Bearer ${state.githubConfig.token.trim()}`;
+  }
+  return headers;
+}
+
+function updateGitHubStatusUI() {
+  const dot = document.getElementById("githubStatusDot");
+  const text = document.getElementById("githubStatusText");
+  const settingsStatus = document.getElementById("settingsGitHubStatus");
+  const lastSyncText = document.getElementById("settingsGitHubLastSync");
+
+  const isConnected = state.githubConfig.connected && !!state.githubConfig.token;
+
+  if (dot) {
+    dot.className = isConnected ? "dot dot-green" : (state.githubConfig.token ? "dot dot-gold" : "dot dot-red");
+  }
+  if (text) {
+    text.textContent = isConnected ? "GitHub: Terhubung (Cloud)" : (state.githubConfig.token ? "GitHub: Siap Sinkron" : "GitHub: Mode Lokal");
+  }
+  if (settingsStatus) {
+    if (isConnected) {
+      settingsStatus.innerHTML = "<span class='badge badge-done'>🟢 Terhubung ke GitHub (" + escapeHtml(state.githubConfig.owner + "/" + state.githubConfig.repo) + ")</span>";
+    } else if (state.githubConfig.token) {
+      settingsStatus.innerHTML = "<span class='badge badge-belum-ttd'>🟡 Token Tersimpan (Belum Diverifikasi)</span>";
+    } else {
+      settingsStatus.innerHTML = "<span class='badge badge-kosong'>⚪ Mode Penyimpanan Lokal (Belum Ada Token)</span>";
+    }
+  }
+  if (lastSyncText) {
+    lastSyncText.textContent = state.githubConfig.lastSync 
+      ? formatDate(state.githubConfig.lastSync.split("T")[0]) + " " + state.githubConfig.lastSync.split("T")[1].slice(0, 8)
+      : "Belum pernah sinkronisasi";
+  }
+
+  // Populate settings form fields
+  const elOwner = document.getElementById("cfgGhOwner");
+  if (elOwner && !elOwner.value) elOwner.value = state.githubConfig.owner;
+  const elRepo = document.getElementById("cfgGhRepo");
+  if (elRepo && !elRepo.value) elRepo.value = state.githubConfig.repo;
+  const elBranch = document.getElementById("cfgGhBranch");
+  if (elBranch && !elBranch.value) elBranch.value = state.githubConfig.branch;
+  const elToken = document.getElementById("cfgGhToken");
+  if (elToken && !elToken.value && state.githubConfig.token) elToken.value = state.githubConfig.token;
+  const elAuto = document.getElementById("cfgGhAutoSync");
+  if (elAuto) elAuto.checked = !!state.githubConfig.autoSync;
+}
+
+async function testGitHubConnection() {
+  const token = document.getElementById("cfgGhToken").value.trim();
+  const owner = document.getElementById("cfgGhOwner").value.trim() || "subhanhusain9811-lab";
+  const repo = document.getElementById("cfgGhRepo").value.trim() || "subhan-rekap-lpj-dan-monitoring-desa";
+  const branch = document.getElementById("cfgGhBranch").value.trim() || "main";
+  const autoSync = document.getElementById("cfgGhAutoSync").checked;
+
+  state.githubConfig.owner = owner;
+  state.githubConfig.repo = repo;
+  state.githubConfig.branch = branch;
+  state.githubConfig.token = token;
+  state.githubConfig.autoSync = autoSync;
+
+  if (!token) {
+    showToast("Silakan masukkan Personal Access Token (PAT) GitHub terlebih dahulu.", "warning");
+    saveGitHubConfig();
+    updateGitHubStatusUI();
+    return;
+  }
+
+  showToast("Menghubungkan ke GitHub API...", "info");
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: getGitHubHeaders()
+    });
+
+    if (res.ok) {
+      const repoData = await res.json();
+      state.githubConfig.connected = true;
+      state.githubConfig.lastSync = new Date().toISOString();
+      saveGitHubConfig();
+      updateGitHubStatusUI();
+      showToast(`Sukses terhubung ke repositori ${repoData.full_name}!`, "success");
+
+      // Pull latest data automatically
+      await pullDataFromGitHub(state.activeYear);
+    } else {
+      const err = await res.json();
+      state.githubConfig.connected = false;
+      saveGitHubConfig();
+      updateGitHubStatusUI();
+      showToast(`Gagal terhubung: ${err.message || res.statusText} (Periksa token & izin repo)`, "danger");
+    }
+  } catch (e) {
+    state.githubConfig.connected = false;
+    saveGitHubConfig();
+    updateGitHubStatusUI();
+    showToast(`Error koneksi: ${e.message}`, "danger");
+  }
+}
+
+async function autoSyncWithGitHub() {
+  if (!state.githubConfig.token || !state.githubConfig.autoSync) return;
+  try {
+    await pullDataFromGitHub(state.activeYear);
+  } catch(e) {
+    console.warn("Auto sync failed:", e);
+  }
+}
+
+async function pushDataToGitHub(year) {
+  const { owner, repo, branch, token } = state.githubConfig;
+  if (!token) return false;
+
+  const y = year || state.activeYear;
+  const path = `data/rekap_desa_${y}.json`;
+  const currentData = getYearData(y);
+  const jsonString = JSON.stringify(currentData, null, 2);
+  const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
+
+  showToast(`Menyimpan data tahun ${y} ke GitHub...`, "info");
+
+  try {
+    // Check existing SHA
+    let sha = null;
+    try {
+      const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}&_t=${Date.now()}`, {
+        headers: getGitHubHeaders()
+      });
+      if (getRes.ok) {
+        const fileInfo = await getRes.json();
+        sha = fileInfo.sha;
+      }
+    } catch (e) {}
+
+    const payload = {
+      message: `sync: update data rekap desa tahun ${y} [skip ci]`,
+      content: base64Content,
+      branch: branch
+    };
+    if (sha) payload.sha = sha;
+
+    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      method: "PUT",
+      headers: getGitHubHeaders(),
+      body: JSON.stringify(payload)
+    });
+
+    if (putRes.ok) {
+      state.githubConfig.connected = true;
+      state.githubConfig.lastSync = new Date().toISOString();
+      saveGitHubConfig();
+      updateGitHubStatusUI();
+      showToast(`Data tahun ${y} berhasil disinkronkan ke repositori GitHub!`, "success");
+      return true;
+    } else {
+      const err = await putRes.json();
+      showToast(`Gagal menyimpan ke GitHub: ${err.message}`, "danger");
+      return false;
+    }
+  } catch (e) {
+    console.error("Push error:", e);
+    showToast(`Error push data: ${e.message}`, "danger");
+    return false;
+  }
+}
+
+async function pullDataFromGitHub(year) {
+  const { owner, repo, branch } = state.githubConfig;
+  const y = year || state.activeYear;
+  const path = `data/rekap_desa_${y}.json`;
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}&_t=${Date.now()}`, {
+      headers: getGitHubHeaders()
+    });
+
+    if (res.ok) {
+      const fileInfo = await res.json();
+      const rawText = decodeURIComponent(escape(atob(fileInfo.content.replace(/\s/g, ""))));
+      const parsedData = JSON.parse(rawText);
+
+      if (Array.isArray(parsedData)) {
+        saveYearData(y, parsedData);
+        state.githubConfig.connected = true;
+        state.githubConfig.lastSync = new Date().toISOString();
+        saveGitHubConfig();
+        updateGitHubStatusUI();
+        renderAllViews();
+        showToast(`Sinkronisasi berhasil! ${parsedData.length} data desa tahun ${y} dimuat dari GitHub.`, "success");
+        return true;
+      }
+    } else if (res.status === 404) {
+      // First time initialization on GitHub
+      if (state.githubConfig.token) {
+        console.log(`File ${path} belum ada di GitHub. Mengunggah berkas lokal pertama kali...`);
+        return await pushDataToGitHub(y);
+      }
+    } else {
+      const err = await res.json();
+      console.warn("Pull error:", err);
+    }
+  } catch (e) {
+    console.error("Pull exception:", e);
+  }
+  return false;
+}
+
+// ==============================================
+// PDF UPLOAD, PREVIEW, & DOWNLOAD ENGINE
+// ==============================================
+
+function triggerPdfUpload(docType) {
+  const desaId = state.selectedDesaId;
+  if (!desaId) return;
+  const input = document.getElementById(`uploadPdfInput_${docType}`);
+  if (input) {
+    input.click();
+  }
+}
+
+async function handlePdfSelected(event, docType) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const desaId = state.selectedDesaId;
+  if (!desaId) return;
+
+  if (!file.name.toLowerCase().endsWith(".pdf") && file.type !== "application/pdf") {
+    alert("Hanya berkas berformat PDF yang dapat diunggah!");
+    event.target.value = "";
+    return;
+  }
+
+  if (file.size > 15 * 1024 * 1024) {
+    alert("Ukuran berkas PDF melebihi batas maksimal (15 MB)!");
+    event.target.value = "";
+    return;
+  }
+
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === desaId);
+  if (!item) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const base64DataUrl = e.target.result;
+    const base64Content = base64DataUrl.split(",")[1];
+
+    const cleanDesa = item.desa.replace(/[^a-zA-Z0-9_-]/g, "_");
+    const cleanFileName = file.name.replace(/[^a-zA-Z0-9_.-]/g, "_");
+    const githubPath = `dokumen/${state.activeYear}/${cleanDesa}/${docType}_${cleanFileName}`;
+
+    const { owner, repo, branch, token } = state.githubConfig;
+    let downloadUrl = "";
+
+    if (token) {
+      showToast(`Mengunggah ${file.name} ke GitHub Cloud...`, "info");
+      try {
+        let sha = null;
+        try {
+          const checkRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${githubPath}?ref=${branch}`, {
+            headers: getGitHubHeaders()
+          });
+          if (checkRes.ok) {
+            const existing = await checkRes.json();
+            sha = existing.sha;
+          }
+        } catch(err) {}
+
+        const putPayload = {
+          message: `docs: upload PDF ${docType} untuk desa ${item.desa} [skip ci]`,
+          content: base64Content,
+          branch: branch
+        };
+        if (sha) putPayload.sha = sha;
+
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${githubPath}`, {
+          method: "PUT",
+          headers: getGitHubHeaders(),
+          body: JSON.stringify(putPayload)
+        });
+
+        if (res.ok) {
+          const resData = await res.json();
+          downloadUrl = resData.content?.download_url || `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${githubPath}`;
+          showToast(`Berkas PDF berhasil diunggah ke GitHub!`, "success");
+        } else {
+          const err = await res.json();
+          showToast(`Tersimpan lokal. GitHub commit info: ${err.message}`, "warning");
+        }
+      } catch(err) {
+        console.error("PDF upload error:", err);
+      }
+    } else {
+      showToast("Berkas PDF tersimpan di memori browser. (Masukkan Token di Pengaturan untuk sync ke GitHub).", "info");
+    }
+
+    if (!item.pdfFiles) item.pdfFiles = {};
+    item.pdfFiles[docType] = {
+      name: file.name,
+      size: file.size,
+      date: new Date().toISOString().split("T")[0],
+      githubPath: githubPath,
+      downloadUrl: downloadUrl,
+      dataUrl: base64DataUrl
+    };
+
+    // Automatically set status to 'done' when PDF is uploaded
+    if (item[docType] !== "done") {
+      item[docType] = "done";
+    }
+
+    saveYearData(state.activeYear, data);
+    addAuditLog(item.desa, `Unggah Berkas PDF ${docType}`, "-", file.name);
+
+    if (token && state.githubConfig.autoSync) {
+      pushDataToGitHub(state.activeYear);
+    }
+
+    renderAllViews();
+    openDetailModal(desaId);
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function downloadPdfDocument(docType) {
+  const desaId = state.selectedDesaId;
+  if (!desaId) return;
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === desaId);
+  if (!item || !item.pdfFiles || !item.pdfFiles[docType]) return;
+
+  const pdf = item.pdfFiles[docType];
+
+  if (pdf.dataUrl) {
+    const a = document.createElement("a");
+    a.href = pdf.dataUrl;
+    a.download = pdf.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast(`Mengunduh ${pdf.name}`, "success");
+  } else if (pdf.downloadUrl) {
+    window.open(pdf.downloadUrl, "_blank");
+  } else {
+    alert("URL berkas PDF tidak ditemukan.");
+  }
+}
+
+function previewPdfDocument(docType) {
+  const desaId = state.selectedDesaId;
+  if (!desaId) return;
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === desaId);
+  if (!item || !item.pdfFiles || !item.pdfFiles[docType]) return;
+
+  const pdf = item.pdfFiles[docType];
+  const url = pdf.dataUrl || pdf.downloadUrl;
+
+  if (url) {
+    const win = window.open();
+    if (win) {
+      win.document.write(`<iframe src="${url}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+      win.document.title = pdf.name;
+    } else {
+      window.location.href = url;
+    }
+  } else {
+    alert("Tautan PDF tidak tersedia.");
+  }
+}
+
+function deletePdfDocument(docType) {
+  const desaId = state.selectedDesaId;
+  if (!desaId) return;
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === desaId);
+  if (!item || !item.pdfFiles || !item.pdfFiles[docType]) return;
+
+  if (confirm(`Apakah Anda yakin ingin menghapus lampiran PDF ${item.pdfFiles[docType].name}?`)) {
+    const oldName = item.pdfFiles[docType].name;
+    item.pdfFiles[docType] = null;
+    saveYearData(state.activeYear, data);
+    addAuditLog(item.desa, `Hapus PDF ${docType}`, oldName, "(dihapus)");
+
+    if (state.githubConfig.token && state.githubConfig.autoSync) {
+      pushDataToGitHub(state.activeYear);
+    }
+
+    renderAllViews();
+    openDetailModal(desaId);
+    showToast("Lampiran PDF telah dihapus.", "danger");
+  }
+}
+
 // COPY MASTER DESA FROM 2025
 function copyMasterDesaFrom2025(targetYear) {
   const baseData = getYearData("2025");
@@ -173,13 +608,25 @@ function copyMasterDesaFrom2025(targetYear) {
       kwitansiLbhDesaTtd: "belum ttd",
       kwitansiLpjDesaTtd: "belum ttd",
       keterangan: "Disalin dari master 2025 (Siap dimonitor)",
-      needsVerification: false
+      needsVerification: false,
+      pdfFiles: {
+        pks: null,
+        kwitansiLbh: null,
+        kwitansiLpj: null,
+        pksDesaTtd: null,
+        kwitansiLbhDesaTtd: null,
+        kwitansiLpjDesaTtd: null
+      }
     }));
 
     saveYearData(targetYear, copied);
     addAuditLog(`Tahun Anggaran ${targetYear}`, "Salin Master Desa", "Kosong", `${copied.length} Desa disalin dari 2025`);
     renderAllViews();
     showToast(`Berhasil menyalin ${copied.length} master desa ke tahun ${targetYear}!`, "success");
+
+    if (state.githubConfig.token && state.githubConfig.autoSync) {
+      pushDataToGitHub(targetYear);
+    }
   }
 }
 
@@ -573,19 +1020,19 @@ function renderRekapDesa() {
             <td>${renderBayarBadge(statusBayar)}</td>
             <td>${formatDate(item.tanggalBayar)}</td>
             <td style="font-weight: 600;">${item.nominal ? formatRupiah(item.nominal) : "-"}</td>
-            <td>${renderDocBadge(item.pks)}</td>
-            <td>${renderDocBadge(item.kwitansiLbh)}</td>
-            <td>${renderDocBadge(item.kwitansiLpj)}</td>
-            <td>${renderTtdBadge(item.pksDesaTtd)}</td>
-            <td>${renderTtdBadge(item.kwitansiLbhDesaTtd)}</td>
-            <td>${renderTtdBadge(item.kwitansiLpjDesaTtd)}</td>
+            <td>${renderDocBadgeWithPdf(item, "pks")}</td>
+            <td>${renderDocBadgeWithPdf(item, "kwitansiLbh")}</td>
+            <td>${renderDocBadgeWithPdf(item, "kwitansiLpj")}</td>
+            <td>${renderTtdBadgeWithPdf(item, "pksDesaTtd")}</td>
+            <td>${renderTtdBadgeWithPdf(item, "kwitansiLbhDesaTtd")}</td>
+            <td>${renderTtdBadgeWithPdf(item, "kwitansiLpjDesaTtd")}</td>
             <td>${renderStatusAllBadge(statusAll)}</td>
             <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(item.keterangan || "")}">
               ${escapeHtml(item.keterangan || "-")}
             </td>
             <td style="text-align: center;">
               <div style="display: flex; gap: 4px; justify-content: center;">
-                <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')" title="Lihat Detail">👁️</button>
+                <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')" title="Lihat Detail & Berkas PDF">👁️</button>
                 <button class="btn btn-secondary btn-sm" onclick="openEditDesaModal('${item.id}')" title="Edit Data">✏️</button>
                 <button class="btn btn-danger btn-sm" onclick="promptDeleteDesa('${item.id}')" title="Hapus Data">🗑️</button>
               </div>
@@ -651,34 +1098,34 @@ function renderCardsMode(items, rawTotal) {
         <div class="dcard-docs-grid">
           <div class="dcard-doc-col">
             <span>PKS</span>
-            ${renderDocBadge(item.pks)}
+            ${renderDocBadgeWithPdf(item, "pks")}
           </div>
           <div class="dcard-doc-col">
             <span>Kwt LBH</span>
-            ${renderDocBadge(item.kwitansiLbh)}
+            ${renderDocBadgeWithPdf(item, "kwitansiLbh")}
           </div>
           <div class="dcard-doc-col">
             <span>Kwt LPJ</span>
-            ${renderDocBadge(item.kwitansiLpj)}
+            ${renderDocBadgeWithPdf(item, "kwitansiLpj")}
           </div>
           <div class="dcard-doc-col">
             <span>PKS TTD</span>
-            ${renderTtdBadge(item.pksDesaTtd)}
+            ${renderTtdBadgeWithPdf(item, "pksDesaTtd")}
           </div>
           <div class="dcard-doc-col">
             <span>LBH TTD</span>
-            ${renderTtdBadge(item.kwitansiLbhDesaTtd)}
+            ${renderTtdBadgeWithPdf(item, "kwitansiLbhDesaTtd")}
           </div>
           <div class="dcard-doc-col">
             <span>LPJ TTD</span>
-            ${renderTtdBadge(item.kwitansiLpjDesaTtd)}
+            ${renderTtdBadgeWithPdf(item, "kwitansiLpjDesaTtd")}
           </div>
         </div>
 
         ${item.keterangan ? `<div style="font-size: 12px; background: #fffbeb; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #f59e0b;">${escapeHtml(item.keterangan)}</div>` : ""}
 
         <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px;">
-          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail</button>
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail & Berkas PDF</button>
           <button class="btn btn-primary btn-sm" onclick="openEditDesaModal('${item.id}')">Edit</button>
         </div>
       </div>
@@ -724,7 +1171,7 @@ function setTableViewMode(mode) {
   document.getElementById("cardsWrapper").style.display = mode === "cards" ? "grid" : "none";
 }
 
-// BADGE GENERATORS
+// BADGE GENERATORS WITH PDF ATTACHMENT INDICATOR
 function renderBayarBadge(status) {
   if (status === "SUDAH BAYAR") {
     return "<span class='badge badge-done'>🟢 SUDAH BAYAR</span>";
@@ -739,12 +1186,50 @@ function renderDocBadge(val) {
   return "<span class='badge badge-kosong'>⚪ BELUM DIISI</span>";
 }
 
+function renderDocBadgeWithPdf(item, docType) {
+  let badge = renderDocBadge(item[docType]);
+  if (item.pdfFiles && item.pdfFiles[docType]) {
+    const pdf = item.pdfFiles[docType];
+    badge += ` <a href="javascript:void(0)" onclick="previewPdfDocumentDirect('${item.id}', '${docType}')" title="Lihat/Unduh PDF: ${escapeHtml(pdf.name)}" class="pdf-link">📄</a>`;
+  }
+  return badge;
+}
+
 function renderTtdBadge(val) {
   const v = (val || "").toLowerCase().trim();
   if (v === "done") return "<span class='badge badge-done'>🟢 DONE</span>";
   if (v === "belum ttd") return "<span class='badge badge-belum-ttd'>🟡 BELUM TTD</span>";
   if (v === "belum") return "<span class='badge badge-belum'>🔴 BELUM</span>";
   return "<span class='badge badge-kosong'>⚪ BELUM DIISI</span>";
+}
+
+function renderTtdBadgeWithPdf(item, docType) {
+  let badge = renderTtdBadge(item[docType]);
+  if (item.pdfFiles && item.pdfFiles[docType]) {
+    const pdf = item.pdfFiles[docType];
+    badge += ` <a href="javascript:void(0)" onclick="previewPdfDocumentDirect('${item.id}', '${docType}')" title="Lihat/Unduh PDF: ${escapeHtml(pdf.name)}" class="pdf-link">📄</a>`;
+  }
+  return badge;
+}
+
+function previewPdfDocumentDirect(desaId, docType) {
+  const data = getYearData(state.activeYear);
+  const item = data.find(x => x.id === desaId);
+  if (!item || !item.pdfFiles || !item.pdfFiles[docType]) return;
+
+  const pdf = item.pdfFiles[docType];
+  const url = pdf.dataUrl || pdf.downloadUrl;
+  if (url) {
+    const win = window.open();
+    if (win) {
+      win.document.write(`<iframe src="${url}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+      win.document.title = pdf.name;
+    } else {
+      window.location.href = url;
+    }
+  } else {
+    alert("Tautan berkas PDF tidak ditemukan.");
+  }
 }
 
 function renderStatusAllBadge(status) {
@@ -876,9 +1361,9 @@ function renderDokumenTable(data) {
         <td style="font-weight: 700;">${escapeHtml(item.desa)}</td>
         <td>${escapeHtml(item.kecamatan)}</td>
         <td>${escapeHtml(item.kabupaten || "Kabupaten Mamuju")}</td>
-        <td>${renderDocBadge(item.pks)}</td>
-        <td>${renderDocBadge(item.kwitansiLbh)}</td>
-        <td>${renderDocBadge(item.kwitansiLpj)}</td>
+        <td>${renderDocBadgeWithPdf(item, "pks")}</td>
+        <td>${renderDocBadgeWithPdf(item, "kwitansiLbh")}</td>
+        <td>${renderDocBadgeWithPdf(item, "kwitansiLpj")}</td>
         <td>
           <span class="badge ${docStatus === "LENGKAP" ? "badge-done" : "badge-belum"}">
             ${docStatus === "LENGKAP" ? "🟢 LENGKAP" : "🔴 BELUM LENGKAP"}
@@ -886,7 +1371,7 @@ function renderDokumenTable(data) {
         </td>
         <td style="font-size: 12px; color: var(--text-muted);">${escapeHtml(item.keterangan || "-")}</td>
         <td>
-          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail</button>
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Detail / PDF</button>
         </td>
       </tr>
     `;
@@ -912,9 +1397,9 @@ function renderTtdTable(data) {
         <td>${escapeHtml(item.kades || "-")}</td>
         <td>${escapeHtml(item.kecamatan)}</td>
         <td>${escapeHtml(item.kabupaten || "Kabupaten Mamuju")}</td>
-        <td>${renderTtdBadge(item.pksDesaTtd)}</td>
-        <td>${renderTtdBadge(item.kwitansiLbhDesaTtd)}</td>
-        <td>${renderTtdBadge(item.kwitansiLpjDesaTtd)}</td>
+        <td>${renderTtdBadgeWithPdf(item, "pksDesaTtd")}</td>
+        <td>${renderTtdBadgeWithPdf(item, "kwitansiLbhDesaTtd")}</td>
+        <td>${renderTtdBadgeWithPdf(item, "kwitansiLpjDesaTtd")}</td>
         <td>
           <span class="badge ${ttdStatus === "LENGKAP" ? "badge-done" : "badge-belum-ttd"}">
             ${ttdStatus === "LENGKAP" ? "🟢 LENGKAP" : "🟡 BELUM LENGKAP"}
@@ -1024,7 +1509,7 @@ function renderTindakLanjut() {
         ` : ""}
 
         <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;">
-          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Lihat Berkas</button>
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${item.id}')">Lihat Berkas & PDF</button>
           <button class="btn btn-primary btn-sm" onclick="openEditDesaModal('${item.id}')">Tindak Lanjuti / Perbarui Data</button>
         </div>
       </div>
@@ -1161,6 +1646,10 @@ function changeYear(newYear) {
   resetFiltersSilently();
   renderAllViews();
   showToast(`Beralih ke database tahun anggaran ${newYear}`, "success");
+
+  if (state.githubConfig.token && state.githubConfig.autoSync) {
+    pullDataFromGitHub(newYear);
+  }
 }
 
 function openAddYearModal() {
@@ -1203,7 +1692,15 @@ function submitNewYear() {
       kwitansiLbhDesaTtd: "belum ttd",
       kwitansiLpjDesaTtd: "belum ttd",
       keterangan: "Data disalin dari tahun 2025",
-      needsVerification: false
+      needsVerification: false,
+      pdfFiles: {
+        pks: null,
+        kwitansiLbh: null,
+        kwitansiLpj: null,
+        pksDesaTtd: null,
+        kwitansiLbhDesaTtd: null,
+        kwitansiLpjDesaTtd: null
+      }
     }));
   }
 
@@ -1213,6 +1710,10 @@ function submitNewYear() {
   saveYearData(inputYear, newDataset);
 
   addAuditLog(`Tahun Anggaran ${inputYear}`, "Pembuatan Tahun Baru", "-", `Inisialisasi ${newDataset.length} desa`);
+
+  if (state.githubConfig.token && state.githubConfig.autoSync) {
+    pushDataToGitHub(inputYear);
+  }
 
   closeAddYearModal();
   initYearSelector();
@@ -1244,12 +1745,13 @@ function openDetailModal(id) {
   document.getElementById("dPayCatatan").textContent = item.catatanBayar || "-";
   document.getElementById("dPayRef").textContent = item.infoTambahanBayar || "-";
 
-  document.getElementById("dDocPksBadge").innerHTML = renderDocBadge(item.pks);
-  document.getElementById("dDocLbhBadge").innerHTML = renderDocBadge(item.kwitansiLbh);
-  document.getElementById("dDocLpjBadge").innerHTML = renderDocBadge(item.kwitansiLpj);
-  document.getElementById("dDocTtdPksBadge").innerHTML = renderTtdBadge(item.pksDesaTtd);
-  document.getElementById("dDocTtdLbhBadge").innerHTML = renderTtdBadge(item.kwitansiLbhDesaTtd);
-  document.getElementById("dDocTtdLpjBadge").innerHTML = renderTtdBadge(item.kwitansiLpjDesaTtd);
+  // Document Badges + PDF controls
+  renderDocDetailRow("pks", item);
+  renderDocDetailRow("kwitansiLbh", item);
+  renderDocDetailRow("kwitansiLpj", item);
+  renderTtdDetailRow("pksDesaTtd", item);
+  renderTtdDetailRow("kwitansiLbhDesaTtd", item);
+  renderTtdDetailRow("kwitansiLpjDesaTtd", item);
 
   document.getElementById("dCatatanKhusus").textContent = item.keterangan || "Tidak ada catatan khusus untuk desa ini.";
 
@@ -1274,6 +1776,62 @@ function openDetailModal(id) {
   document.getElementById("modalDetailDesa").classList.add("active");
 }
 
+function renderDocDetailRow(docType, item) {
+  const badgeEl = document.getElementById(`dDoc_${docType}_Badge`);
+  const pdfControl = document.getElementById(`dDoc_${docType}_Pdf`);
+  if (badgeEl) badgeEl.innerHTML = renderDocBadge(item[docType]);
+
+  if (pdfControl) {
+    const pdf = item.pdfFiles && item.pdfFiles[docType];
+    if (pdf) {
+      pdfControl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
+          <span style="font-weight: 700; color: #065f46;">📄 ${escapeHtml(pdf.name)}</span>
+          <span style="color: #047857; font-size: 11px;">(${Math.round((pdf.size || 0)/1024)} KB)</span>
+          <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="previewPdfDocument('${docType}')">👁️ Lihat</button>
+          <button class="btn btn-success btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="downloadPdfDocument('${docType}')">📥 Unduh</button>
+          <button class="btn btn-danger btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="deletePdfDocument('${docType}')">🗑️</button>
+        </div>
+      `;
+    } else {
+      pdfControl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button class="btn btn-outline-purple btn-sm" onclick="triggerPdfUpload('${docType}')">📤 Unggah Berkas PDF</button>
+          <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+        </div>
+      `;
+    }
+  }
+}
+
+function renderTtdDetailRow(docType, item) {
+  const badgeEl = document.getElementById(`dDoc_${docType}_Badge`);
+  const pdfControl = document.getElementById(`dDoc_${docType}_Pdf`);
+  if (badgeEl) badgeEl.innerHTML = renderTtdBadge(item[docType]);
+
+  if (pdfControl) {
+    const pdf = item.pdfFiles && item.pdfFiles[docType];
+    if (pdf) {
+      pdfControl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
+          <span style="font-weight: 700; color: #065f46;">📄 ${escapeHtml(pdf.name)}</span>
+          <span style="color: #047857; font-size: 11px;">(${Math.round((pdf.size || 0)/1024)} KB)</span>
+          <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="previewPdfDocument('${docType}')">👁️ Lihat</button>
+          <button class="btn btn-success btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="downloadPdfDocument('${docType}')">📥 Unduh</button>
+          <button class="btn btn-danger btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="deletePdfDocument('${docType}')">🗑️</button>
+        </div>
+      `;
+    } else {
+      pdfControl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button class="btn btn-outline-purple btn-sm" onclick="triggerPdfUpload('${docType}')">📤 Unggah Berkas PDF</button>
+          <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+        </div>
+      `;
+    }
+  }
+}
+
 function closeDetailModal() {
   document.getElementById("modalDetailDesa").classList.remove("active");
 }
@@ -1296,7 +1854,6 @@ function openAddDesaModal() {
   document.getElementById("formDesaId").value = "";
   document.getElementById("duplicateWarningBox").style.display = "none";
   
-  // Set default kabupaten & provinsi
   document.getElementById("fKabupaten").value = "Kabupaten Mamuju";
   document.getElementById("fProvinsi").value = "Sulawesi Barat";
   
@@ -1378,7 +1935,7 @@ function updateDuplicateRecord() {
   }
 }
 
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
 
   const id = document.getElementById("formDesaId").value;
@@ -1396,9 +1953,19 @@ function handleFormSubmit(e) {
   const rawNominal = document.getElementById("fNominal").value.replace(/[^0-9]/g, "");
   const nominal = rawNominal ? Number(rawNominal) : 0;
 
+  const existingItem = id ? data.find(x => x.id === id) : null;
+  const existingPdfFiles = existingItem?.pdfFiles || {
+    pks: null,
+    kwitansiLbh: null,
+    kwitansiLpj: null,
+    pksDesaTtd: null,
+    kwitansiLbhDesaTtd: null,
+    kwitansiLpjDesaTtd: null
+  };
+
   const newRecord = {
     id: id || `desa-${Date.now()}`,
-    no: id ? (data.find(x => x.id === id)?.no || data.length + 1) : data.length + 1,
+    no: id ? (existingItem?.no || data.length + 1) : data.length + 1,
     desa: desaName,
     kades: document.getElementById("fKades").value.trim(),
     jabatan: document.getElementById("fJabatan").value,
@@ -1417,7 +1984,8 @@ function handleFormSubmit(e) {
     kwitansiLbhDesaTtd: document.getElementById("fKwitansiLbhTtd").value,
     kwitansiLpjDesaTtd: document.getElementById("fKwitansiLpjTtd").value,
     keterangan: document.getElementById("fKeterangan").value.trim(),
-    needsVerification: document.getElementById("fNeedsVerification").checked
+    needsVerification: document.getElementById("fNeedsVerification").checked,
+    pdfFiles: existingPdfFiles
   };
 
   if (id) {
@@ -1442,6 +2010,10 @@ function handleFormSubmit(e) {
   saveYearData(state.activeYear, data);
   closeFormModal();
   renderAllViews();
+
+  if (state.githubConfig.token && state.githubConfig.autoSync) {
+    pushDataToGitHub(state.activeYear);
+  }
 }
 
 // DELETE MODAL
@@ -1478,6 +2050,10 @@ function executeDeleteDesa(id) {
   closeDeleteModal();
   renderAllViews();
   showToast(`Data desa ${desaName} telah dihapus.`, "danger");
+
+  if (state.githubConfig.token && state.githubConfig.autoSync) {
+    pushDataToGitHub(state.activeYear);
+  }
 }
 
 // FILTERS & SEARCH
@@ -1621,7 +2197,7 @@ function switchView(viewId) {
     "import": ["Import Data Massal", `Unggah Berkas Excel (.xlsx) atau File CSV (${state.activeYear})`],
     "export": ["Ekspor & Laporan", `Unduh Berkas Excel, CSV, atau Cetak Resmi PDF (${state.activeYear})`],
     "audit": ["Log Riwayat Perubahan", "Kronologi Perubahan Status & Data Desa oleh Operator"],
-    "pengaturan": ["Pengaturan Sistem & Cadangan", "Manajemen Tahun Anggaran dan Backup Database"]
+    "pengaturan": ["Pengaturan & Sinkronisasi GitHub", "Koneksi Cloud GitHub API & Manajemen Multi-Tahun"]
   };
 
   if (titles[viewId]) {
@@ -1654,6 +2230,12 @@ function toggleSidebar() {
     sb.classList.add("open");
     if (bd) bd.classList.add("active");
   }
+}
+
+function toggleTokenVisibility() {
+  const inp = document.getElementById("cfgGhToken");
+  if (!inp) return;
+  inp.type = inp.type === "password" ? "text" : "password";
 }
 
 // IMPORT MODULE
@@ -1772,7 +2354,15 @@ function parseMatrixAndPreview(matrix) {
       kwitansiLbhDesaTtd: colMap.kwitansiLbhDesaTtd !== -1 ? normalizeStatus(r[colMap.kwitansiLbhDesaTtd]) : "belum ttd",
       kwitansiLpjDesaTtd: colMap.kwitansiLpjDesaTtd !== -1 ? normalizeStatus(r[colMap.kwitansiLpjDesaTtd]) : "belum ttd",
       keterangan: colMap.keterangan !== -1 ? String(r[colMap.keterangan] || "") : "",
-      needsVerification: false
+      needsVerification: false,
+      pdfFiles: {
+        pks: null,
+        kwitansiLbh: null,
+        kwitansiLpj: null,
+        pksDesaTtd: null,
+        kwitansiLbhDesaTtd: null,
+        kwitansiLpjDesaTtd: null
+      }
     });
   });
 
@@ -1874,6 +2464,10 @@ function executeImport() {
   current.forEach((d, i) => d.no = i + 1);
   saveYearData(state.activeYear, current);
   addAuditLog(`Import ${state.importParsedData.length} Desa`, "Import Data File", "-", `Mode: ${mode}`);
+
+  if (state.githubConfig.token && state.githubConfig.autoSync) {
+    pushDataToGitHub(state.activeYear);
+  }
 
   showToast(`Berhasil mengimpor ${state.importParsedData.length} data desa ke tahun ${state.activeYear}!`, "success");
   cancelImport();
@@ -1979,6 +2573,12 @@ function backupDatabaseJSON() {
     backupDate: new Date().toISOString(),
     availableYears: state.availableYears,
     auditLogs: state.auditLogs,
+    githubConfig: {
+      owner: state.githubConfig.owner,
+      repo: state.githubConfig.repo,
+      branch: state.githubConfig.branch,
+      lastSync: state.githubConfig.lastSync
+    },
     datasets: {}
   };
 
@@ -2080,7 +2680,7 @@ function escapeHtml(text) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/\x27/g, "&#039;");
 }
 
 function showToast(message, type = "info") {

@@ -1517,3 +1517,73 @@ body {
     display: block;
   }
 }
+
+
+/* GITHUB CLOUD SYNC WIDGET */
+.github-sync-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.github-sync-pill:hover {
+  background: #fff;
+  border-color: var(--primary-purple);
+  box-shadow: var(--shadow-sm);
+}
+
+.pdf-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 4px;
+  font-size: 11px;
+  padding: 1px 4px;
+  margin-left: 5px;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pdf-link:hover {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+}
+
+.gh-sync-card {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.gh-input-group {
+  display: flex;
+  position: relative;
+}
+
+.gh-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 14px;
+}

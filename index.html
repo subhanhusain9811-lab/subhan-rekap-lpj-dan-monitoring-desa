@@ -132,6 +132,12 @@
       </div>
 
       <div class="header-right">
+        <!-- GITHUB CLOUD SYNC WIDGET -->
+        <div class="github-sync-pill" onclick="switchView('pengaturan')" title="Status Sinkronisasi Cloud GitHub (Klik untuk Buka Pengaturan)">
+          <span id="githubStatusDot" class="dot dot-gold"></span>
+          <span id="githubStatusText">GitHub: Mode Lokal</span>
+        </div>
+
         <!-- TAHUN AKTIF SELECTOR -->
         <div class="year-pill">
           <span class="year-label">Tahun:</span>
@@ -841,6 +847,92 @@
 
       <!-- VIEW 12: PENGATURAN & BACKUP -->
       <section class="app-view" id="view-pengaturan">
+
+        <!-- GITHUB CLOUD DATABASE INTEGRATION CARD -->
+        <div class="card" style="max-width: 800px; margin: 0 auto 24px; border: 2px solid var(--primary-purple-border); box-shadow: var(--shadow-md);">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title" style="font-size: 18px; color: var(--primary-purple-dark); display: flex; align-items: center; gap: 8px;">
+                <span>☁️</span>
+                <span>Sinkronisasi Cloud GitHub API (Akses Multi-Device: HP, Tablet, Laptop)</span>
+              </h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Hubungkan aplikasi langsung ke repositori GitHub Anda untuk menyimpan database JSON dan berkas PDF secara otomatis.
+              </p>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-secondary); padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Status Koneksi:</div>
+              <div id="settingsGitHubStatus" style="margin-top: 2px;"><span class="badge badge-kosong">⚪ Memeriksa...</span></div>
+            </div>
+            <div>
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Terakhir Sinkronisasi:</div>
+              <div id="settingsGitHubLastSync" style="font-size: 12.5px; font-weight: 600; color: var(--navy-slate); margin-top: 2px;">-</div>
+            </div>
+          </div>
+
+          <div class="form-grid-3" style="margin-bottom: 14px;">
+            <div class="form-field">
+              <label>Owner / Akun GitHub</label>
+              <input type="text" class="form-control" id="cfgGhOwner" value="subhanhusain9811-lab">
+            </div>
+
+            <div class="form-field">
+              <label>Nama Repositori</label>
+              <input type="text" class="form-control" id="cfgGhRepo" value="subhan-rekap-lpj-dan-monitoring-desa">
+            </div>
+
+            <div class="form-field">
+              <label>Branch</label>
+              <input type="text" class="form-control" id="cfgGhBranch" value="main">
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-bottom: 14px;">
+            <label style="display: flex; justify-content: space-between; align-items: center;">
+              <span>GitHub Personal Access Token (PAT) <span style="color: var(--status-red);">*</span></span>
+              <a href="#panduanToken" style="font-size: 11.5px; color: var(--primary-purple); font-weight: 600; text-decoration: none;">Cara Buat Token?</a>
+            </label>
+            <div class="gh-input-group">
+              <input type="password" class="form-control" id="cfgGhToken" placeholder="Contoh: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" style="padding-right: 40px;">
+              <button type="button" class="gh-toggle-btn" onclick="toggleTokenVisibility()" title="Lihat/Sembunyikan Token">👁️</button>
+            </div>
+            <div class="helper-text">Token disimpan dengan aman di memori lokal browser perangkat ini (tidak disebarkan ke publik).</div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+            <input type="checkbox" id="cfgGhAutoSync" checked style="width: 16px; height: 16px; cursor: pointer;">
+            <label for="cfgGhAutoSync" style="font-size: 13px; font-weight: 600; cursor: pointer; color: var(--navy-slate);">
+              Otomatis sinkronkan perubahan data & unggahan PDF ke GitHub
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+            <button class="btn btn-primary" onclick="testGitHubConnection()">🔗 Simpan & Tes Koneksi</button>
+            <button class="btn btn-secondary" onclick="pullDataFromGitHub(state.activeYear)">⬇️ Tarik Data Terbaru dari GitHub</button>
+            <button class="btn btn-secondary" onclick="pushDataToGitHub(state.activeYear)">⬆️ Unggah Data Lokal ke GitHub</button>
+          </div>
+
+          <!-- PANDUAN BUAT TOKEN -->
+          <div id="panduanToken" style="background: #faf5ff; border: 1px dashed var(--primary-purple-border); border-radius: var(--radius-md); padding: 14px 18px; font-size: 12.5px; line-height: 1.6; color: #581c87;">
+            <div style="font-weight: 800; margin-bottom: 4px;">📖 Panduan Membuat Token GitHub (Hanya 1 Menit):</div>
+            <ol style="padding-left: 20px;">
+              <li>Buka <a href="https://github.com/settings/tokens" target="_blank" style="color: #7e22ce; font-weight: 700; text-decoration: underline;">github.com/settings/tokens</a> pada browser Anda.</li>
+              <li>Klik tombol <b>Generate new token (classic)</b>.</li>
+              <li>Beri nama/catatan pada kolom <i>Note</i>, misalnya: <code>Token Rekap Desa HP & Laptop</code>.</li>
+              <li>Pilih masa berlaku (<i>Expiration</i>): pilih <b>No expiration</b> atau sesuai keinginan.</li>
+              <li>Pada daftar centang di bawahnya, centang kotak <b>[✓] repo</b> (Full control of private repositories).</li>
+              <li>Gulir ke paling bawah lalu klik tombol hijau <b>Generate token</b>.</li>
+              <li>Salin kode token yang muncul (berawalan <code>ghp_...</code>) lalu tempelkan (*paste*) pada kolom input di atas, lalu klik <b>Simpan & Tes Koneksi</b>.</li>
+            </ol>
+            <div style="margin-top: 6px; font-size: 11.5px; color: #7e22ce;">
+              * Lakukan langkah ini juga saat membuka web di HP atau tablet Anda agar data langsung tersambung.
+            </div>
+          </div>
+        </div>
+
         <div class="card" style="max-width: 800px; margin: 0 auto 20px;">
           <h3 class="card-title" style="font-size: 17px; margin-bottom: 4px;">Manajemen Tahun & Arsip</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
@@ -971,37 +1063,65 @@
           </div>
         </div>
 
-        <!-- TAB 3: DOKUMEN CHECKLIST -->
+        <!-- TAB 3: DOKUMEN CHECKLIST & BERKAS PDF -->
         <div class="dtab-content" id="tab-dokumen">
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px; font-size: 12.5px; color: #1e40af;">
+            💡 <b>Fitur Unggah & Unduh PDF:</b> Anda dapat mengunggah berkas PDF untuk setiap dokumen di bawah ini. Berkas akan tersimpan dan tersinkronisasi ke repositori GitHub sehingga dapat diunduh/dilihat dari HP, tablet, maupun laptop lain.
+          </div>
+
           <div class="doc-checklist-card">
             <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">1. Dokumen Fisik / Administrasi</h4>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>📄</span><span>Perjanjian Kerja Sama (PKS)</span></div>
-              <span id="dDocPksBadge">-</span>
+            
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>📄</span><span>Perjanjian Kerja Sama (PKS)</span></div>
+                <span id="dDoc_pks_Badge">-</span>
+              </div>
+              <div id="dDoc_pks_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>🧾</span><span>Kwitansi LBH</span></div>
-              <span id="dDocLbhBadge">-</span>
+
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>🧾</span><span>Kwitansi LBH</span></div>
+                <span id="dDoc_kwitansiLbh_Badge">-</span>
+              </div>
+              <div id="dDoc_kwitansiLbh_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>📑</span><span>Kwitansi LPJ</span></div>
-              <span id="dDocLpjBadge">-</span>
+
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>📑</span><span>Kwitansi LPJ</span></div>
+                <span id="dDoc_kwitansiLpj_Badge">-</span>
+              </div>
+              <div id="dDoc_kwitansiLpj_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
           </div>
 
           <div class="doc-checklist-card">
             <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--navy-slate);">2. Tanda Tangan Dokumen Oleh Desa (Kepala Desa)</h4>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>✍️</span><span>PKS Desa TTD</span></div>
-              <span id="dDocTtdPksBadge">-</span>
+            
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>✍️</span><span>PKS Desa TTD</span></div>
+                <span id="dDoc_pksDesaTtd_Badge">-</span>
+              </div>
+              <div id="dDoc_pksDesaTtd_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LBH Desa TTD</span></div>
-              <span id="dDocTtdLbhBadge">-</span>
+
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>✍️</span><span>Kwitansi LBH Desa TTD</span></div>
+                <span id="dDoc_kwitansiLbhDesaTtd_Badge">-</span>
+              </div>
+              <div id="dDoc_kwitansiLbhDesaTtd_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
-            <div class="doc-check-item">
-              <div class="doc-check-left"><span>✍️</span><span>Kwitansi LPJ Desa TTD</span></div>
-              <span id="dDocTtdLpjBadge">-</span>
+
+            <div class="doc-check-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="doc-check-left"><span>✍️</span><span>Kwitansi LPJ Desa TTD</span></div>
+                <span id="dDoc_kwitansiLpjDesaTtd_Badge">-</span>
+              </div>
+              <div id="dDoc_kwitansiLpjDesaTtd_Pdf" style="display: flex; justify-content: flex-end;"></div>
             </div>
           </div>
         </div>

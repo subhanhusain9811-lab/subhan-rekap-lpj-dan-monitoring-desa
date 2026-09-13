@@ -1,147 +1,141 @@
-# REKAP DESA — MONITORING LPJ TAHUNAN
+# REKAP DESA — MONITORING LPJ TAHUNAN (CLOUD GITHUB EDITION)
 
 [![Platform](https://img.shields.io/badge/Platform-Web%20SPA-6b21a8.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-059669.svg)](LICENSE)
 [![Year Coverage](https://img.shields.io/badge/Tahun%20Anggaran-2025%20s%2Fd%202031-d97706.svg)](#)
 [![Wilayah 2025](https://img.shields.io/badge/Wilayah%202025-Kab.%20Mamuju%2C%20Sulbar-1e293b.svg)](#)
+[![Cloud Storage](https://img.shields.io/badge/Cloud%20Database-GitHub%20API%20%2B%20Token-2563eb.svg)](#)
+[![PDF Support](https://img.shields.io/badge/PDF-Upload%20%26%20Download-dc2626.svg)](#)
 [![Designed for](https://img.shields.io/badge/Konsultan%20Hukum-Minzathu%20%26%20Minzathu%20Law%20Offices-059669.svg)](#)
 
 Aplikasi web modern, cepat, dan responsif untuk monitoring, rekapitulasi, dan pengawasan berkas administrasi LPJ, status pembayaran iuran konsultan hukum desa, kelengkapan PKS, serta pengesahan tanda tangan Kepala Desa secara tahunan.
 
-Aplikasi ini telah disesuaikan secara khusus dengan data awal **50 desa se-Kabupaten Mamuju, Provinsi Sulawesi Barat** untuk Tahun Anggaran 2025, serta menyediakan ruang kosong siap pakai untuk tahun 2026 hingga 2031.
+Aplikasi ini kini dilengkapi dengan **Sinkronisasi Cloud GitHub API** (menggunakan Personal Access Token) dan **Fitur Unggah/Unduh Dokumen PDF Fisik**, sehingga basis data dan berkas LPJ dapat diakses, diedit, dan disinkronkan secara mulus dari **HP (Android / iPhone), Tablet, maupun Laptop/Komputer** di mana pun Anda berada.
+
+Data awal mencakup **50 desa se-Kabupaten Mamuju, Provinsi Sulawesi Barat** untuk Tahun Anggaran 2025, serta menyediakan ruang kosong siap pakai untuk tahun 2026 hingga 2031.
 
 ---
 
 ## 📑 Daftar Isi
-1. [Fitur Utama](#-fitur-utama)
-2. [Cakupan Wilayah & Multi-Tahun](#-cakupan-wilayah--multi-tahun)
-3. [Struktur Data Lengkap](#-struktur-data-lengkap)
-4. [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
-5. [Panduan Injek / Update Berkas ke Repositori GitHub](#-panduan-injek--update-ke-github)
-6. [Panduan Menjalankan Secara Lokal](#-panduan-menjalankan-secara-lokal)
+1. [Fitur Baru: Cloud Sync & Dokumen PDF](#-fitur-baru-cloud-sync--dokumen-pdf)
+2. [Fitur Utama Aplikasi](#-fitur-utama-aplikasi)
+3. [Cakupan Wilayah Kabupaten Mamuju (2025)](#-cakupan-wilayah-kabupaten-mamuju-2025)
+4. [Panduan Membuat GitHub Personal Access Token (PAT)](#-panduan-membuat-github-token-pat)
+5. [Panduan Menghubungkan Aplikasi di HP, Tablet, & Laptop](#-panduan-menghubungkan-di-hp-tablet--laptop)
+6. [Panduan Injek / Update Berkas ke Repositori GitHub](#-panduan-injek--update-ke-github)
 7. [Struktur Berkas Repositori](#-struktur-berkas-repositori)
 8. [Lisensi](#-lisensi)
 
 ---
 
-## 🚀 Fitur Utama
+## 🚀 Fitur Baru: Cloud Sync & Dokumen PDF
 
-- **📊 Dashboard Eksekutif Real-time**: 
-  - 6 Kartu Statistik: Total Desa, Sudah Bayar, Belum Bayar, Dokumen Lengkap, Belum Lengkap, dan Perlu Tindak Lanjut.
-  - Kartu *Progress Tahunan* visual dengan persentase penyelesaian agregat.
-  - Insight & Rekomendasi Otomatis (misal: analisis kecamatan dengan dokumen belum tanda tangan terbanyak di Kabupaten Mamuju).
-  - Grafik capaian kinerja administrasi (Pembayaran, Dokumen Fisik, dan TTD Kades).
+### 1. ☁️ Sinkronisasi Cloud Otomatis via GitHub API
+- **Akses Multi-Device**: Data yang diinput di laptop akan otomatis tersimpan ke repositori GitHub `subhanhusain9811-lab/subhan-rekap-lpj-dan-monitoring-desa`. Saat membuka website di HP atau tablet, data langsung tersinkronkan secara real-time.
+- **Keamanan Token (PAT)**: Token disimpan secara lokal di memori peramban masing-masing perangkat, sehingga aman dan tidak bocor ke publik.
+- **Dua Arah (Pull & Push)**:
+  - *Tarik Data (Pull)*: Memuat perubahan terbaru dari GitHub ke perangkat Anda.
+  - *Unggah Data (Push)*: Menyimpan perubahan lokal langsung ke GitHub sebagai komit resmi.
 
-- **📋 Rekap Desa (Pusat Data Lengkap Berkolom Wilayah)**:
-  - Kolom lengkap: *No, Desa, Nama Kades, Kecamatan, Kabupaten, Provinsi, Status Bayar, Tanggal Bayar, Nominal, PKS, Kwitansi LBH, Kwitansi LPJ, PKS Desa TTD, LBH Desa TTD, LPJ Desa TTD, Status Keseluruhan, Keterangan, dan Aksi*.
-  - Badge visual berstandar warna administrasi:
-    - 🟢 `DONE` / `SUDAH BAYAR` / `LENGKAP` / `SELESAI`
-    - 🔴 `BELUM` / `BELUM BAYAR` / `BELUM LENGKAP`
-    - 🟡 `BELUM TTD` / `PERLU MELENGKAPI DOKUMEN`
-    - ⚪ `BELUM DIISI` / `KOSONG`
-  - Sorting interaktif pada setiap kolom dan pagination dinamis (15, 25, 50, 100, atau Semua).
-  - Mode tampilan fleksibel: **Tabel Horizontal** untuk laptop/desktop atau **Mode Kartu (Card Grid)** untuk tablet dan smartphone.
-
-- **🔍 Filter Wilayah Dinamis & Pencarian Global**:
-  - Filter bersarang: **Provinsi**, **Kabupaten**, dan **Kecamatan**.
-  - Filter status: Pembayaran, Dokumen, TTD, dan Status Keseluruhan.
-  - Live search instan: cari berdasarkan nama desa, nama kepala desa, kecamatan, kabupaten, atau provinsi.
-
-- **🏘️ Rekapitulasi Per Kecamatan (Kabupaten Mamuju)**:
-  - Tabel ringkasan kinerja per kecamatan (Tapalang Barat, Tapalang, Mamuju, Simboro, Kalukku, Sampaga, Tommo, Bonehau, Kalumpang, Bala-Balakang) dengan visual progress bar persentase.
-  - Klik baris kecamatan untuk langsung memfilter daftar desa di kecamatan tersebut.
-
-- **⚠️ Menu Khusus "Perlu Tindak Lanjut"**:
-  - Membedah secara spesifik desa-desa yang memiliki kendala administrasi, tunggakan pembayaran, atau dokumen belum TTD.
-  - Klasifikasi prioritas otomatis:
-    - 🔴 **Prioritas Tinggi**: Belum bayar atau >= 3 dokumen belum selesai.
-    - 🟡 **Prioritas Sedang**: Sudah bayar tetapi masih ada 1-2 dokumen/TTD yang kurang.
-    - 🟢 **Prioritas Rendah**: Tinggal catatan verifikasi kecil.
-
-- **📅 Manajemen Multi-Tahun (2025 s/d 2031)**:
-  - Database terisolasi per tahun anggaran (data tahun 2025 tidak tercampur dengan 2026 atau tahun lainnya).
-  - **Tahun 2025**: Terisi 50 desa aktif Kabupaten Mamuju, Sulawesi Barat.
-  - **Tahun 2026 s/d 2031**: Disiapkan dalam kondisi kosong.
-  - **Fitur Cerdas Salin Master Desa**: Cukup 1 klik tombol `📥 Salin 50 Desa dari 2025` untuk menduplikasi master desa ke tahun baru dengan status di-reset ke "Belum", tanpa perlu mengetik ulang data 50 desa setiap tahun!
-  - Tombol `+ Tahun` untuk menambah tahun di atas 2031 kapan pun dibutuhkan.
-
-- **📥 Import & 📤 Export Data**:
-  - Import massal dari berkas **Excel (.xlsx, .xls)** dan **CSV (.csv)** dengan pengenalan otomatis kolom Kabupaten & Provinsi.
-  - Export data aktif ke **Excel (.xlsx)** dan **CSV (.csv)** lengkap dengan kolom Kabupaten dan Provinsi.
-  - **Mode Cetak Resmi (Print View / PDF)**: Tata letak ramah kertas A4/Landscape dengan kop dinas resmi advokat, tanggal & jam cetak (WITA), serta pembersihan elemen navigasi layar.
-
-- **🕒 Log Riwayat Perubahan (Audit Trail)**:
-  - Mencatat kronologi waktu, nama desa, bidang data yang diubah, nilai sebelum, nilai sesudah, dan identitas operator.
-
-- **💾 Penyimpanan Lokal & Keamanan**:
-  - Menggunakan browser **HTML5 LocalStorage** (data tetap tersimpan saat peramban ditutup/direfresh).
-  - Fitur **Backup JSON** dan **Restore JSON** untuk mengamankan data dan memindahkan data antar-komputer dengan mudah.
+### 2. 📄 Unggah & Unduh Dokumen PDF Fisik
+- **Lampiran PDF untuk 6 Dokumen Pokok**:
+  1. Perjanjian Kerja Sama (PKS)
+  2. Kwitansi LBH
+  3. Kwitansi LPJ
+  4. PKS Desa TTD (Lembar pengesahan tanda tangan)
+  5. Kwitansi LBH Desa TTD
+  6. Kwitansi LPJ Desa TTD
+- **Penyimpanan Berkas ke GitHub**: Setiap kali Anda mengunggah berkas PDF (maks. 15 MB), berkas otomatis di-commit ke folder `dokumen/{tahun}/{nama_desa}/` di repositori GitHub Anda.
+- **Unduh & Pratinjau Instan**: Tombol **👁️ Lihat PDF** dan **📥 Unduh** tersedia langsung di modal detail desa serta tabel utama (ikon 📄).
 
 ---
 
-## 🗺️ Cakupan Wilayah & Multi-Tahun
+## 📊 Fitur Utama Aplikasi
 
-### Tahun Anggaran 2025 (Aktif)
-Secara khusus mencakup **50 Desa di Kabupaten Mamuju, Provinsi Sulawesi Barat**:
-* **Kecamatan Tapalang Barat** (6 Desa): Tanete Pao, Dungkait, Ahu, Labuang Rano, Pasabu, Pangasaan.
-* **Kecamatan Tapalang** (5 Desa): Galung, Orobatu, Tampalang, Taan, Bela.
-* **Kecamatan Mamuju** (4 Desa): Bambu (Kades: Hartono), Karampuang, Tadui, Batu Pannu.
-* **Kecamatan Simboro** (5 Desa): Simboro, Botteng, Botteng Utara, Salletto, Sumare.
-* **Kecamatan Kalukku** (7 Desa): Beru-beru, Kabuloang, Sondoang, Uhaimate, Keang, Guliling, Belang-belang.
-* **Kecamatan Sampaga** (5 Desa): Tanambuah (Kades: Muh. Nasrullah), Bunde, Losso, Salukayu, Tarailu.
-* **Kecamatan Tommo** (6 Desa): Kakullasan (Kades: Yosep), Campaloga, Malino, Rantemario, Sandana, Tommo.
-* **Kecamatan Bonehau** (5 Desa): Bonehau, Banua Ada, Hinua, Lumika, Mabu.
-* **Kecamatan Kalumpang** (5 Desa): Kalumpang, Karama, Karataun, Kondo Bulo, Tumonga.
-* **Kecamatan Kepulauan Bala-Balakang** (2 Desa): Bala-Balakang, Bala-Balakang Timur.
+- **Dashboard Eksekutif Real-time**: 6 Kartu Statistik, Progress Tahunan visual, Insight & Rekomendasi Otomatis (analisis kecamatan dengan dokumen belum tanda tangan terbanyak di Kabupaten Mamuju), dan grafik kinerja administrasi.
+- **Rekap Desa (Pusat Data Lengkap)**: Kolom *No, Desa, Nama Kades, Kecamatan, Kabupaten, Provinsi, Status Bayar, Tanggal Bayar, Nominal, PKS, Kwitansi LBH, Kwitansi LPJ, PKS Desa TTD, LBH Desa TTD, LPJ Desa TTD, Status Keseluruhan, Keterangan, dan Aksi*.
+- **Filter Wilayah Dinamis**: Filter bersarang **Provinsi**, **Kabupaten**, dan **Kecamatan**.
+- **Menu "Perlu Tindak Lanjut"**: Mengurai poin masalah desa dengan klasifikasi prioritas otomatis (🔴 Tinggi, 🟡 Sedang, 🟢 Rendah).
+- **Manajemen Multi-Tahun (2025 s/d 2031)**:
+  - Tahun 2025 terisi 50 desa Kabupaten Mamuju.
+  - Tahun 2026 s/d 2031 disiapkan kosong dengan tombol **`📥 Salin 50 Desa dari 2025`** untuk menduplikasi master desa ke tahun baru dalam 1 klik.
+- **Import & Export**: Ekspor ke Excel (.xlsx) dan CSV (.csv) mengikuti filter aktif. Mode cetak ramah kertas landscape (Print View / PDF).
+- **Log Riwayat Perubahan (Audit Trail)**: Kronologi pencatatan setiap perubahan data desa.
 
-### Tahun Anggaran 2026 s/d 2031 (Kosong / Siap Digunakan)
-Telah disediakan di menu dropdown tahun. Operator dapat menyalin data 50 desa dari tahun 2025 atau memasukkan kabupaten/desa baru di masa mendatang.
+---
+
+## 🗺️ Cakupan Wilayah Kabupaten Mamuju (2025)
+
+Tahun Anggaran 2025 mencakup **50 Desa di Kabupaten Mamuju, Provinsi Sulawesi Barat**:
+* **Tapalang Barat** (6 Desa): Tanete Pao, Dungkait, Ahu, Labuang Rano, Pasabu, Pangasaan.
+* **Tapalang** (5 Desa): Galung, Orobatu, Tampalang, Taan, Bela.
+* **Mamuju** (4 Desa): Bambu (Kades: Hartono), Karampuang, Tadui, Batu Pannu.
+* **Simboro** (5 Desa): Simboro, Botteng, Botteng Utara, Salletto, Sumare.
+* **Kalukku** (7 Desa): Beru-beru, Kabuloang, Sondoang, Uhaimate, Keang, Guliling, Belang-belang.
+* **Sampaga** (5 Desa): Tanambuah (Kades: Muh. Nasrullah), Bunde, Losso, Salukayu, Tarailu.
+* **Tommo** (6 Desa): Kakullasan (Kades: Yosep), Campaloga, Malino, Rantemario, Sandana, Tommo.
+* **Bonehau** (5 Desa): Bonehau, Banua Ada, Hinua, Lumika, Mabu.
+* **Kalumpang** (5 Desa): Kalumpang, Karama, Karataun, Kondo Bulo, Tumonga.
+* **Kepulauan Bala-Balakang** (2 Desa): Bala-Balakang, Bala-Balakang Timur.
+
+---
+
+## 🔑 Panduan Membuat GitHub Token (PAT)
+
+Untuk mengizinkan web menyimpan data dan mengunggah PDF ke repositori GitHub Anda:
+
+1. Buka peramban di laptop atau HP, lalu kunjungi: [https://github.com/settings/tokens](https://github.com/settings/tokens).
+2. Klik tombol **Generate new token** lalu pilih **Generate new token (classic)**.
+3. Pada kolom **Note**, beri nama pengingat, misalnya: `Token Rekap Desa HP Laptop`.
+4. Pada kolom **Expiration**, pilih `No expiration` (atau 90 hari sesuai selera).
+5. Pada daftar hak akses (*scopes*), beri tanda centang pada kotak:
+   - **`[✓] repo`** (Full control of private/public repositories).
+6. Gulir ke bawah dan klik tombol hijau **Generate token**.
+7. Salin kode token yang muncul (berawalan `ghp_...`). *Simpan kode ini di catatan pribadi Anda karena hanya ditampilkan satu kali oleh GitHub.*
+
+---
+
+## 📱 Panduan Menghubungkan di HP, Tablet, & Laptop
+
+1. Buka website aplikasi Anda di HP, tablet, atau browser laptop:
+   `https://subhanhusain9811-lab.github.io/subhan-rekap-lpj-dan-monitoring-desa/`
+2. Buka menu **⚙️ Pengaturan & Sinkronisasi GitHub** di sidebar (atau klik tombol status GitHub di pojok kanan atas header).
+3. Masukkan Token GitHub Anda pada kolom **GitHub Personal Access Token (PAT)**.
+4. Klik tombol **🔗 Simpan & Tes Koneksi**.
+5. Sistem akan menampilkan status: `🟢 Terhubung ke GitHub (subhanhusain9811-lab/subhan-rekap-lpj-dan-monitoring-desa)`.
+6. Klik tombol **⬇️ Tarik Data Terbaru dari GitHub**.
+7. Sekarang, setiap perubahan data atau unggahan berkas PDF yang Anda lakukan di HP atau laptop akan otomatis tersimpan ke repositori GitHub dan dapat dilihat di semua perangkat Anda!
 
 ---
 
 ## 🌐 Panduan Injek / Update ke GitHub
 
-Jika repositori GitHub Anda sudah dibuat sebelumnya, berikut cara termudah untuk meng-update ("injek") berkas versi terbaru ini:
+Berikut cara memperbarui repositori GitHub Anda dengan kode versi terbaru ini:
 
-### Cara 1: Update Langsung Lewat Web GitHub (Paling Mudah, Tanpa Git CLI)
-1. Buka repositori Anda di [https://github.com](https://github.com).
-2. Klik tombol **Add file** di bagian kanan atas daftar berkas, lalu pilih **Upload files**.
-3. Buka folder hasil ekstrak berkas ZIP terbaru di komputer Anda.
-4. Pilih dan tarik (*drag and drop*) semua berkas berikut ke layar browser:
+### Melalui Web Browser GitHub (Tanpa Terminal / Git CLI)
+1. Buka repositori Anda: [https://github.com/subhanhusain9811-lab/subhan-rekap-lpj-dan-monitoring-desa](https://github.com/subhanhusain9811-lab/subhan-rekap-lpj-dan-monitoring-desa).
+2. Klik menu **Add file** -> **Upload files**.
+3. Ekstrak berkas ZIP yang telah diunduh di komputer Anda.
+4. Tarik (*drag & drop*) seluruh berkas berikut ke area upload GitHub:
    * `index.html`
    * `app.js`
    * `style.css`
    * `rekap_desa_standalone.html`
    * `dataset_desa_2025.json`
    * `README.md`
-5. GitHub akan mendeteksi file yang sudah ada dan otomatis menimpanya (*overwrite*) dengan versi terbaru.
-6. Pada kolom **Commit changes** di bagian bawah, tulis pesan (contoh: `feat: tambah kolom kabupaten & provinsi, data 2025 kab mamuju sulbar`).
-7. Klik tombol hijau **Commit changes**.
-8. Selesai! GitHub Pages Anda akan otomatis meng-update web dalam 1–2 menit.
-
----
-
-### Cara 2: Update Melalui Terminal Git
-Jika menggunakan Git CLI di komputer:
-```bash
-# Masuk ke folder repositori lokal Anda
-cd folder-rekap-desa
-
-# Salin/timpa semua berkas baru ke folder ini, lalu jalankan:
-git add .
-git commit -m "feat: tambah kolom kabupaten dan provinsi, set 2025 kab mamuju"
-git push origin main
-```
+5. Pada kolom *Commit changes* di bawah, tulis pesan: `feat: integrasi cloud github sync & upload download dokumen pdf`.
+6. Klik tombol hijau **Commit changes**.
+7. Tunggu 1 menit, lalu refresh website GitHub Pages Anda.
 
 ---
 
 ## 📁 Struktur Berkas Repositori
 
 ```text
-rekap-desa-lpj/
-├── index.html                  # Entrypoint aplikasi utama (GitHub Pages)
-├── style.css                   # Desain UI, palet warna, dan tata letak responsif
-├── app.js                      # Mesin logika aplikasi, filter wilayah, & dataset 2025
+subhan-rekap-lpj-dan-monitoring-desa/
+├── index.html                  # Halaman web utama (GitHub Pages)
+├── style.css                   # Desain UI, palet warna, dan aturan responsive
+├── app.js                      # Mesin logika aplikasi, sinkronisasi GitHub API, & modul PDF
 ├── dataset_desa_2025.json      # Dataset 50 desa Kabupaten Mamuju, Sulawesi Barat
 ├── rekap_desa_standalone.html  # Berkas mandiri all-in-one (bisa dibuka offline tanpa server)
 ├── README.md                   # Dokumentasi resmi repositori
@@ -154,4 +148,4 @@ rekap-desa-lpj/
 
 ## 📄 Lisensi
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE). Bebas digunakan, dikembangkan, dan disesuaikan untuk tata kelola administrasi desa dan pendampingan hukum pemerintahan daerah.
+Proyek ini dilisensikan di bawah [MIT License](LICENSE). Hak Cipta (c) 2026 Ahmad Subhan Suaib, S.H. - Minzathu & Minzathu Law Offices.
