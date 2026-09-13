@@ -1213,23 +1213,7 @@ function renderTtdBadgeWithPdf(item, docType) {
 }
 
 function previewPdfDocumentDirect(desaId, docType) {
-  const data = getYearData(state.activeYear);
-  const item = data.find(x => x.id === desaId);
-  if (!item || !item.pdfFiles || !item.pdfFiles[docType]) return;
-
-  const pdf = item.pdfFiles[docType];
-  const url = pdf.dataUrl || pdf.downloadUrl;
-  if (url) {
-    const win = window.open();
-    if (win) {
-      win.document.write(`<iframe src="${url}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
-      win.document.title = pdf.name;
-    } else {
-      window.location.href = url;
-    }
-  } else {
-    alert("Tautan berkas PDF tidak ditemukan.");
-  }
+  openPdfViewerModal(docType, desaId);
 }
 
 function renderStatusAllBadge(status) {
@@ -1785,19 +1769,49 @@ function renderDocDetailRow(docType, item) {
     const pdf = item.pdfFiles && item.pdfFiles[docType];
     if (pdf) {
       pdfControl.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
-          <span style="font-weight: 700; color: #065f46;">📄 ${escapeHtml(pdf.name)}</span>
-          <span style="color: #047857; font-size: 11px;">(${Math.round((pdf.size || 0)/1024)} KB)</span>
-          <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="previewPdfDocument('${docType}')">👁️ Lihat</button>
-          <button class="btn btn-success btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="downloadPdfDocument('${docType}')">📥 Unduh</button>
-          <button class="btn btn-danger btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="deletePdfDocument('${docType}')">🗑️</button>
+        <div style="background: #ecfdf5; border: 1.5px solid #10b981; border-radius: var(--radius-md); padding: 12px 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 26px;">📄</span>
+            <div>
+              <div style="font-weight: 800; color: #065f46; font-size: 13.5px;">${escapeHtml(pdf.name)}</div>
+              <div style="font-size: 11.5px; color: #047857; margin-top: 2px;">
+                Ukuran: <b>${Math.round((pdf.size || 0)/1024)} KB</b> • Diunggah: <b>${formatDate(pdf.date || '')}</b>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm" style="padding: 6px 12px; font-weight: 700; gap: 6px;" onclick="openPdfViewerModal('${docType}')">
+              <span>👁️</span>
+              <span>Lihat Dokumen</span>
+            </button>
+            <button type="button" class="btn btn-success btn-sm" style="padding: 6px 12px; font-weight: 700; gap: 6px;" onclick="downloadPdfDocumentDirect('${docType}')">
+              <span>📥</span>
+              <span>Unduh PDF</span>
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="padding: 6px 10px; font-size: 12px;" onclick="triggerPdfUpload('${docType}')" title="Ganti Berkas PDF Ini">
+              <span>🔄 Ganti</span>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" style="padding: 6px 10px; font-size: 12px;" onclick="deletePdfDocument('${docType}')" title="Hapus Lampiran PDF">
+              <span>🗑️</span>
+            </button>
+            <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+          </div>
         </div>
       `;
     } else {
       pdfControl.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <button class="btn btn-outline-purple btn-sm" onclick="triggerPdfUpload('${docType}')">📤 Unggah Berkas PDF</button>
-          <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+        <div style="background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 10px 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+          <div style="font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+            <span>📎</span>
+            <span>Belum ada lampiran berkas PDF fisik</span>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-purple btn-sm" style="padding: 6px 14px; font-weight: 700; gap: 6px;" onclick="triggerPdfUpload('${docType}')">
+              <span>📤</span>
+              <span>Unggah Berkas PDF</span>
+            </button>
+            <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+          </div>
         </div>
       `;
     }
@@ -1813,19 +1827,49 @@ function renderTtdDetailRow(docType, item) {
     const pdf = item.pdfFiles && item.pdfFiles[docType];
     if (pdf) {
       pdfControl.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
-          <span style="font-weight: 700; color: #065f46;">📄 ${escapeHtml(pdf.name)}</span>
-          <span style="color: #047857; font-size: 11px;">(${Math.round((pdf.size || 0)/1024)} KB)</span>
-          <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="previewPdfDocument('${docType}')">👁️ Lihat</button>
-          <button class="btn btn-success btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="downloadPdfDocument('${docType}')">📥 Unduh</button>
-          <button class="btn btn-danger btn-sm" style="padding: 2px 6px; font-size: 11px;" onclick="deletePdfDocument('${docType}')">🗑️</button>
+        <div style="background: #ecfdf5; border: 1.5px solid #10b981; border-radius: var(--radius-md); padding: 12px 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 26px;">📄</span>
+            <div>
+              <div style="font-weight: 800; color: #065f46; font-size: 13.5px;">${escapeHtml(pdf.name)}</div>
+              <div style="font-size: 11.5px; color: #047857; margin-top: 2px;">
+                Ukuran: <b>${Math.round((pdf.size || 0)/1024)} KB</b> • Diunggah: <b>${formatDate(pdf.date || '')}</b>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm" style="padding: 6px 12px; font-weight: 700; gap: 6px;" onclick="openPdfViewerModal('${docType}')">
+              <span>👁️</span>
+              <span>Lihat Dokumen</span>
+            </button>
+            <button type="button" class="btn btn-success btn-sm" style="padding: 6px 12px; font-weight: 700; gap: 6px;" onclick="downloadPdfDocumentDirect('${docType}')">
+              <span>📥</span>
+              <span>Unduh PDF</span>
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="padding: 6px 10px; font-size: 12px;" onclick="triggerPdfUpload('${docType}')" title="Ganti Berkas PDF Ini">
+              <span>🔄 Ganti</span>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" style="padding: 6px 10px; font-size: 12px;" onclick="deletePdfDocument('${docType}')" title="Hapus Lampiran PDF">
+              <span>🗑️</span>
+            </button>
+            <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+          </div>
         </div>
       `;
     } else {
       pdfControl.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <button class="btn btn-outline-purple btn-sm" onclick="triggerPdfUpload('${docType}')">📤 Unggah Berkas PDF</button>
-          <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+        <div style="background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 10px 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+          <div style="font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+            <span>📎</span>
+            <span>Belum ada lampiran berkas PDF fisik</span>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-purple btn-sm" style="padding: 6px 14px; font-weight: 700; gap: 6px;" onclick="triggerPdfUpload('${docType}')">
+              <span>📤</span>
+              <span>Unggah Berkas PDF</span>
+            </button>
+            <input type="file" id="uploadPdfInput_${docType}" accept=".pdf" style="display: none;" onchange="handlePdfSelected(event, '${docType}')">
+          </div>
         </div>
       `;
     }
