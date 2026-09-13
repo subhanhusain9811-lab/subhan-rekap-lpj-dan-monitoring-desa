@@ -1599,6 +1599,454 @@ body {
   font-size: 14px;
 }
 
+
+/* ============================================== */
+/* COMPREHENSIVE RESPONSIVE DESIGN (MOBILE & TABLET) */
+/* ============================================== */
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* TOUCH TARGETS & iOS AUTO-ZOOM PREVENTION */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* SIDEBAR CLOSE BUTTON (MOBILE ONLY) */
+.sidebar-close-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* MOBILE BOTTOM NAVIGATION BAR */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid var(--border-color);
+  z-index: 95;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.08);
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 4px;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  padding: 6px 0;
+  position: relative;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary-purple);
+  font-weight: 800;
+}
+
+.bottom-nav-icon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.bottom-nav-fab {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed 0%, #6b21a8 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 14px rgba(107, 33, 168, 0.4);
+  margin-top: -20px;
+  border: 3px solid #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bottom-nav-badge {
+  position: absolute;
+  top: 4px;
+  right: 18%;
+  background: var(--status-red);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+/* MOBILE EXPANDABLE SEARCH ROW */
+.mobile-search-strip {
+  display: none;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.mobile-search-strip input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 14px;
+  font-size: 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+/* TABLE HINT FOR MOBILE */
+.table-scroll-hint {
+  display: none;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  background: #fffbeb;
+  border-bottom: 1px solid #fef08a;
+  text-align: center;
+}
+
+/* BREAKPOINT: TABLET & MOBILE (<= 900px) */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1000;
+    width: 290px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+  }
+
+  .app-main {
+    margin-left: 0 !important;
+    padding-bottom: 74px !important;
+  }
+
+  .top-header {
+    height: auto !important;
+    min-height: 58px;
+    padding: 8px 14px !important;
+    gap: 8px;
+  }
+
+  .header-left {
+    flex: 1;
+    gap: 10px;
+  }
+
+  .page-title-area h2 {
+    font-size: 15px !important;
+  }
+
+  .page-title-area p {
+    display: none !important;
+  }
+
+  .header-right {
+    gap: 6px !important;
+  }
+
+  .header-search {
+    display: none !important;
+  }
+
+  .header-right .btn-primary {
+    display: none !important;
+  }
+
+  .btn-outline-purple.btn-sm {
+    display: none !important;
+  }
+
+  .github-sync-pill {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+
+  #githubStatusText {
+    display: none;
+  }
+
+  .github-sync-pill::after {
+    content: "Cloud";
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .year-pill {
+    padding: 2px 6px !important;
+  }
+
+  .year-label {
+    display: none !important;
+  }
+
+  .year-select {
+    font-size: 13px !important;
+  }
+
+  .content-container {
+    padding: 12px 12px 80px !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  .mobile-search-strip {
+    display: block;
+  }
+
+  .table-scroll-hint {
+    display: block;
+  }
+}
+
+/* BREAKPOINT: SMARTPHONE (<= 640px) */
+@media (max-width: 640px) {
+  /* STATS 2 COLUMNS ON MOBILE */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .stat-card {
+    padding: 12px 14px !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .stat-label {
+    font-size: 10px !important;
+  }
+
+  .stat-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+  }
+
+  .stat-value {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .stat-sub {
+    font-size: 10px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* PROGRESS HERO CARD */
+  .progress-hero-card {
+    padding: 16px 18px !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 16px !important;
+  }
+
+  .hero-title h3 {
+    font-size: 15px !important;
+  }
+
+  .hero-title p {
+    font-size: 11.5px !important;
+  }
+
+  .hero-pct {
+    font-size: 20px !important;
+    padding: 2px 10px !important;
+  }
+
+  .hero-details-row {
+    flex-direction: column !important;
+    gap: 6px !important;
+    font-size: 11px !important;
+  }
+
+  /* QUICK ACTIONS */
+  .quick-actions-bar {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .quick-actions-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qa-label {
+    display: none !important;
+  }
+
+  .quick-actions-bar .btn {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  /* FILTER GRID */
+  .filter-panel {
+    padding: 12px 14px !important;
+  }
+
+  .filter-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .filter-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* CARDS GRID FOR DESA */
+  .cards-grid-view {
+    grid-template-columns: 1fr !important;
+    padding: 8px 0 !important;
+    gap: 12px !important;
+  }
+
+  .desa-record-card {
+    padding: 14px !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .dcard-title h4 {
+    font-size: 16px !important;
+  }
+
+  .dcard-title p {
+    font-size: 11.5px !important;
+  }
+
+  .dcard-docs-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+    padding: 8px !important;
+  }
+
+  .dcard-doc-col {
+    font-size: 9.5px !important;
+  }
+
+  .dcard-doc-col .badge {
+    padding: 2px 4px !important;
+    font-size: 9px !important;
+  }
+
+  /* MODALS AS NATIVE BOTTOM SHEETS ON MOBILE */
+  .modal-backdrop {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .modal-box {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 94vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    margin: 0 !important;
+  }
+
+  .modal-header {
+    padding: 14px 18px !important;
+  }
+
+  .modal-header h3 {
+    font-size: 15px !important;
+  }
+
+  .modal-body {
+    padding: 16px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .modal-footer {
+    padding: 12px 16px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .modal-footer .btn {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  .form-grid-2, .form-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .detail-tabs {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 2px !important;
+  }
+
+  .detail-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dtab-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* FULLSCREEN PDF VIEWER MODAL ON MOBILE */
+  #modalPdfViewer .modal-box {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1614,6 +2062,7 @@ body {
         <h1>REKAP DESA</h1>
         <p>Monitoring LPJ Tahunan</p>
       </div>
+      <button class="sidebar-close-btn" onclick="toggleSidebar()" title="Tutup Menu">✕</button>
     </div>
 
     <div class="sidebar-menu">
@@ -1759,6 +2208,11 @@ body {
         </button>
       </div>
     </header>
+
+    <!-- MOBILE EXPANDABLE SEARCH STRIP -->
+    <div class="mobile-search-strip" id="mobileSearchStrip">
+      <input type="text" id="mobileSearchInput" placeholder="🔍 Cari desa, kades, kecamatan..." oninput="handleGlobalSearch(this.value)">
+    </div>
 
     <!-- CONTENT CONTAINER -->
     <main class="content-container">
@@ -2030,6 +2484,7 @@ body {
             </div>
           </div>
 
+          <div class="table-scroll-hint">👉 Geser tabel ke kanan untuk melihat seluruh status dokumen & pengesahan</div>
           <div class="table-responsive" id="tableWrapper">
             <table class="data-table" id="mainDataTable">
               <thead>
@@ -3081,10 +3536,18 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStateFromStorage();
   loadGitHubConfig();
   initYearSelector();
+
+  // Mobile Auto-Detection: Default to clean Card View on smartphones
+  if (window.innerWidth <= 768) {
+    state.tableViewMode = "cards";
+  }
+
   renderAllViews();
   initPrintTimestamp();
 
-  // If token exists, automatically attempt background sync / connection check
+  // Ensure toggle buttons reflect initial mode
+  setTableViewMode(state.tableViewMode);
+
   if (state.githubConfig.token) {
     autoSyncWithGitHub();
   }
@@ -3840,6 +4303,8 @@ function updateBadgesAndHeaders(stats) {
   if (sbIss) sbIss.textContent = stats.perluTindakLanjut;
   const hNotif = document.getElementById("headerNotifBadge");
   if (hNotif) hNotif.textContent = stats.perluTindakLanjut;
+  const bnavIss = document.getElementById("bnavIssuesBadge");
+  if (bnavIss) bnavIss.textContent = stats.perluTindakLanjut;
   document.querySelectorAll(".print-year-target").forEach(el => el.textContent = state.activeYear);
 }
 
@@ -5175,11 +5640,18 @@ function resetFiltersSilently() {
   if (el("filterTtd")) el("filterTtd").value = "";
   if (el("filterStatusAll")) el("filterStatusAll").value = "";
   if (el("globalSearchInput")) el("globalSearchInput").value = "";
+  if (el("mobileSearchInput")) el("mobileSearchInput").value = "";
 }
 
 function handleGlobalSearch(val) {
   state.searchQuery = val.trim();
   state.pagination.page = 1;
+
+  // Sync values between desktop and mobile search inputs
+  const dInput = document.getElementById("globalSearchInput");
+  const mInput = document.getElementById("mobileSearchInput");
+  if (dInput && dInput.value !== val) dInput.value = val;
+  if (mInput && mInput.value !== val) mInput.value = val;
 
   if (state.searchQuery && state.activeView !== "rekap-desa") {
     switchView("rekap-desa");
@@ -5258,6 +5730,11 @@ function switchView(viewId) {
   document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
   const targetNav = document.querySelector(`.menu-item[onclick*="${viewId}"]`);
   if (targetNav) targetNav.classList.add("active");
+
+  // Sync mobile bottom navigation
+  document.querySelectorAll(".bottom-nav-item").forEach(b => b.classList.remove("active"));
+  const targetBottom = document.getElementById(`bnav-${viewId}`);
+  if (targetBottom) targetBottom.classList.add("active");
 
   document.querySelectorAll(".app-view").forEach(v => v.classList.remove("active"));
   const targetView = document.getElementById(`view-${viewId}`);
@@ -5778,5 +6255,29 @@ function showToast(message, type = "info") {
 }
 
 </script>
+  <!-- MOBILE BOTTOM NAVIGATION (NATIVE APP EXPERIENCE) -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <button type="button" class="bottom-nav-item active" id="bnav-dashboard" onclick="switchView('dashboard')">
+      <span class="bottom-nav-icon">🏠</span>
+      <span>Dashboard</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bnav-rekap-desa" onclick="switchView('rekap-desa')">
+      <span class="bottom-nav-icon">📋</span>
+      <span>Desa</span>
+    </button>
+    <button type="button" class="bottom-nav-fab" onclick="openAddDesaModal()" title="Tambah Desa Baru">
+      <span>+</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bnav-tindak-lanjut" onclick="switchView('tindak-lanjut')">
+      <span class="bottom-nav-icon">⚠️</span>
+      <span>Tindak Lanjut</span>
+      <span class="bottom-nav-badge" id="bnavIssuesBadge">17</span>
+    </button>
+    <button type="button" class="bottom-nav-item" onclick="toggleSidebar()">
+      <span class="bottom-nav-icon">☰</span>
+      <span>Menu</span>
+    </button>
+  </nav>
+
 </body>
 </html>

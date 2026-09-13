@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=1.2">
+  <link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body>
 
@@ -23,6 +23,7 @@
         <h1>REKAP DESA</h1>
         <p>Monitoring LPJ Tahunan</p>
       </div>
+      <button class="sidebar-close-btn" onclick="toggleSidebar()" title="Tutup Menu">✕</button>
     </div>
 
     <div class="sidebar-menu">
@@ -168,6 +169,11 @@
         </button>
       </div>
     </header>
+
+    <!-- MOBILE EXPANDABLE SEARCH STRIP -->
+    <div class="mobile-search-strip" id="mobileSearchStrip">
+      <input type="text" id="mobileSearchInput" placeholder="🔍 Cari desa, kades, kecamatan..." oninput="handleGlobalSearch(this.value)">
+    </div>
 
     <!-- CONTENT CONTAINER -->
     <main class="content-container">
@@ -439,6 +445,7 @@
             </div>
           </div>
 
+          <div class="table-scroll-hint">👉 Geser tabel ke kanan untuk melihat seluruh status dokumen & pengesahan</div>
           <div class="table-responsive" id="tableWrapper">
             <table class="data-table" id="mainDataTable">
               <thead>
@@ -1440,6 +1447,30 @@
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="app.js?v=1.2"></script>
+  <script src="app.js?v=1.3"></script>
+  <!-- MOBILE BOTTOM NAVIGATION (NATIVE APP EXPERIENCE) -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <button type="button" class="bottom-nav-item active" id="bnav-dashboard" onclick="switchView('dashboard')">
+      <span class="bottom-nav-icon">🏠</span>
+      <span>Dashboard</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bnav-rekap-desa" onclick="switchView('rekap-desa')">
+      <span class="bottom-nav-icon">📋</span>
+      <span>Desa</span>
+    </button>
+    <button type="button" class="bottom-nav-fab" onclick="openAddDesaModal()" title="Tambah Desa Baru">
+      <span>+</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bnav-tindak-lanjut" onclick="switchView('tindak-lanjut')">
+      <span class="bottom-nav-icon">⚠️</span>
+      <span>Tindak Lanjut</span>
+      <span class="bottom-nav-badge" id="bnavIssuesBadge">17</span>
+    </button>
+    <button type="button" class="bottom-nav-item" onclick="toggleSidebar()">
+      <span class="bottom-nav-icon">☰</span>
+      <span>Menu</span>
+    </button>
+  </nav>
+
 </body>
 </html>

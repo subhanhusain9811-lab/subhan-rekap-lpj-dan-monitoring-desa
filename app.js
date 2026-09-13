@@ -47,10 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStateFromStorage();
   loadGitHubConfig();
   initYearSelector();
+
+  // Mobile Auto-Detection: Default to clean Card View on smartphones
+  if (window.innerWidth <= 768) {
+    state.tableViewMode = "cards";
+  }
+
   renderAllViews();
   initPrintTimestamp();
 
-  // If token exists, automatically attempt background sync / connection check
+  // Ensure toggle buttons reflect initial mode
+  setTableViewMode(state.tableViewMode);
+
   if (state.githubConfig.token) {
     autoSyncWithGitHub();
   }
@@ -806,6 +814,8 @@ function updateBadgesAndHeaders(stats) {
   if (sbIss) sbIss.textContent = stats.perluTindakLanjut;
   const hNotif = document.getElementById("headerNotifBadge");
   if (hNotif) hNotif.textContent = stats.perluTindakLanjut;
+  const bnavIss = document.getElementById("bnavIssuesBadge");
+  if (bnavIss) bnavIss.textContent = stats.perluTindakLanjut;
   document.querySelectorAll(".print-year-target").forEach(el => el.textContent = state.activeYear);
 }
 
@@ -2141,11 +2151,18 @@ function resetFiltersSilently() {
   if (el("filterTtd")) el("filterTtd").value = "";
   if (el("filterStatusAll")) el("filterStatusAll").value = "";
   if (el("globalSearchInput")) el("globalSearchInput").value = "";
+  if (el("mobileSearchInput")) el("mobileSearchInput").value = "";
 }
 
 function handleGlobalSearch(val) {
   state.searchQuery = val.trim();
   state.pagination.page = 1;
+
+  // Sync values between desktop and mobile search inputs
+  const dInput = document.getElementById("globalSearchInput");
+  const mInput = document.getElementById("mobileSearchInput");
+  if (dInput && dInput.value !== val) dInput.value = val;
+  if (mInput && mInput.value !== val) mInput.value = val;
 
   if (state.searchQuery && state.activeView !== "rekap-desa") {
     switchView("rekap-desa");
@@ -2224,6 +2241,11 @@ function switchView(viewId) {
   document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
   const targetNav = document.querySelector(`.menu-item[onclick*="${viewId}"]`);
   if (targetNav) targetNav.classList.add("active");
+
+  // Sync mobile bottom navigation
+  document.querySelectorAll(".bottom-nav-item").forEach(b => b.classList.remove("active"));
+  const targetBottom = document.getElementById(`bnav-${viewId}`);
+  if (targetBottom) targetBottom.classList.add("active");
 
   document.querySelectorAll(".app-view").forEach(v => v.classList.remove("active"));
   const targetView = document.getElementById(`view-${viewId}`);
