@@ -1179,5 +1179,36 @@
       "kwitansiLbhDesaTtd": null,
       "kwitansiLpjDesaTtd": null
     }
+  },
+  {
+    "id": "desa-1793611145415",
+    "no": 52,
+    "desa": "Batu ampa",
+    "kades": "",
+    "jabatan": "Definitif",
+    "kecamatan": "Papalang",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "SUDAH BAYAR",
+    "tanggalBayar": "2026-11-02",
+    "nominal": 10000000,
+    "catatanBayar": "",
+    "infoTambahanBayar": "",
+    "pks": "belum",
+    "kwitansiLbh": "belum",
+    "kwitansiLpj": "belum",
+    "pksDesaTtd": "belum ttd",
+    "kwitansiLbhDesaTtd": "belum ttd",
+    "kwitansiLpjDesaTtd": "belum ttd",
+    "keterangan": "",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
