@@ -122,5 +122,36 @@
       "kwitansiLbhDesaTtd": null,
       "kwitansiLpjDesaTtd": null
     }
+  },
+  {
+    "id": "desa-1793702992000",
+    "no": 5,
+    "desa": "Sisango",
+    "kades": "",
+    "jabatan": "Definitif",
+    "kecamatan": "Papalang",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "SUDAH BAYAR",
+    "tanggalBayar": "",
+    "nominal": 0,
+    "catatanBayar": "",
+    "infoTambahanBayar": "",
+    "pks": "belum",
+    "kwitansiLbh": "belum",
+    "kwitansiLpj": "done",
+    "pksDesaTtd": "belum ttd",
+    "kwitansiLbhDesaTtd": "belum ttd",
+    "kwitansiLpjDesaTtd": "done",
+    "keterangan": "",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
