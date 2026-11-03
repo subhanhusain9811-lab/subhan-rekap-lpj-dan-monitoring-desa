@@ -184,5 +184,36 @@
       "kwitansiLbhDesaTtd": null,
       "kwitansiLpjDesaTtd": null
     }
+  },
+  {
+    "id": "desa-1793706104914",
+    "no": 7,
+    "desa": "Bonda",
+    "kades": "",
+    "jabatan": "Definitif",
+    "kecamatan": "Papalang",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "BELUM BAYAR",
+    "tanggalBayar": "",
+    "nominal": 10000000,
+    "catatanBayar": "",
+    "infoTambahanBayar": "Sdh berkas, uang belum",
+    "pks": "done",
+    "kwitansiLbh": "done",
+    "kwitansiLpj": "done",
+    "pksDesaTtd": "done",
+    "kwitansiLbhDesaTtd": "done",
+    "kwitansiLpjDesaTtd": "done",
+    "keterangan": "",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
