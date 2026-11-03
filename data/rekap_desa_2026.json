@@ -29,5 +29,36 @@
       "kwitansiLbhDesaTtd": null,
       "kwitansiLpjDesaTtd": null
     }
+  },
+  {
+    "id": "desa-1793699400385",
+    "no": 2,
+    "desa": "Uhaimate",
+    "kades": "Syarifuddin S",
+    "jabatan": "Definitif",
+    "kecamatan": "Kalukku",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "SUDAH BAYAR",
+    "tanggalBayar": "",
+    "nominal": 6400000,
+    "catatanBayar": "",
+    "infoTambahanBayar": "",
+    "pks": "belum",
+    "kwitansiLbh": "belum",
+    "kwitansiLpj": "belum",
+    "pksDesaTtd": "belum ttd",
+    "kwitansiLbhDesaTtd": "belum ttd",
+    "kwitansiLpjDesaTtd": "belum ttd",
+    "keterangan": "",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
