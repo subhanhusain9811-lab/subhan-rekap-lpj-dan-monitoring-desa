@@ -215,5 +215,36 @@
       "kwitansiLbhDesaTtd": null,
       "kwitansiLpjDesaTtd": null
     }
+  },
+  {
+    "id": "desa-1794053952876",
+    "no": 8,
+    "desa": "Kabuloang",
+    "kades": "Munajat",
+    "jabatan": "Definitif",
+    "kecamatan": "Kakukku",
+    "kabupaten": "Kabupaten Mamuju",
+    "provinsi": "Sulawesi Barat",
+    "statusBayar": "BELUM BAYAR",
+    "tanggalBayar": "",
+    "nominal": 6400000,
+    "catatanBayar": "3,6 jt k",
+    "infoTambahanBayar": "15 jt aslinya",
+    "pks": "belum",
+    "kwitansiLbh": "belum",
+    "kwitansiLpj": "belum",
+    "pksDesaTtd": "belum ttd",
+    "kwitansiLbhDesaTtd": "belum ttd",
+    "kwitansiLpjDesaTtd": "belum ttd",
+    "keterangan": "",
+    "needsVerification": true,
+    "pdfFiles": {
+      "pks": null,
+      "kwitansiLbh": null,
+      "kwitansiLpj": null,
+      "pksDesaTtd": null,
+      "kwitansiLbhDesaTtd": null,
+      "kwitansiLpjDesaTtd": null
+    }
   }
 ]
